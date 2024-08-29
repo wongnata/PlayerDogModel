@@ -6,7 +6,7 @@
 
 ## Changelog
 
-**[1.1.0]**
+**[1.0.0]**
 - Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
 
 ## Features
