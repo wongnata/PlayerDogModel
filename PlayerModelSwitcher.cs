@@ -3,7 +3,7 @@ using UnityEngine.Rendering.HighDefinition;
 using UnityEngine;
 using UnityEngine.Animations;
 
-namespace PlayerDogModel
+namespace PlayerDogModel_Plus
 {
 	public class PlayerModelSwitcher : MonoBehaviour
 	{
@@ -58,6 +58,7 @@ namespace PlayerDogModel
 
 		private void Interacted(PlayerControllerB player)
 		{
+
 			player.GetComponentInChildren<PlayerModelReplacer>().ToggleAndBroadcast();
 		}
 	}

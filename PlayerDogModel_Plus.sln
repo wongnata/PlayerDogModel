@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayerDogModel", "PlayerDogModel.csproj", "{B5EC8E3A-D3FD-4C8F-BC53-E64D54E86594}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayerDogModel_Plus", "PlayerDogModel_Plus.csproj", "{B5EC8E3A-D3FD-4C8F-BC53-E64D54E86594}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

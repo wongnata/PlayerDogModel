@@ -6,10 +6,11 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Animations;
 
-namespace PlayerDogModel
+namespace PlayerDogModel_Plus
 {
 	[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 	[BepInDependency("LC_API_V50")]
+	[BepInDependency("x753.More_Suits")]
 	[BepInProcess("Lethal Company.exe")]
 	public class Plugin : BaseUnityPlugin
 	{

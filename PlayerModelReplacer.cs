@@ -8,9 +8,10 @@ using System.Reflection;
 using System.Collections;
 using Newtonsoft.Json;
 using BepInEx.Bootstrap;
-using PlayerDogModel.Patches;
+using PlayerDogModel_Plus.Patches;
+using Unity.Netcode;
 
-namespace PlayerDogModel
+namespace PlayerDogModel_Plus
 {
 	// By default, LateUpdate is called in a chaotic order: GrabbableObject can execute it before or after PlayerModelReplacer.
 	// Forcing the Execution Order to this value will ensure PlayerModelReplacer updates the anchor first and THEN only the GrabbableObject will update its position.
@@ -60,7 +61,7 @@ namespace PlayerDogModel
 				PlayerModelReplacer.loaded = true;
 				PlayerModelReplacer.LoadImageResources();
 				this.StartCoroutine(PlayerModelReplacer.LoadAudioResources());
-			}
+            }
 		}
 
 		private void Start()
@@ -313,7 +314,7 @@ namespace PlayerDogModel
 		}
 
 		public void EnableHumanModel(bool playAudio = true)
-		{
+        {
 			this.isDogActive = false;
 
 			// Dog can be completely disabled because it doesn't drive the animations and sounds and other stuff.
@@ -338,15 +339,10 @@ namespace PlayerDogModel
 					PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.humanOutline;
 				}
 			}
-
-			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
-			{
-				MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
-			}
 		}
 
 		public void EnableDogModel(bool playAudio = true)
-		{
+        {
 			this.isDogActive = true;
 
 			this.dogGameObject.SetActive(true);
@@ -378,11 +374,6 @@ namespace PlayerDogModel
 				PlayerModelReplacer.healthFill.sprite = PlayerModelReplacer.dogFill;
 				PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.dogOutline;
 			}
-
-			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
-			{
-				MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-			}
 		}
 
 		public void UpdateMaterial()
@@ -401,19 +392,57 @@ namespace PlayerDogModel
 
 		public void ToggleAndBroadcast(bool playAudio = true)
 		{
-			if (this.isDogActive)
+            Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for you ({playerController.playerUsername})!");
+            if (this.isDogActive)
 			{
 				this.EnableHumanModel();
-			}
+            }
 			else
 			{
 				this.EnableDogModel();
-			}
+            }
 
-			this.BroadcastSelectedModel(playAudio);
+			// This is a hack in the meantime before the networking issue is fixed when another player joins an existing session
+            //if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+            //{
+            //    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+            //}
+
+            this.BroadcastSelectedModel(playAudio);
 		}
 
-		public void BroadcastSelectedModel(bool playAudio)
+        public void ReceiveBroadcastAndToggle(bool playAudio = true, bool isDog = false)
+        {
+            if (isDog)
+            {
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a dog! Woof!");
+                this.EnableDogModel();
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                }
+            }
+            else
+            {
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a human! Damn!");
+                this.EnableHumanModel();
+
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+					if (playerController.IsOwner) // This should only be true once when you start up!
+					{
+                        Debug.Log($"{PluginInfo.PLUGIN_GUID}: Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+						return;
+					}
+					else 
+					{
+						MoreCompanyPatch.ShowCosmeticsForPlayer(playerController); 
+					}
+                }
+            }
+        }
+
+        public void BroadcastSelectedModel(bool playAudio)
 		{
 			Debug.Log($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
 
@@ -421,7 +450,7 @@ namespace PlayerDogModel
 			{
 				playerClientId = this.PlayerClientId,
 				isDog = this.isDogActive,
-				playAudio = playAudio,
+				playAudio = playAudio
 			};
 
 			LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
@@ -490,7 +519,7 @@ namespace PlayerDogModel
 				set;
 			}
 
-			[JsonProperty]
+            [JsonProperty]
 			public bool isDog
 			{
 				get;
