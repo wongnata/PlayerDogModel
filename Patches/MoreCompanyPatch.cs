@@ -13,15 +13,15 @@ namespace PlayerDogModel_Plus.Patches
 		{
 			CosmeticApplication cosmeticApplication = playerController.meshContainer.GetComponentInChildren<CosmeticApplication>();
 
-			Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
-
 			if (cosmeticApplication == null)
 			{
 				Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance was null!");
 				return;
 			}
 
-			cosmeticApplication.ClearCosmetics();
+            Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
+
+            cosmeticApplication.ClearCosmetics();
 
 			List<string> selectedCosmetics = MainClass.playerIdsAndCosmetics[(int)playerController.playerClientId];
 			foreach (var selected in selectedCosmetics)
@@ -41,15 +41,15 @@ namespace PlayerDogModel_Plus.Patches
 		{
 			CosmeticApplication cosmeticApplication = playerController.meshContainer.GetComponentInChildren<CosmeticApplication>();
 
-			Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
-
 			if (cosmeticApplication == null)
 			{
 				Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance was null!");
 				return;
 			}
 
-			cosmeticApplication.ClearCosmetics();
+            Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
+
+            cosmeticApplication.ClearCosmetics();
 			List<string> selectedCosmetics = MainClass.playerIdsAndCosmetics[(int)playerController.playerClientId];
 			foreach (var selected in selectedCosmetics)
 			{
