@@ -77,7 +77,7 @@ namespace PlayerDogModel_Plus
 			Debug.Log($"Adding PlayerModelReplacer on {this.playerController.playerUsername} ({this.playerController.IsOwner})");
 
 			this.SpawnDogModel();
-			this.EnableHumanModel(false);
+			this.EnableHumanModel(PlayerClientId, false);
 		}
 
 		private void Update()
@@ -312,8 +312,8 @@ namespace PlayerDogModel_Plus
 			this.humanGameObjects[5] = this.playerController.playerBetaBadgeMesh.transform.parent.Find("LevelSticker").gameObject;
 		}
 
-		public void EnableHumanModel(bool playAudio = true)
-		{
+		public void EnableHumanModel(ulong playerClientId, bool playAudio = true)
+        {
 			this.isDogActive = false;
 
 			// Dog can be completely disabled because it doesn't drive the animations and sounds and other stuff.
@@ -339,14 +339,14 @@ namespace PlayerDogModel_Plus
 				}
 			}
 
-			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany") && playerClientId != this.PlayerClientId)
 			{
 				MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
 			}
 		}
 
-		public void EnableDogModel(bool playAudio = true)
-		{
+		public void EnableDogModel(ulong playerClientId, bool playAudio = true)
+        {
 			this.isDogActive = true;
 
 			this.dogGameObject.SetActive(true);
@@ -379,7 +379,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.dogOutline;
 			}
 
-			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany") && playerClientId != this.PlayerClientId)
 			{
 				MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
 			}
@@ -403,11 +403,11 @@ namespace PlayerDogModel_Plus
 		{
 			if (this.isDogActive)
 			{
-				this.EnableHumanModel();
+				this.EnableHumanModel(PlayerClientId);
 			}
 			else
 			{
-				this.EnableDogModel();
+				this.EnableDogModel(PlayerClientId);
 			}
 
 			this.BroadcastSelectedModel(playAudio);

@@ -49,11 +49,11 @@ namespace PlayerDogModel_Plus
 
             if (toggleData.isDog)
             {
-                replacer.EnableDogModel(toggleData.playAudio);
+                replacer.EnableDogModel(toggleData.playerClientId, toggleData.playAudio);
             }
             else
             {
-                replacer.EnableHumanModel(toggleData.playAudio);
+                replacer.EnableHumanModel(toggleData.playerClientId, toggleData.playAudio);
             }
         }
 

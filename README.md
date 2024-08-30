@@ -4,10 +4,13 @@
 
 ![](https://imgur.com/gA6h0Qf.png)
 
-## Changelog
+## Versions
 
 **[1.0.0]**
 - Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
+
+**[1.0.1]**
+- Fixed issue causing MoreCompany cosmetics to be visible in first-person.
 
 ## Features
 - Use the helmets on the side of the suits rack to switch between dog and human model.
