@@ -46,15 +46,7 @@ namespace PlayerDogModel_Plus
             }
 
             Debug.Log($"Received dog={toggleData.isDog} for {replacer.PlayerClientId} ({replacer.PlayerUsername}).");
-
-            if (toggleData.isDog)
-            {
-                replacer.EnableDogModel(toggleData.playerClientId, toggleData.playAudio);
-            }
-            else
-            {
-                replacer.EnableHumanModel(toggleData.playerClientId, toggleData.playAudio);
-            }
+            replacer.ReceiveBroadcastAndToggle(toggleData.playAudio);
         }
 
         private static void HandleModelInfoMessage(ulong senderId)

@@ -77,7 +77,7 @@ namespace PlayerDogModel_Plus
 			Debug.Log($"Adding PlayerModelReplacer on {this.playerController.playerUsername} ({this.playerController.IsOwner})");
 
 			this.SpawnDogModel();
-			this.EnableHumanModel(PlayerClientId, false);
+			this.EnableHumanModel(false);
 		}
 
 		private void Update()
@@ -312,7 +312,7 @@ namespace PlayerDogModel_Plus
 			this.humanGameObjects[5] = this.playerController.playerBetaBadgeMesh.transform.parent.Find("LevelSticker").gameObject;
 		}
 
-		public void EnableHumanModel(ulong playerClientId, bool playAudio = true)
+		public void EnableHumanModel(bool playAudio = true)
         {
 			this.isDogActive = false;
 
@@ -338,14 +338,9 @@ namespace PlayerDogModel_Plus
 					PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.humanOutline;
 				}
 			}
-
-			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany") && playerClientId != this.PlayerClientId)
-			{
-				MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
-			}
 		}
 
-		public void EnableDogModel(ulong playerClientId, bool playAudio = true)
+		public void EnableDogModel(bool playAudio = true)
         {
 			this.isDogActive = true;
 
@@ -378,11 +373,6 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.healthFill.sprite = PlayerModelReplacer.dogFill;
 				PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.dogOutline;
 			}
-
-			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany") && playerClientId != this.PlayerClientId)
-			{
-				MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-			}
 		}
 
 		public void UpdateMaterial()
@@ -401,19 +391,41 @@ namespace PlayerDogModel_Plus
 
 		public void ToggleAndBroadcast(bool playAudio = true)
 		{
-			if (this.isDogActive)
+            Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for you ({playerController.playerUsername})!");
+            if (this.isDogActive)
 			{
-				this.EnableHumanModel(PlayerClientId);
-			}
+				this.EnableHumanModel();
+            }
 			else
 			{
-				this.EnableDogModel(PlayerClientId);
-			}
+				this.EnableDogModel();
+            }
 
 			this.BroadcastSelectedModel(playAudio);
 		}
 
-		public void BroadcastSelectedModel(bool playAudio)
+        public void ReceiveBroadcastAndToggle(bool playAudio = true)
+        {
+            Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for someone else ({playerController.playerUsername})!");
+            if (this.isDogActive)
+            {
+                this.EnableHumanModel();
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+                    MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
+                }
+            }
+            else
+            {
+                this.EnableDogModel();
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                }
+            }
+        }
+
+        public void BroadcastSelectedModel(bool playAudio)
 		{
 			Debug.Log($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
 
