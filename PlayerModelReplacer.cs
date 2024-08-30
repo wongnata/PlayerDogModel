@@ -9,6 +9,7 @@ using System.Collections;
 using Newtonsoft.Json;
 using BepInEx.Bootstrap;
 using PlayerDogModel_Plus.Patches;
+using Unity.Netcode;
 
 namespace PlayerDogModel_Plus
 {
@@ -60,7 +61,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.loaded = true;
 				PlayerModelReplacer.LoadImageResources();
 				this.StartCoroutine(PlayerModelReplacer.LoadAudioResources());
-			}
+            }
 		}
 
 		private void Start()
@@ -401,26 +402,42 @@ namespace PlayerDogModel_Plus
 				this.EnableDogModel();
             }
 
-			this.BroadcastSelectedModel(playAudio);
+			// This is a hack in the meantime before the networking issue is fixed when another player joins an existing session
+            //if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+            //{
+            //    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+            //}
+
+            this.BroadcastSelectedModel(playAudio);
 		}
 
-        public void ReceiveBroadcastAndToggle(bool playAudio = true)
+        public void ReceiveBroadcastAndToggle(bool playAudio = true, bool isDog = false)
         {
-            Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for someone else ({playerController.playerUsername})!");
-            if (this.isDogActive)
+            if (isDog)
             {
-                this.EnableHumanModel();
-                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
-                {
-                    MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
-                }
-            }
-            else
-            {
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a dog! Woof!");
                 this.EnableDogModel();
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
                 {
                     MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                }
+            }
+            else
+            {
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a human! Damn!");
+                this.EnableHumanModel();
+
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+					if (playerController.IsOwner) // This should only be true once when you start up!
+					{
+                        Debug.Log($"{PluginInfo.PLUGIN_GUID}: Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+						return;
+					}
+					else 
+					{
+						MoreCompanyPatch.ShowCosmeticsForPlayer(playerController); 
+					}
                 }
             }
         }
@@ -433,7 +450,7 @@ namespace PlayerDogModel_Plus
 			{
 				playerClientId = this.PlayerClientId,
 				isDog = this.isDogActive,
-				playAudio = playAudio,
+				playAudio = playAudio
 			};
 
 			LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
@@ -502,7 +519,7 @@ namespace PlayerDogModel_Plus
 				set;
 			}
 
-			[JsonProperty]
+            [JsonProperty]
 			public bool isDog
 			{
 				get;

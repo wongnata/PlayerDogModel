@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameNetcodeStuff;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus
@@ -24,6 +25,7 @@ namespace PlayerDogModel_Plus
                       "}}");
 
             PlayerModelReplacer replacer = null;
+
             foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
             {
                 var currentReplacer = player.GetComponent<PlayerModelReplacer>();
@@ -46,7 +48,7 @@ namespace PlayerDogModel_Plus
             }
 
             Debug.Log($"Received dog={toggleData.isDog} for {replacer.PlayerClientId} ({replacer.PlayerUsername}).");
-            replacer.ReceiveBroadcastAndToggle(toggleData.playAudio);
+            replacer.ReceiveBroadcastAndToggle(toggleData.playAudio, toggleData.isDog);
         }
 
         private static void HandleModelInfoMessage(ulong senderId)

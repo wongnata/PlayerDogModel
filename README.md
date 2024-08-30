@@ -10,7 +10,7 @@
 - Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
 
 **[1.0.1]**
-- Fixed issue causing MoreCompany cosmetics to be visible in first-person.
+- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person.
 
 ## Features
 - Use the helmets on the side of the suits rack to switch between dog and human model.
@@ -27,6 +27,7 @@
 - Based on [DarnHyena's LethalCreatures mod, which is based on code by Zoomy](https://github.com/DarnHyena/LethalCreatures)
 - Originated from a [design by EndlessForebode](https://twitter.com/UslurpArt/status/1724137874717573268)
 - [LC_API 3.2 fix by juanjp600. Thank you very much!](https://github.com/MonAmiral/PlayerDogModel/pull/12)
+- Thanks to Andrew, Jaime, Andy, and Denny for your help in testing and fixing multiplayer interactions! Dog bless you!
 
 ## Concept Art
 ![](https://pbs.twimg.com/media/F-1eD_IWYAAwKmh.jpg)
