@@ -10,7 +10,7 @@
 - Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
 
 **[1.0.1]**
-- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person.
+- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. Also added dependency to x753-More_Suits since this mod tends to work best with it.
 
 ## Features
 - Use the helmets on the side of the suits rack to switch between dog and human model.
