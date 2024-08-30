@@ -2,7 +2,7 @@
 using GameNetcodeStuff;
 using UnityEngine;
 
-namespace PlayerDogModel
+namespace PlayerDogModel_Plus
 {
     static class Networking
     {

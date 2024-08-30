@@ -4,7 +4,7 @@ using MoreCompany.Cosmetics;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerDogModel.Patches
+namespace PlayerDogModel_Plus.Patches
 {
 
 	public static class MoreCompanyPatch

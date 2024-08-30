@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Collections;
 using Newtonsoft.Json;
 using BepInEx.Bootstrap;
-using PlayerDogModel.Patches;
+using PlayerDogModel_Plus.Patches;
 
-namespace PlayerDogModel
+namespace PlayerDogModel_Plus
 {
 	// By default, LateUpdate is called in a chaotic order: GrabbableObject can execute it before or after PlayerModelReplacer.
 	// Forcing the Execution Order to this value will ensure PlayerModelReplacer updates the anchor first and THEN only the GrabbableObject will update its position.
