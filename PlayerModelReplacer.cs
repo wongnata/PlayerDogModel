@@ -7,6 +7,8 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 using Newtonsoft.Json;
+using BepInEx.Bootstrap;
+using PlayerDogModel.Patches;
 
 namespace PlayerDogModel
 {
@@ -336,6 +338,11 @@ namespace PlayerDogModel
 					PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.humanOutline;
 				}
 			}
+
+			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+			{
+				MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
+			}
 		}
 
 		public void EnableDogModel(bool playAudio = true)
@@ -370,6 +377,11 @@ namespace PlayerDogModel
 
 				PlayerModelReplacer.healthFill.sprite = PlayerModelReplacer.dogFill;
 				PlayerModelReplacer.healthOutline.sprite = PlayerModelReplacer.dogOutline;
+			}
+
+			if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+			{
+				MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
 			}
 		}
 

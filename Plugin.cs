@@ -9,7 +9,7 @@ using UnityEngine.Animations;
 namespace PlayerDogModel
 {
 	[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-	[BepInDependency("LC_API")]
+	[BepInDependency("LC_API_V50")]
 	[BepInProcess("Lethal Company.exe")]
 	public class Plugin : BaseUnityPlugin
 	{

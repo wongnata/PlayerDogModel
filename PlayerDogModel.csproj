@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <AssemblyName>PlayerDogModel</AssemblyName>
+        <AssemblyName>PlayerDogModel_Plus</AssemblyName>
         <Description>A mod to replace Player models with a dog for Lethal Company</Description>
-        <Version>1.0.3</Version>
+        <Version>1.0.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -58,8 +58,11 @@
 	<Reference Include="Newtonsoft.Json">
 	  <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Newtonsoft.Json.dll</HintPath>
 	</Reference>
-	<Reference Include="LC_API">
-	  <HintPath>..\LC_API.dll</HintPath>
+	<Reference Include="LC_API_V50">
+	  <HintPath>..\LC_API_V50.dll</HintPath>
 	</Reference>
+	  <Reference Include="MoreCompany">
+		  <HintPath>..\MoreCompany.dll</HintPath>
+	  </Reference>
   </ItemGroup>
 </Project>
