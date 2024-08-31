@@ -1,4 +1,5 @@
 ﻿using GameNetcodeStuff;
+using HarmonyLib;
 using MoreCompany;
 using MoreCompany.Cosmetics;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using UnityEngine;
 
 namespace PlayerDogModel_Plus.Patches
 {
-
 	public static class MoreCompanyPatch
 	{
 		public static void HideCosmeticsForPlayer(PlayerControllerB playerController)
@@ -64,5 +64,41 @@ namespace PlayerDogModel_Plus.Patches
 
 			}
 		}
-	}
+
+        [HarmonyPatch(typeof(CosmeticPatches), nameof(CosmeticPatches.CloneCosmeticsToNonPlayer))]
+		class CloneCosmeticsToNonPlayerPatch
+        {
+            static bool Prefix(Transform cosmeticRoot, int playerClientId)
+            {
+				Debug.Log($"{PluginInfo.PLUGIN_GUID}: Checking for dog mode before copying cosmetics to body...");
+                PlayerModelReplacer replacer = null;
+                foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
+                {
+                    var currentReplacer = player.GetComponent<PlayerModelReplacer>();
+                    if (currentReplacer != null && (int) currentReplacer.PlayerClientId == playerClientId)
+                    {
+                        replacer = currentReplacer;
+                        break;
+                    }
+                }
+
+				if (replacer == null)
+				{
+                    Debug.Log($"{PluginInfo.PLUGIN_GUID}: Could not find replacer for playerClientId={playerClientId}. Nothing to prefix.");
+					return true;
+                }
+
+				// If this person is a dog, we use this prefix to skip cloning the cosmetics.
+				if (replacer.IsDog)
+				{
+                    Debug.Log($"{PluginInfo.PLUGIN_GUID}: playerClientId={playerClientId} is a dog! Skipping cosmetics cloning to body...");
+					return false;
+                }
+
+                // Otherwise, we let the cosmetics get cloned.
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}: playerClientId={playerClientId} is a human! Cloning cosmetics to body...");
+                return true;
+            }
+        }
+    }
 }

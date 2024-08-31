@@ -59,7 +59,7 @@ namespace PlayerDogModel_Plus
 		private void Interacted(PlayerControllerB player)
 		{
 
-			player.GetComponentInChildren<PlayerModelReplacer>().ToggleAndBroadcast();
+			player.GetComponentInChildren<PlayerModelReplacer>().ToggleAndBroadcast(true);
 		}
 	}
 }

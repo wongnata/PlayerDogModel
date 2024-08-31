@@ -313,7 +313,7 @@ namespace PlayerDogModel_Plus
 			this.humanGameObjects[5] = this.playerController.playerBetaBadgeMesh.transform.parent.Find("LevelSticker").gameObject;
 		}
 
-		public void EnableHumanModel(bool playAudio = true)
+		public void EnableHumanModel(bool playAudio)
         {
 			this.isDogActive = false;
 
@@ -341,7 +341,7 @@ namespace PlayerDogModel_Plus
 			}
 		}
 
-		public void EnableDogModel(bool playAudio = true)
+		public void EnableDogModel(bool playAudio)
         {
 			this.isDogActive = true;
 
@@ -390,33 +390,27 @@ namespace PlayerDogModel_Plus
 			}
 		}
 
-		public void ToggleAndBroadcast(bool playAudio = true)
+		public void ToggleAndBroadcast(bool playAudio)
 		{
             Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for you ({playerController.playerUsername})!");
             if (this.isDogActive)
 			{
-				this.EnableHumanModel();
+				this.EnableHumanModel(playAudio);
             }
 			else
 			{
-				this.EnableDogModel();
+				this.EnableDogModel(playAudio);
             }
-
-			// This is a hack in the meantime before the networking issue is fixed when another player joins an existing session
-            //if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
-            //{
-            //    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-            //}
 
             this.BroadcastSelectedModel(playAudio);
 		}
 
-        public void ReceiveBroadcastAndToggle(bool playAudio = true, bool isDog = false)
+        public void ReceiveBroadcastAndToggle(bool playAudio, bool isDog)
         {
             if (isDog)
             {
                 Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a dog! Woof!");
-                this.EnableDogModel();
+                this.EnableDogModel(playAudio);
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
                 {
                     MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
@@ -425,7 +419,7 @@ namespace PlayerDogModel_Plus
             else
             {
                 Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a human! Damn!");
-                this.EnableHumanModel();
+                this.EnableHumanModel(playAudio);
 
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
                 {
