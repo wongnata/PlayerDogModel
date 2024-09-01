@@ -123,34 +123,6 @@ namespace PlayerDogModel_Plus
 			{
 				this.dogTorso.localRotation = Quaternion.RotateTowards(this.dogTorso.localRotation, Quaternion.Euler(180, 0, 0), Time.deltaTime * 360);
 			}
-
-			////// Kill hack for Ragdoll testing purposes.
-			////if (!this.playerController.isPlayerDead)
-			////{
-			////	if (UnityEngine.InputSystem.Keyboard.current.numpad0Key.wasPressedThisFrame)
-			////	{
-			////		Debug.Log("Trying to kill player.");
-			////		this.playerController.KillPlayer(Vector3.up, true, CauseOfDeath.Unknown, 0);
-			////	}
-
-			////	if (UnityEngine.InputSystem.Keyboard.current.numpad1Key.wasPressedThisFrame)
-			////	{
-			////		Debug.Log("Trying to kill player (1).");
-			////		this.playerController.KillPlayer(Vector3.up, true, CauseOfDeath.Unknown, 1);
-			////	}
-
-			////	if (UnityEngine.InputSystem.Keyboard.current.numpad2Key.wasPressedThisFrame)
-			////	{
-			////		Debug.Log("Trying to kill player (springman).");
-			////		this.playerController.KillPlayer(Vector3.up, true, CauseOfDeath.Unknown, 2);
-			////	}
-
-			////	if (UnityEngine.InputSystem.Keyboard.current.numpad3Key.wasPressedThisFrame)
-			////	{
-			////		Debug.Log("Trying to kill player (electrocution).");
-			////		this.playerController.KillPlayer(Vector3.up, true, CauseOfDeath.Unknown, 3);
-			////	}
-			////}
 		}
 
 		private void LateUpdate()
@@ -171,13 +143,13 @@ namespace PlayerDogModel_Plus
 			// Make sure the shadow casting mode and layer are right despite other mods.
 			if (this.dogRenderers[0].shadowCastingMode != this.playerController.thisPlayerModel.shadowCastingMode)
 			{
-				Debug.Log($"Dog model is on the wrong shadow casting mode. ({this.dogRenderers[0].shadowCastingMode} instead of {this.playerController.thisPlayerModel.shadowCastingMode})");
+				//Debug.Log($"Dog model is on the wrong shadow casting mode. ({this.dogRenderers[0].shadowCastingMode} instead of {this.playerController.thisPlayerModel.shadowCastingMode})");
 				this.dogRenderers[0].shadowCastingMode = this.playerController.thisPlayerModel.shadowCastingMode;
 			}
 
 			if (this.dogRenderers[0].gameObject.layer != this.playerController.thisPlayerModel.gameObject.layer)
 			{
-				Debug.Log($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
+				//Debug.Log($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
 				this.dogRenderers[0].gameObject.layer = this.playerController.thisPlayerModel.gameObject.layer;
 			}
 		}
@@ -409,7 +381,7 @@ namespace PlayerDogModel_Plus
         {
             if (isDog)
             {
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a dog! Woof!");
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}: Turning {playerController.playerUsername} into a dog! Woof!");
                 this.EnableDogModel(playAudio);
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
                 {
@@ -418,7 +390,7 @@ namespace PlayerDogModel_Plus
             }
             else
             {
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning ({playerController.playerUsername}) into a human! Damn!");
+                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning {playerController.playerUsername} into a human!");
                 this.EnableHumanModel(playAudio);
 
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
@@ -426,7 +398,8 @@ namespace PlayerDogModel_Plus
 					if (playerController.IsOwner) // This should only be true once when you start up!
 					{
                         Debug.Log($"{PluginInfo.PLUGIN_GUID}: Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
-						return;
+                        MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                        return;
 					}
 					else 
 					{

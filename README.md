@@ -4,14 +4,6 @@
 
 ![](https://imgur.com/gA6h0Qf.png)
 
-## Changelog
-
-**[1.0.0]**
-- Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
-
-**[1.0.1]**
-- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. Also added dependency to x753-More_Suits since this mod tends to work best with it.
-
 ## Features
 - Use the helmets on the side of the suits rack to switch between dog and human model.
 - Replaces your 3D model, adjusts your height, updates the health UI.
@@ -28,6 +20,17 @@
 - Originated from a [design by EndlessForebode](https://twitter.com/UslurpArt/status/1724137874717573268)
 - [LC_API 3.2 fix by juanjp600. Thank you very much!](https://github.com/MonAmiral/PlayerDogModel/pull/12)
 - Thanks to Andrew, Jaime, Andy, and Denny for your help in testing and fixing multiplayer interactions! Dog bless you!
+
+## Changelog
+
+**[1.0.0]**
+- Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
+
+**[1.0.1]**
+- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. Also added dependency to x753-More_Suits since this mod tends to work best with it.
+
+**[1.0.2]**
+- Dog model ragdolls no longer have MoreCompany cosmetics floating above them. Fixed audio issue where model toggle clips played on respawn.
 
 ## Concept Art
 ![](https://pbs.twimg.com/media/F-1eD_IWYAAwKmh.jpg)
