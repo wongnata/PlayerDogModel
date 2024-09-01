@@ -2,17 +2,25 @@
 
 # [Fork of the original mod by **MonAmiral**!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
 
-![](https://imgur.com/gA6h0Qf.png)
+![](https://imgur.com/Jqnam1q.png)
+![](https://imgur.com/HqYB9te.png)
 
 ## Features
-- Use the helmets on the side of the suits rack to switch between dog and human model.
-- Replaces your 3D model, adjusts your height, updates the health UI.
+- Use the helmets on the side of the suits rack to switch between dog and human model!
+- Replaces your 3D model, adjusts your height, updates the health UI!
 - Compatible with custom suits!
 - Compatible with 3rd person & mirror!
-- The mod works in multiplayer with players who do not have it. They will just see everyone as a human.
-- NOT compatible with other model-replacing mods: Lethal Creature, Custom model API, Lethal VRM, etc.
+- The mod works in multiplayer with players who do not have it! They will just see everyone as a human.
 - Limited compatibility with emotes!
 - **[NEW]** Compatible with MoreCompany cosmetics! Cosmetics are hidden in dog mode.
+
+## Limitations
+- Not compatible with model replacing mods (e.g. ModelReplacementAPI, etc.)
+- In dog mode:
+	- held scrap can easily clip and fall through the ship and world floor, especially when crouching
+		- jumping before dropping and looking up helps prevent this!
+	- snare fleas will appear to float above you
+	- if you turn into a masked enemy, you will still be a human
 
 ## Credits
 - [Obviously **MonAmiral** for creating the original mod! It's awesome!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
@@ -32,5 +40,7 @@
 **[1.0.2]**
 - Dog model ragdolls no longer have MoreCompany cosmetics floating above them. Fixed audio issue where model toggle clips played on respawn.
 
+<details>
 ## Concept Art
 ![](https://pbs.twimg.com/media/F-1eD_IWYAAwKmh.jpg)
+</details>
