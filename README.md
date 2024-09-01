@@ -3,11 +3,10 @@
 # [Fork of the original mod by **MonAmiral**!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
 
 ![](https://imgur.com/Jqnam1q.png)
-![](https://imgur.com/HqYB9te.png)
 
 ## Features
 - Use the helmets on the side of the suits rack to switch between dog and human model!
-- Replaces your 3D model, adjusts your height, updates the health UI!
+- Replaces your 3D model, adjusts your height, updates the health UI.
 - Compatible with custom suits!
 - Compatible with 3rd person & mirror!
 - The mod works in multiplayer with players who do not have it! They will just see everyone as a human.
@@ -41,6 +40,9 @@
 - Dog model ragdolls no longer have MoreCompany cosmetics floating above them. Fixed audio issue where model toggle clips played on respawn.
 
 <details>
-## Concept Art
-![](https://pbs.twimg.com/media/F-1eD_IWYAAwKmh.jpg)
+
+<summary>Click for a surprise</summary>
+
+![](https://imgur.com/HqYB9te.png)
+
 </details>
