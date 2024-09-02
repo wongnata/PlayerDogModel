@@ -60,7 +60,12 @@ namespace PlayerDogModel_Plus
 			return dogTorso;
 		}
 
-		private void Awake()
+        public GameObject GetDogGameObject()
+        {
+            return dogGameObject;
+        }
+
+        private void Awake()
 		{
 			if (!PlayerModelReplacer.loaded)
 			{
