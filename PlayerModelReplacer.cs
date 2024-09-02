@@ -38,7 +38,7 @@ namespace PlayerDogModel_Plus
 		private static AudioClip humanClip, dogClip;
 
 		private Vector3 humanCameraPosition;
-		private Transform localItemAnchor, serverItemAnchor;
+		public Transform itemAnchor;
 
 		private static Image healthFill, healthOutline;
 		private static Sprite humanFill, humanOutline, dogFill, dogOutline;
@@ -103,11 +103,11 @@ namespace PlayerDogModel_Plus
 			{
 				if (!this.playerController.isCrouching)
 				{
-					cameraPositionGoal = new Vector3(0, Plugin.boundConfig.standingCameraHeight.Value, 0.3f);
+					cameraPositionGoal = new Vector3(0, -0.8f, 0.3f);
 				}
 				else
 				{
-					cameraPositionGoal = new Vector3(0, Plugin.boundConfig.crouchingCameraHeight.Value, 0.3f);
+					cameraPositionGoal = new Vector3(0, -0.1f, 0.3f);
 				}
 			}
 
@@ -136,17 +136,17 @@ namespace PlayerDogModel_Plus
 
 		private void LateUpdate()
 		{
-			if (this.localItemAnchor == null || this.serverItemAnchor == null)
+			if (this.itemAnchor == null)
 			{
 				return;
 			}
 
 			// Update the location of the item anchor. This is reset by animation between every Update and LateUpate.
 			// Thanks to the DefaultExecutionOrder attribute we know it'll be executed BEFORE the GrabbableObject.LateUpdate().
-			if (this.isDogActive && Plugin.boundConfig.dogModeAnchorEnabled.Value)
+			if (this.isDogActive)
 			{
-				this.playerController.localItemHolder.position = this.localItemAnchor.position;
-				this.playerController.serverItemHolder.position = this.serverItemAnchor.position;
+				this.playerController.localItemHolder.position = this.itemAnchor.position;
+				this.playerController.serverItemHolder.position = this.itemAnchor.position;
 			}
 
 			// Make sure the shadow casting mode and layer are right despite other mods.
@@ -268,9 +268,8 @@ namespace PlayerDogModel_Plus
 					Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 				}
 
-				// Fetch the anchors for the items.
-				this.serverItemAnchor = dogHead.Find("serverItem");
-				this.localItemAnchor = dogHead.Find("localItem");
+				// Fetch the anchor for the items.
+				this.itemAnchor = dogHead.Find("serverItem");
 			}
 			catch (System.Exception e)
 			{
