@@ -58,8 +58,7 @@
 - Updated spectator camera to be better centered around players in dog mode.
 - Updated snare flea interaction so that snare fleas attach to the dog model's head.
 - Updated all logging to use BepIn Ex loggers
-- Added a config file for
-	- Configuring the camera height for dog mode
-	- Disabling dog mode item anchors (will just use human anchors instead)
-	- Verity-3rdPerson overrides
+- Added a config file for Verity-3rdPerson overrides
 - Added patch for Verity-3rdPerson which will use custom overrides for dog mode.
+- Updated camera height of dog mode to better match the dog model
+- Updated the item anchors for dog mode to prevent dropped items from clipping through the ship
