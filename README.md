@@ -59,4 +59,4 @@
 - Added patch for Verity-3rdPerson which will use custom overrides for dog mode.
 - Raised camera height of dog mode to better match the dog model.
 - Updated the item anchors for dog mode to prevent dropped items from clipping through the ship.
-- Added dependencies to Verity-3rdPerson and MoreCompany for now (as a workaround to the plugin breaking without them)
+- Added dependencies to Verity-3rdPerson and MoreCompany for now (as a workaround for the plugin breaking without them)
