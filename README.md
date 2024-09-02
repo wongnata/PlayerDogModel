@@ -20,6 +20,7 @@
 - The mod works in multiplayer with players who do not have it! They will just see everyone as a human.
 - Limited compatibility with emotes!
 - **[NEW]** Compatible with MoreCompany cosmetics! Cosmetics are hidden in dog mode.
+- **[NEW]** Configurable with Verity-3rdPerson! Overrides are available using the config file.
 
 ## Limitations
 - Not compatible with model replacing mods (e.g. ModelReplacementAPI, etc.)
