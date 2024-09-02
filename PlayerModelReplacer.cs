@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using BepInEx.Bootstrap;
 using PlayerDogModel_Plus.Patches;
 using Unity.Netcode;
+using MoreCompany.Cosmetics;
 
 namespace PlayerDogModel_Plus
 {
@@ -52,6 +53,11 @@ namespace PlayerDogModel_Plus
 			{
 				return this.isDogActive;
 			}
+		}
+
+		public Transform GetDogTorso()
+		{
+			return dogTorso;
 		}
 
 		private void Awake()
@@ -411,17 +417,17 @@ namespace PlayerDogModel_Plus
 
         public void BroadcastSelectedModel(bool playAudio)
 		{
-			Debug.Log($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
+            Debug.Log($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
 
-			ToggleData data = new ToggleData()
-			{
-				playerClientId = this.PlayerClientId,
-				isDog = this.isDogActive,
-				playAudio = playAudio
-			};
+            ToggleData data = new ToggleData()
+            {
+                playerClientId = this.PlayerClientId,
+                isDog = this.isDogActive,
+                playAudio = playAudio
+            };
 
-			LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
-		}
+            LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
+        }
 
 		public static void RequestSelectedModelBroadcast()
 		{

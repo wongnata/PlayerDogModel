@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameNetcodeStuff;
+using MoreCompany.Cosmetics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -59,7 +60,14 @@ namespace PlayerDogModel_Plus
                 var replacer = player.GetComponent<PlayerModelReplacer>();
                 if (replacer != null)
                 {
-                    replacer.BroadcastSelectedModel(playAudio: false);
+                    try
+                    {
+                        replacer.BroadcastSelectedModel(playAudio: false);
+                    }
+                    catch
+                    {
+                        Debug.Log($"{PluginInfo.PLUGIN_GUID}: Couldn't broadcast model for senderId={senderId} for some reason!");
+                    }
                 }
             }
         }
