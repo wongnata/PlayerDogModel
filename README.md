@@ -39,10 +39,11 @@
 
 **[1.0.2]**
 - Dog model ragdolls no longer have MoreCompany cosmetics floating above them. 
-- Fixed audio issue where model toggle clips played on respawn.
+- Fixed audio issue where model toggle clips are played on respawn.
 
 **[1.0.3]**
 - Updated dog model ragdolls so that back legs and torso also move.
+- Updated spectator camera to be better centered around players in dog mode.
 
 <details>
 
