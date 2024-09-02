@@ -58,8 +58,9 @@ namespace PlayerDogModel_Plus.Patches
 
                     ___spectateCameraPivot.GetComponentInChildren<Camera>().transform.localPosition = Vector3.back * 1.8f;
                 }
-                catch
+                catch (Exception e)
                 {
+                    if (!Plugin.boundConfig.suppressExceptions.Value) throw e;
                     // Couldn't adjust the spectator camera, no biggie.
                 }
             }

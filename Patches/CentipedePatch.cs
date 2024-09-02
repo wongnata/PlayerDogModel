@@ -29,7 +29,7 @@ namespace PlayerDogModel_Plus.Patches
 
                 if (replacer.GetDogGameObject() == null)
                 {
-                    Debug.Log($"{PluginInfo.PLUGIN_GUID}: dog game object was null when trying to apply centipede.");
+                    Plugin.logger.LogDebug($"dog game object was null when trying to apply centipede.");
                     return;
                 }
 

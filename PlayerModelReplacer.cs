@@ -86,7 +86,7 @@ namespace PlayerDogModel_Plus
 
 			this.humanCameraPosition = this.playerController.gameplayCamera.transform.localPosition;
 
-			Debug.Log($"Adding PlayerModelReplacer on {this.playerController.playerUsername} ({this.playerController.IsOwner})");
+			Plugin.logger.LogDebug($"Adding PlayerModelReplacer on {this.playerController.playerUsername} ({this.playerController.IsOwner})");
 
 			this.SpawnDogModel();
 			this.EnableHumanModel(false);
@@ -154,13 +154,13 @@ namespace PlayerDogModel_Plus
 			// Make sure the shadow casting mode and layer are right despite other mods.
 			if (this.dogRenderers[0].shadowCastingMode != this.playerController.thisPlayerModel.shadowCastingMode)
 			{
-				//Debug.Log($"Dog model is on the wrong shadow casting mode. ({this.dogRenderers[0].shadowCastingMode} instead of {this.playerController.thisPlayerModel.shadowCastingMode})");
+				Plugin.logger.LogDebug($"Dog model is on the wrong shadow casting mode. ({this.dogRenderers[0].shadowCastingMode} instead of {this.playerController.thisPlayerModel.shadowCastingMode})");
 				this.dogRenderers[0].shadowCastingMode = this.playerController.thisPlayerModel.shadowCastingMode;
 			}
 
 			if (this.dogRenderers[0].gameObject.layer != this.playerController.thisPlayerModel.gameObject.layer)
 			{
-				//Debug.Log($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
+				Plugin.logger.LogDebug($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
 				this.dogRenderers[0].gameObject.layer = this.playerController.thisPlayerModel.gameObject.layer;
 			}
 		}
@@ -181,8 +181,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to spawn dog model.";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 
 			// Copy the material. Note: this is also changed in the Update.
@@ -204,8 +203,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to set up the LOD.";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 
 			try
@@ -269,8 +267,7 @@ namespace PlayerDogModel_Plus
 					PlayerModelReplacer.exceptionMessage = "Failed to set up the constraints.";
 					PlayerModelReplacer.exception = e;
 
-					Debug.LogError(PlayerModelReplacer.exceptionMessage);
-					Debug.LogException(PlayerModelReplacer.exception);
+					Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 				}
 
 				// Fetch the anchors for the items.
@@ -282,8 +279,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to retrieve bones. What the hell?";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 
 			// Get a handy list of gameobjects to disable.
@@ -363,7 +359,7 @@ namespace PlayerDogModel_Plus
 		{
 			if (this.dogRenderers == null)
 			{
-				Debug.LogWarning($"Skipping material replacement on dog because there was an error earlier.");
+				Plugin.logger.LogWarning($"Skipping material replacement on dog because there was an error earlier.");
 				return;
 			}
 
@@ -375,7 +371,7 @@ namespace PlayerDogModel_Plus
 
 		public void ToggleAndBroadcast(bool playAudio)
 		{
-            Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for you ({playerController.playerUsername})!");
+            Plugin.logger.LogDebug($"Toggling dog mode for you ({playerController.playerUsername})!");
             if (this.isDogActive)
 			{
 				this.EnableHumanModel(playAudio);
@@ -392,7 +388,7 @@ namespace PlayerDogModel_Plus
         {
             if (isDog)
             {
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}: Turning {playerController.playerUsername} into a dog! Woof!");
+                Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
                 this.EnableDogModel(playAudio);
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
                 {
@@ -401,14 +397,14 @@ namespace PlayerDogModel_Plus
             }
             else
             {
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning {playerController.playerUsername} into a human!");
+                Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a human!");
                 this.EnableHumanModel(playAudio);
 
                 if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
                 {
 					if (playerController.IsOwner) // This should only be true once when you start up!
 					{
-                        Debug.Log($"{PluginInfo.PLUGIN_GUID}: Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+                        Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
                         MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
                         return;
 					}
@@ -422,7 +418,7 @@ namespace PlayerDogModel_Plus
 
         public void BroadcastSelectedModel(bool playAudio)
 		{
-            Debug.Log($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
+            Plugin.logger.LogDebug($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
 
             ToggleData data = new ToggleData()
             {
@@ -454,8 +450,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to retrieve images.";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 		}
 

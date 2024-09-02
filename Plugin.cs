@@ -5,6 +5,8 @@ using GameNetcodeStuff;
 using UnityEngine;
 using System.IO;
 using UnityEngine.Animations;
+using PlayerDogModel_Plus.Config;
+using BepInEx.Logging;
 
 namespace PlayerDogModel_Plus
 {
@@ -14,13 +16,19 @@ namespace PlayerDogModel_Plus
 	[BepInProcess("Lethal Company.exe")]
 	public class Plugin : BaseUnityPlugin
 	{
-		public static Harmony _harmony;
+		public static Harmony harmony;
+		internal static PlayerDogModelConfig boundConfig { get; private set; } = null!;
+		internal static ManualLogSource logger;
 
 		private void Awake()
 		{
-			_harmony = new Harmony(PluginInfo.PLUGIN_GUID);
-			_harmony.PatchAll();
-			Logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded");
+            harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+			harmony.PatchAll();
+
+			logger = base.Logger;
+            logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded");
+
+			boundConfig = new PlayerDogModelConfig(base.Config);
 
 			Networking.Initialize();
 			LC_API.BundleAPI.BundleLoader.LoadAssetBundle(GetAssemblyFullPath("playerdog"));

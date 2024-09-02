@@ -4,6 +4,14 @@
 
 ![](https://imgur.com/Jqnam1q.png)
 
+<details>
+
+<summary>Click for more screenshots!</summary>
+
+![](https://imgur.com/HqYB9te.png)
+
+</details>
+
 ## Features
 - Use the helmets on the side of the suits rack to switch between dog and human model!
 - Replaces your 3D model, adjusts your height, updates the health UI.
@@ -18,8 +26,8 @@
 - In dog mode:
 	- held scrap can easily clip and fall through the ship and world floor, especially when crouching
 		- jumping before dropping and looking up helps prevent this!
-	- snare fleas will appear to float above you
-	- if you turn into a masked enemy, you will still be a human
+	- ~~snare fleas will appear to float above you~~ Fixed as of v1.0.3!
+	- masked enemies spawned from dog model players will still use their human model
 
 ## Credits
 - [Obviously **MonAmiral** for creating the original mod! It's awesome!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
@@ -27,6 +35,7 @@
 - Originated from a [design by EndlessForebode](https://twitter.com/UslurpArt/status/1724137874717573268)
 - [LC_API 3.2 fix by juanjp600. Thank you very much!](https://github.com/MonAmiral/PlayerDogModel/pull/12)
 - Thanks to Andrew, Jaime, Andy, and Denny for your help in testing and fixing multiplayer interactions! Dog bless you!
+- Thanks to the entire Flodogs+ squad for dogfooding this mod with me! Bone-appetit!
 
 ## Changelog
 
@@ -44,11 +53,5 @@
 **[1.0.3]**
 - Updated dog model ragdolls so that back legs and torso also move.
 - Updated spectator camera to be better centered around players in dog mode.
-
-<details>
-
-<summary>Click for a surprise</summary>
-
-![](https://imgur.com/HqYB9te.png)
-
-</details>
+- Updated snare flea interaction so that snare fleas attach to the dog model's head.
+- Added a config file which can enable debug logging and set 
