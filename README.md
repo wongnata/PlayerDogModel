@@ -21,15 +21,12 @@
 - Limited compatibility with emotes!
 - **[NEW]** Compatible with MoreCompany cosmetics! Cosmetics are hidden in dog mode.
 - **[NEW]** Configurable with Verity-3rdPerson! Overrides are available using the config file.
-- **[NEW]** Configurable camera height for dog mode!
 
 ## Limitations
 - Not compatible with model replacing mods (e.g. ModelReplacementAPI, etc.)
-- In dog mode:
-	- held scrap can easily clip and fall through the ship and world floor, especially when crouching
-		- jumping before dropping and looking up helps prevent this!
-	- ~~snare fleas will appear to float above you~~ Fixed as of v1.0.3!
-	- masked enemies spawned from dog model players will still use their human model
+- When crouching in dog mode, dropped items can fall through the ship
+- Masked enemies spawned from dog model players will still use their human model
+- When using the jetpack in dog mode, the jetpack model partially obstructs your view
 
 ## Credits
 - [Obviously **MonAmiral** for creating the original mod! It's awesome!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
@@ -57,8 +54,8 @@
 - Updated dog model ragdolls so that back legs and torso also move.
 - Updated spectator camera to be better centered around players in dog mode.
 - Updated snare flea interaction so that snare fleas attach to the dog model's head.
-- Updated all logging to use BepIn Ex loggers
-- Added a config file for Verity-3rdPerson overrides
+- Updated all logging to use BepIn Ex loggers.
+- Added a config file for Verity-3rdPerson overrides.
 - Added patch for Verity-3rdPerson which will use custom overrides for dog mode.
-- Updated camera height of dog mode to better match the dog model
-- Updated the item anchors for dog mode to prevent dropped items from clipping through the ship
+- Raised camera height of dog mode to better match the dog model.
+- Updated the item anchors for dog mode to prevent dropped items from clipping through the ship.
