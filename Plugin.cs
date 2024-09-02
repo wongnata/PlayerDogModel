@@ -13,6 +13,8 @@ namespace PlayerDogModel_Plus
 	[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 	[BepInDependency("LC_API_V50")]
 	[BepInDependency("x753.More_Suits")]
+	[BepInDependency("me.swipez.melonloader.morecompany")]
+	[BepInDependency("verity.3rdperson")]
 	[BepInProcess("Lethal Company.exe")]
 	public class Plugin : BaseUnityPlugin
 	{
