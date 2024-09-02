@@ -40,7 +40,8 @@
 ## Changelog
 
 **[1.0.0]**
-- Updated to LC_API_V50. Added compatibility with MoreCompany which hides cosmetics when in dog mode.
+- Updated to LC_API_V50. 
+- Added compatibility with MoreCompany which hides cosmetics when in dog mode.
 
 **[1.0.1]**
 - Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. 
@@ -54,4 +55,6 @@
 - Updated dog model ragdolls so that back legs and torso also move.
 - Updated spectator camera to be better centered around players in dog mode.
 - Updated snare flea interaction so that snare fleas attach to the dog model's head.
-- Added a config file which can enable debug logging and set 
+- Updated all logging to use BepIn Ex loggers
+- Added a config file for dev tools and for Verity-3rdPerson overrides
+- Added patch for Verity-3rdPerson which will use custom overrides for dog mode.

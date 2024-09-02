@@ -64,5 +64,8 @@
 	  <Reference Include="MoreCompany">
 		  <HintPath>..\MoreCompany.dll</HintPath>
 	  </Reference>
+	  <Reference Include="3rdPerson">
+		  <HintPath>..\3rdPerson.dll</HintPath>
+	  </Reference>
   </ItemGroup>
 </Project>
