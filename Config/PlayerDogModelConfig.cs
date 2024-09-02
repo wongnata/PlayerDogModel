@@ -1,9 +1,7 @@
 ﻿using BepInEx.Configuration;
 using HarmonyLib;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace PlayerDogModel_Plus.Config
 {
@@ -11,6 +9,11 @@ namespace PlayerDogModel_Plus.Config
     {
         // Developer Tools
         public readonly ConfigEntry<bool> suppressExceptions;
+
+        // General
+        public readonly ConfigEntry<float> standingCameraHeight;
+        public readonly ConfigEntry<float> crouchingCameraHeight;
+        public readonly ConfigEntry<bool> dogModeAnchorEnabled;
 
         // Verity-3rdPerson Config Overrides
         public readonly ConfigEntry<bool> thirdPersonConfigOverride;
@@ -29,24 +32,45 @@ namespace PlayerDogModel_Plus.Config
                 "Non-fatal exceptions will be suppressed."
             );
 
+            standingCameraHeight = config.Bind(
+                "General",
+                "StandingCameraHeight",
+                -1.1f,
+                "Dog mode camera height when standing. Beware that changing this might affect visibility of held items."
+            );
+
+            crouchingCameraHeight = config.Bind(
+                "General",
+                "CrouchingCameraHeight",
+                -0.5f,
+                "Dog mode camera height when crouching. Beware that changing this might affect visibility of held items."
+            );
+
+            dogModeAnchorEnabled = config.Bind(
+                "General",
+                "DogModeAnchorEnabled",
+                true,
+                "Updates item anchors in dog mode. Turning this off will help prevent issues with dropped items falling through the floor, but will affect visibility and look a lil goofy."
+            );
+
             thirdPersonConfigOverride = config.Bind(
                 "Verity-3rdPerson Config Overrides",
                 "Override",
-                false,
+                true,
                 "Enables overriding Verity-3rdPerson config settings with custom ones (distance, right-offset, and up-offset) for dog mode."
             );
 
             thirdPersonDistance = config.Bind(
                 "Verity-3rdPerson Config Overrides",
                 "Distance",
-                2f,
+                3f,
                 "Distance of the camera from the player when using dog mode."
             );
 
             thirdPersonRightOffset = config.Bind(
                 "Verity-3rdPerson Config Overrides",
                 "Right-Offset",
-                0.6f,
+                0.0f,
                 "Offset of the camera to the right from the player when using dog mode."
             );
 

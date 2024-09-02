@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PlayerDogModel_Plus.Patches
 {
-    internal class CentipedePatch
+    internal class SnareFleaPatch
     {
         [HarmonyPatch(typeof(CentipedeAI))]
         [HarmonyPatch("UpdatePositionToClingingPlayerHead")]

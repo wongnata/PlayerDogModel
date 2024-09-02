@@ -9,14 +9,12 @@ using System.Collections;
 using Newtonsoft.Json;
 using BepInEx.Bootstrap;
 using PlayerDogModel_Plus.Patches;
-using Unity.Netcode;
-using MoreCompany.Cosmetics;
 
 namespace PlayerDogModel_Plus
 {
-	// By default, LateUpdate is called in a chaotic order: GrabbableObject can execute it before or after PlayerModelReplacer.
-	// Forcing the Execution Order to this value will ensure PlayerModelReplacer updates the anchor first and THEN only the GrabbableObject will update its position.
-	[DefaultExecutionOrder(-1)]
+    // By default, LateUpdate is called in a chaotic order: GrabbableObject can execute it before or after PlayerModelReplacer.
+    // Forcing the Execution Order to this value will ensure PlayerModelReplacer updates the anchor first and THEN only the GrabbableObject will update its position.
+    [DefaultExecutionOrder(-1)]
 	public class PlayerModelReplacer : MonoBehaviour
 	{
 		public static PlayerModelReplacer LocalReplacer;
@@ -105,11 +103,11 @@ namespace PlayerDogModel_Plus
 			{
 				if (!this.playerController.isCrouching)
 				{
-					cameraPositionGoal = new Vector3(0, -1.1f, 0.3f);
+					cameraPositionGoal = new Vector3(0, Plugin.boundConfig.standingCameraHeight.Value, 0.3f);
 				}
 				else
 				{
-					cameraPositionGoal = new Vector3(0, -0.5f, 0.3f);
+					cameraPositionGoal = new Vector3(0, Plugin.boundConfig.crouchingCameraHeight.Value, 0.3f);
 				}
 			}
 
@@ -145,7 +143,7 @@ namespace PlayerDogModel_Plus
 
 			// Update the location of the item anchor. This is reset by animation between every Update and LateUpate.
 			// Thanks to the DefaultExecutionOrder attribute we know it'll be executed BEFORE the GrabbableObject.LateUpdate().
-			if (this.isDogActive)
+			if (this.isDogActive && Plugin.boundConfig.dogModeAnchorEnabled.Value)
 			{
 				this.playerController.localItemHolder.position = this.localItemAnchor.position;
 				this.playerController.serverItemHolder.position = this.serverItemAnchor.position;

@@ -1,9 +1,6 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
-using MoreCompany;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Patches
@@ -33,9 +30,9 @@ namespace PlayerDogModel_Plus.Patches
 
                     ___spectateCameraPivot.position = replacer.GetDogTorso().position + Vector3.up * 0.5f;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // Couldn't adjust the spectator camera, no biggie.
+                    if (!Plugin.boundConfig.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
                 }
             }
 
@@ -60,8 +57,7 @@ namespace PlayerDogModel_Plus.Patches
                 }
                 catch (Exception e)
                 {
-                    if (!Plugin.boundConfig.suppressExceptions.Value) throw e;
-                    // Couldn't adjust the spectator camera, no biggie.
+                    if (!Plugin.boundConfig.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
                 }
             }
         }

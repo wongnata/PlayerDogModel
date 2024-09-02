@@ -21,6 +21,7 @@
 - Limited compatibility with emotes!
 - **[NEW]** Compatible with MoreCompany cosmetics! Cosmetics are hidden in dog mode.
 - **[NEW]** Configurable with Verity-3rdPerson! Overrides are available using the config file.
+- **[NEW]** Configurable camera height for dog mode!
 
 ## Limitations
 - Not compatible with model replacing mods (e.g. ModelReplacementAPI, etc.)
@@ -57,5 +58,8 @@
 - Updated spectator camera to be better centered around players in dog mode.
 - Updated snare flea interaction so that snare fleas attach to the dog model's head.
 - Updated all logging to use BepIn Ex loggers
-- Added a config file for dev tools and for Verity-3rdPerson overrides
+- Added a config file for
+	- Configuring the camera height for dog mode
+	- Disabling dog mode item anchors (will just use human anchors instead)
+	- Verity-3rdPerson overrides
 - Added patch for Verity-3rdPerson which will use custom overrides for dog mode.
