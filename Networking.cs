@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using GameNetcodeStuff;
-using Unity.Netcode;
+﻿using System;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus
@@ -18,11 +16,11 @@ namespace PlayerDogModel_Plus
 
         private static void HandleModelSwitchMessage(ulong senderId, PlayerModelReplacer.ToggleData toggleData)
         {
-            Debug.Log($"Got {ModelSwitchMessageName} network message from {senderId}: {{ " +
-                      $"{nameof(PlayerModelReplacer.ToggleData.playerClientId)} = {toggleData.playerClientId}, " +
-                      $"{nameof(PlayerModelReplacer.ToggleData.playAudio)} = {toggleData.playAudio}, " +
-                      $"{nameof(PlayerModelReplacer.ToggleData.isDog)} = {toggleData.isDog} " +
-                      "}}");
+            Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId}: {{ " +
+                  $"{nameof(PlayerModelReplacer.ToggleData.playerClientId)} = {toggleData.playerClientId}, " +
+                  $"{nameof(PlayerModelReplacer.ToggleData.playAudio)} = {toggleData.playAudio}, " +
+                  $"{nameof(PlayerModelReplacer.ToggleData.isDog)} = {toggleData.isDog} " +
+                  "}}");
 
             PlayerModelReplacer replacer = null;
 
@@ -37,29 +35,39 @@ namespace PlayerDogModel_Plus
             }
             if (replacer == null)
             {
-                Debug.LogWarning($"{ModelSwitchMessageName} message from client {senderId} will be ignored because replacer with this ID is not registered");
+                Plugin.logger.LogWarning($"{ModelSwitchMessageName} message from client {senderId} will be ignored because replacer with this ID is not registered");
                 return;
             }
 
             if (!replacer.IsValid)
             {
-                Debug.LogError("Dog encountered an error when it was initialized and it can't be toggled. Check the log for more info.");
+                Plugin.logger.LogError("Dog encountered an error when it was initialized and it can't be toggled. Check the log for more info.");
                 return;
             }
 
-            Debug.Log($"Received dog={toggleData.isDog} for {replacer.PlayerClientId} ({replacer.PlayerUsername}).");
+            Plugin.logger.LogDebug($"Received dog={toggleData.isDog} for {replacer.PlayerClientId} ({replacer.PlayerUsername}).");
             replacer.ReceiveBroadcastAndToggle(toggleData.playAudio, toggleData.isDog);
         }
 
         private static void HandleModelInfoMessage(ulong senderId)
         {
-            Debug.Log($"Got {ModelInfoMessageName} network message from {senderId}");
+            Plugin.logger.LogDebug($"Got {ModelInfoMessageName} network message from {senderId}");
+
             foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
             {
                 var replacer = player.GetComponent<PlayerModelReplacer>();
                 if (replacer != null)
                 {
-                    replacer.BroadcastSelectedModel(playAudio: false);
+                    try
+                    {
+                        replacer.BroadcastSelectedModel(playAudio: false);
+                    }
+                    catch (Exception e)
+                    {
+                        Plugin.logger.LogDebug($"Couldn't broadcast model for senderId={senderId} for some reason!");
+
+                        if (!Plugin.boundConfig.suppressExceptions.Value) throw e;
+                    }
                 }
             }
         }

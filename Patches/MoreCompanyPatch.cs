@@ -15,19 +15,19 @@ namespace PlayerDogModel_Plus.Patches
 
 			if (cosmeticApplication == null)
 			{
-				Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance was null!");
-				return;
+                Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance was null!");
+                return;
 			}
 
-            Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
+            Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
 
             cosmeticApplication.ClearCosmetics();
 
 			List<string> selectedCosmetics = MainClass.playerIdsAndCosmetics[(int)playerController.playerClientId];
 			foreach (var selected in selectedCosmetics)
 			{
-				Debug.Log($"{PluginInfo.PLUGIN_GUID}: Disabling {playerController.playerUsername}'s {selected}...");
-				cosmeticApplication.ApplyCosmetic(selected, false);
+                Plugin.logger.LogDebug($"Disabling {playerController.playerUsername}'s {selected}...");
+                cosmeticApplication.ApplyCosmetic(selected, false);
 			}
 
 			cosmeticApplication.RefreshAllCosmeticPositions();
@@ -43,18 +43,18 @@ namespace PlayerDogModel_Plus.Patches
 
 			if (cosmeticApplication == null)
 			{
-				Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance was null!");
-				return;
+                Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance was null!");
+                return;
 			}
 
-            Debug.Log($"{PluginInfo.PLUGIN_GUID}: {playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
+            Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
 
             cosmeticApplication.ClearCosmetics();
 			List<string> selectedCosmetics = MainClass.playerIdsAndCosmetics[(int)playerController.playerClientId];
 			foreach (var selected in selectedCosmetics)
 			{
-				Debug.Log($"{PluginInfo.PLUGIN_GUID}: Enabling {playerController.playerUsername}'s {selected}...");
-				cosmeticApplication.ApplyCosmetic(selected, true);
+                Plugin.logger.LogDebug($"Enabling {playerController.playerUsername}'s {selected}...");
+                cosmeticApplication.ApplyCosmetic(selected, true);
 			}
 
 			cosmeticApplication.RefreshAllCosmeticPositions();
@@ -70,7 +70,8 @@ namespace PlayerDogModel_Plus.Patches
         {
             static bool Prefix(Transform cosmeticRoot, int playerClientId)
             {
-				Debug.Log($"{PluginInfo.PLUGIN_GUID}: Checking for dog mode before copying cosmetics to body...");
+                Plugin.logger.LogDebug($"Checking for dog mode before copying cosmetics to body...");
+
                 PlayerModelReplacer replacer = null;
                 foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
                 {
@@ -84,19 +85,19 @@ namespace PlayerDogModel_Plus.Patches
 
 				if (replacer == null)
 				{
-                    Debug.Log($"{PluginInfo.PLUGIN_GUID}: Could not find replacer for playerClientId={playerClientId}. Nothing to prefix.");
-					return true;
+                    Plugin.logger.LogDebug($"Could not find replacer for playerClientId={playerClientId}. Nothing to prefix.");
+                    return true;
                 }
 
 				// If this person is a dog, we use this prefix to skip cloning the cosmetics.
 				if (replacer.IsDog)
 				{
-                    Debug.Log($"{PluginInfo.PLUGIN_GUID}: playerClientId={playerClientId} is a dog! Skipping cosmetics cloning to body...");
-					return false;
+                    Plugin.logger.LogDebug($"playerClientId={playerClientId} is a dog! Skipping cosmetics cloning to body...");
+                    return false;
                 }
 
                 // Otherwise, we let the cosmetics get cloned.
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}: playerClientId={playerClientId} is a human! Cloning cosmetics to body...");
+                Plugin.logger.LogDebug($"playerClientId={playerClientId} is a human! Cloning cosmetics to body...");
                 return true;
             }
         }

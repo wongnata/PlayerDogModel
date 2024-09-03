@@ -5,22 +5,32 @@ using GameNetcodeStuff;
 using UnityEngine;
 using System.IO;
 using UnityEngine.Animations;
+using PlayerDogModel_Plus.Config;
+using BepInEx.Logging;
 
 namespace PlayerDogModel_Plus
 {
 	[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 	[BepInDependency("LC_API_V50")]
 	[BepInDependency("x753.More_Suits")]
+	[BepInDependency("me.swipez.melonloader.morecompany")]
+	[BepInDependency("verity.3rdperson")]
 	[BepInProcess("Lethal Company.exe")]
 	public class Plugin : BaseUnityPlugin
 	{
-		public static Harmony _harmony;
+		public static Harmony harmony;
+		internal static PlayerDogModelConfig boundConfig { get; private set; } = null!;
+		internal static ManualLogSource logger;
 
 		private void Awake()
 		{
-			_harmony = new Harmony(PluginInfo.PLUGIN_GUID);
-			_harmony.PatchAll();
-			Logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded");
+            harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+			harmony.PatchAll();
+
+			logger = base.Logger;
+            logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded");
+
+			boundConfig = new PlayerDogModelConfig(base.Config);
 
 			Networking.Initialize();
 			LC_API.BundleAPI.BundleLoader.LoadAssetBundle(GetAssemblyFullPath("playerdog"));
@@ -143,32 +153,38 @@ namespace PlayerDogModel_Plus
 
 				// Add Constraints.
 				// Note: the rotation offsets are not set because the model bones have the same rotation as the associated bones.
+				RotationConstraint torsoConstraint = dogTorso.gameObject.AddComponent<RotationConstraint>();
+                torsoConstraint.AddSource(new ConstraintSource() { sourceTransform = humanPelvis, weight = 0.5f });
+                torsoConstraint.rotationAtRest = dogHead.localEulerAngles;
+                torsoConstraint.constraintActive = true;
+				torsoConstraint.locked = true;				
+				
 				RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
-				headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 1 });
+				headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 0.5f });
 				headConstraint.rotationAtRest = dogHead.localEulerAngles;
 				headConstraint.constraintActive = true;
 				headConstraint.locked = true;
 
 				RotationConstraint armLConstraint = dogArmL.gameObject.AddComponent<RotationConstraint>();
-				armLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanArmR, weight = 1 });
+				armLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanArmR, weight = 0.5f });
 				armLConstraint.rotationAtRest = dogArmL.localEulerAngles;
 				armLConstraint.constraintActive = true;
 				armLConstraint.locked = true;
 
 				RotationConstraint armRConstraint = dogArmR.gameObject.AddComponent<RotationConstraint>();
-				armRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanArmL, weight = 1 });
+				armRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanArmL, weight = 0.5f });
 				armRConstraint.rotationAtRest = dogArmR.localEulerAngles;
 				armRConstraint.constraintActive = true;
 				armRConstraint.locked = true;
 
 				RotationConstraint legLConstraint = dogLegL.gameObject.AddComponent<RotationConstraint>();
-				legLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
+				legLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanArmL, weight = 0.5f });
 				legLConstraint.rotationAtRest = dogLegL.localEulerAngles;
 				legLConstraint.constraintActive = true;
 				legLConstraint.locked = true;
 
 				RotationConstraint legRConstraint = dogLegR.gameObject.AddComponent<RotationConstraint>();
-				legRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
+				legRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanArmR, weight = 0.5f });
 				legRConstraint.rotationAtRest = dogLegR.localEulerAngles;
 				legRConstraint.constraintActive = true;
 				legRConstraint.locked = true;

@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>PlayerDogModel_Plus</AssemblyName>
         <Description>It's a doggie-dog world! Updated version of the original mod by MonAmiral!</Description>
-        <Version>1.0.2</Version>
+        <Version>1.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -63,6 +63,9 @@
 	</Reference>
 	  <Reference Include="MoreCompany">
 		  <HintPath>..\MoreCompany.dll</HintPath>
+	  </Reference>
+	  <Reference Include="3rdPerson">
+		  <HintPath>..\3rdPerson.dll</HintPath>
 	  </Reference>
   </ItemGroup>
 </Project>

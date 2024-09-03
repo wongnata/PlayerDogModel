@@ -9,13 +9,12 @@ using System.Collections;
 using Newtonsoft.Json;
 using BepInEx.Bootstrap;
 using PlayerDogModel_Plus.Patches;
-using Unity.Netcode;
 
 namespace PlayerDogModel_Plus
 {
-	// By default, LateUpdate is called in a chaotic order: GrabbableObject can execute it before or after PlayerModelReplacer.
-	// Forcing the Execution Order to this value will ensure PlayerModelReplacer updates the anchor first and THEN only the GrabbableObject will update its position.
-	[DefaultExecutionOrder(-1)]
+    // By default, LateUpdate is called in a chaotic order: GrabbableObject can execute it before or after PlayerModelReplacer.
+    // Forcing the Execution Order to this value will ensure PlayerModelReplacer updates the anchor first and THEN only the GrabbableObject will update its position.
+    [DefaultExecutionOrder(-1)]
 	public class PlayerModelReplacer : MonoBehaviour
 	{
 		public static PlayerModelReplacer LocalReplacer;
@@ -39,7 +38,7 @@ namespace PlayerDogModel_Plus
 		private static AudioClip humanClip, dogClip;
 
 		private Vector3 humanCameraPosition;
-		private Transform localItemAnchor, serverItemAnchor;
+		public Transform itemAnchor;
 
 		private static Image healthFill, healthOutline;
 		private static Sprite humanFill, humanOutline, dogFill, dogOutline;
@@ -54,7 +53,17 @@ namespace PlayerDogModel_Plus
 			}
 		}
 
-		private void Awake()
+		public Transform GetDogTorso()
+		{
+			return dogTorso;
+		}
+
+        public GameObject GetDogGameObject()
+        {
+            return dogGameObject;
+        }
+
+        private void Awake()
 		{
 			if (!PlayerModelReplacer.loaded)
 			{
@@ -75,7 +84,7 @@ namespace PlayerDogModel_Plus
 
 			this.humanCameraPosition = this.playerController.gameplayCamera.transform.localPosition;
 
-			Debug.Log($"Adding PlayerModelReplacer on {this.playerController.playerUsername} ({this.playerController.IsOwner})");
+			Plugin.logger.LogDebug($"Adding PlayerModelReplacer on {this.playerController.playerUsername} ({this.playerController.IsOwner})");
 
 			this.SpawnDogModel();
 			this.EnableHumanModel(false);
@@ -94,11 +103,11 @@ namespace PlayerDogModel_Plus
 			{
 				if (!this.playerController.isCrouching)
 				{
-					cameraPositionGoal = new Vector3(0, -1.1f, 0.3f);
+					cameraPositionGoal = new Vector3(0, -0.8f, 0.3f);
 				}
 				else
 				{
-					cameraPositionGoal = new Vector3(0, -0.5f, 0.3f);
+					cameraPositionGoal = new Vector3(0, -0.1f, 0.3f);
 				}
 			}
 
@@ -127,7 +136,7 @@ namespace PlayerDogModel_Plus
 
 		private void LateUpdate()
 		{
-			if (this.localItemAnchor == null || this.serverItemAnchor == null)
+			if (this.itemAnchor == null)
 			{
 				return;
 			}
@@ -136,20 +145,20 @@ namespace PlayerDogModel_Plus
 			// Thanks to the DefaultExecutionOrder attribute we know it'll be executed BEFORE the GrabbableObject.LateUpdate().
 			if (this.isDogActive)
 			{
-				this.playerController.localItemHolder.position = this.localItemAnchor.position;
-				this.playerController.serverItemHolder.position = this.serverItemAnchor.position;
+				this.playerController.localItemHolder.position = this.itemAnchor.position;
+				this.playerController.serverItemHolder.position = this.itemAnchor.position;
 			}
 
 			// Make sure the shadow casting mode and layer are right despite other mods.
 			if (this.dogRenderers[0].shadowCastingMode != this.playerController.thisPlayerModel.shadowCastingMode)
 			{
-				//Debug.Log($"Dog model is on the wrong shadow casting mode. ({this.dogRenderers[0].shadowCastingMode} instead of {this.playerController.thisPlayerModel.shadowCastingMode})");
+				Plugin.logger.LogDebug($"Dog model is on the wrong shadow casting mode. ({this.dogRenderers[0].shadowCastingMode} instead of {this.playerController.thisPlayerModel.shadowCastingMode})");
 				this.dogRenderers[0].shadowCastingMode = this.playerController.thisPlayerModel.shadowCastingMode;
 			}
 
 			if (this.dogRenderers[0].gameObject.layer != this.playerController.thisPlayerModel.gameObject.layer)
 			{
-				//Debug.Log($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
+				Plugin.logger.LogDebug($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
 				this.dogRenderers[0].gameObject.layer = this.playerController.thisPlayerModel.gameObject.layer;
 			}
 		}
@@ -170,8 +179,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to spawn dog model.";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 
 			// Copy the material. Note: this is also changed in the Update.
@@ -193,8 +201,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to set up the LOD.";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 
 			try
@@ -258,21 +265,18 @@ namespace PlayerDogModel_Plus
 					PlayerModelReplacer.exceptionMessage = "Failed to set up the constraints.";
 					PlayerModelReplacer.exception = e;
 
-					Debug.LogError(PlayerModelReplacer.exceptionMessage);
-					Debug.LogException(PlayerModelReplacer.exception);
+					Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 				}
 
-				// Fetch the anchors for the items.
-				this.serverItemAnchor = dogHead.Find("serverItem");
-				this.localItemAnchor = dogHead.Find("localItem");
+				// Fetch the anchor for the items.
+				this.itemAnchor = dogHead.Find("serverItem");
 			}
 			catch (System.Exception e)
 			{
 				PlayerModelReplacer.exceptionMessage = "Failed to retrieve bones. What the hell?";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 
 			// Get a handy list of gameobjects to disable.
@@ -352,7 +356,7 @@ namespace PlayerDogModel_Plus
 		{
 			if (this.dogRenderers == null)
 			{
-				Debug.LogWarning($"Skipping material replacement on dog because there was an error earlier.");
+				Plugin.logger.LogWarning($"Skipping material replacement on dog because there was an error earlier.");
 				return;
 			}
 
@@ -364,7 +368,7 @@ namespace PlayerDogModel_Plus
 
 		public void ToggleAndBroadcast(bool playAudio)
 		{
-            Debug.Log($"{PluginInfo.PLUGIN_GUID}: Toggling dog mode for you ({playerController.playerUsername})!");
+            Plugin.logger.LogDebug($"Toggling dog mode for you ({playerController.playerUsername})!");
             if (this.isDogActive)
 			{
 				this.EnableHumanModel(playAudio);
@@ -381,47 +385,41 @@ namespace PlayerDogModel_Plus
         {
             if (isDog)
             {
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}: Turning {playerController.playerUsername} into a dog! Woof!");
+                Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
                 this.EnableDogModel(playAudio);
-                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
-                {
-                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-                }
+                MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
             }
             else
             {
-                Debug.Log($"{PluginInfo.PLUGIN_GUID}:Turning {playerController.playerUsername} into a human!");
+                Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a human!");
                 this.EnableHumanModel(playAudio);
 
-                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                if (playerController.IsOwner) // This should only be true once when you start up!
                 {
-					if (playerController.IsOwner) // This should only be true once when you start up!
-					{
-                        Debug.Log($"{PluginInfo.PLUGIN_GUID}: Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
-                        MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-                        return;
-					}
-					else 
-					{
-						MoreCompanyPatch.ShowCosmeticsForPlayer(playerController); 
-					}
+                    Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                    return;
+                }
+                else
+                {
+                    MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
                 }
             }
         }
 
         public void BroadcastSelectedModel(bool playAudio)
 		{
-			Debug.Log($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
+            Plugin.logger.LogDebug($"Sent dog={this.isDogActive} on {this.playerController.playerClientId} ({this.playerController.playerUsername}).");
 
-			ToggleData data = new ToggleData()
-			{
-				playerClientId = this.PlayerClientId,
-				isDog = this.isDogActive,
-				playAudio = playAudio
-			};
+            ToggleData data = new ToggleData()
+            {
+                playerClientId = this.PlayerClientId,
+                isDog = this.isDogActive,
+                playAudio = playAudio
+            };
 
-			LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
-		}
+            LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
+        }
 
 		public static void RequestSelectedModelBroadcast()
 		{
@@ -443,8 +441,7 @@ namespace PlayerDogModel_Plus
 				PlayerModelReplacer.exceptionMessage = "Failed to retrieve images.";
 				PlayerModelReplacer.exception = e;
 
-				Debug.LogError(PlayerModelReplacer.exceptionMessage);
-				Debug.LogException(PlayerModelReplacer.exception);
+				Plugin.logger.LogError(PlayerModelReplacer.exceptionMessage);
 			}
 		}
 
