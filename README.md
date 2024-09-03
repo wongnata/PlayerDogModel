@@ -2,13 +2,16 @@
 
 # [Fork of the original mod by **MonAmiral**!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
 
-![](https://imgur.com/Jqnam1q.png)
+![](https://i.imgur.com/s1SdJxD.png)
 
 <details>
 
 <summary>Click for more screenshots!</summary>
 
 ![](https://imgur.com/HqYB9te.png)
+![](https://i.imgur.com/lJHsS3n.png)
+![](https://i.imgur.com/dSnw0l3.png)
+![](https://i.imgur.com/NS6bAPH.png)
 
 </details>
 
@@ -50,7 +53,7 @@
 - Dog model ragdolls no longer have MoreCompany cosmetics floating above them. 
 - Fixed audio issue where model toggle clips are played on respawn.
 
-**[1.0.3]**
+**[1.1.0]**
 - Updated dog model ragdolls so that back legs and torso also move.
 - Updated spectator camera to be better centered around players in dog mode.
 - Updated snare flea interaction so that snare fleas attach to the dog model's head.
