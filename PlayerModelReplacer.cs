@@ -387,28 +387,22 @@ namespace PlayerDogModel_Plus
             {
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
                 this.EnableDogModel(playAudio);
-                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
-                {
-                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-                }
+                MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
             }
             else
             {
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a human!");
                 this.EnableHumanModel(playAudio);
 
-                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                if (playerController.IsOwner) // This should only be true once when you start up!
                 {
-					if (playerController.IsOwner) // This should only be true once when you start up!
-					{
-                        Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
-                        MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
-                        return;
-					}
-					else 
-					{
-						MoreCompanyPatch.ShowCosmeticsForPlayer(playerController); 
-					}
+                    Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                    return;
+                }
+                else
+                {
+                    MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
                 }
             }
         }
