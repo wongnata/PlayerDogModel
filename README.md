@@ -63,9 +63,7 @@
 - **[1.0.2]**
 - Dog model ragdolls no longer have MoreCompany cosmetics floating above them. 
 - Fixed audio issue where model toggle clips are played on respawn.
-- 
+
 **[1.0.0]**
 - Updated to LC_API_V50. 
 - Added compatibility with MoreCompany which hides cosmetics when in dog mode.
-
-
