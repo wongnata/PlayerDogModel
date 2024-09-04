@@ -113,18 +113,11 @@ namespace PlayerDogModel_Plus
 
 			this.playerController.gameplayCamera.transform.localPosition = Vector3.MoveTowards(this.playerController.gameplayCamera.transform.localPosition, cameraPositionGoal, Time.deltaTime * 2);
 
-			// Adjust position constraint to avoid going through the floor.
-			if (this.playerController.isCrouching)
-			{
-				this.torsoConstraint.weight = Mathf.MoveTowards(this.torsoConstraint.weight, 0.5f, Time.deltaTime * 3);
-			}
-			else
-			{
-				this.torsoConstraint.weight = Mathf.MoveTowards(this.torsoConstraint.weight, 1f, Time.deltaTime * 3);
-			}
+            // Adjust position constraint to avoid going through the floor.
+			this.torsoConstraint.weight = Mathf.MoveTowards(this.torsoConstraint.weight, 0.5f, Time.deltaTime * 3);
 
-			// Adjust torso rotation for climbing animation.
-			if (this.playerController.isClimbingLadder)
+            // Adjust torso rotation for climbing animation.
+            if (this.playerController.isClimbingLadder)
 			{
 				this.dogTorso.localRotation = Quaternion.RotateTowards(this.dogTorso.localRotation, Quaternion.Euler(90, 0, 0), Time.deltaTime * 360);
 			}
@@ -161,7 +154,7 @@ namespace PlayerDogModel_Plus
 				Plugin.logger.LogDebug($"Dog model is on the wrong layer. ({LayerMask.LayerToName(this.dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(this.playerController.thisPlayerModel.gameObject.layer)})");
 				this.dogRenderers[0].gameObject.layer = this.playerController.thisPlayerModel.gameObject.layer;
 			}
-		}
+        }
 
 		private void SpawnDogModel()
 		{
@@ -229,8 +222,8 @@ namespace PlayerDogModel_Plus
 					this.torsoConstraint.constraintActive = true;
 					this.torsoConstraint.locked = true;
 
-					// Note: the rotation offsets are not set because the model bones have the same rotation as the associated bones.
-					RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
+                    // Note: the rotation offsets are not set because the model bones have the same rotation as the associated bones.
+                    RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
 					headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 1 });
 					headConstraint.rotationAtRest = dogHead.localEulerAngles;
 					headConstraint.constraintActive = true;

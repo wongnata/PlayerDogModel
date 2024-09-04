@@ -41,17 +41,8 @@
 
 ## Changelog
 
-**[1.0.0]**
-- Updated to LC_API_V50. 
-- Added compatibility with MoreCompany which hides cosmetics when in dog mode.
-
-**[1.0.1]**
-- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. 
-- Added dependency to x753-More_Suits since this mod tends to work best with it.
-
-**[1.0.2]**
-- Dog model ragdolls no longer have MoreCompany cosmetics floating above them. 
-- Fixed audio issue where model toggle clips are played on respawn.
+**[1.1.1]**
+- Fixed issue causing dog mode players appearing to "swim" through the ground while crouching
 
 **[1.1.0]**
 - Updated dog model ragdolls so that back legs and torso also move.
@@ -64,3 +55,17 @@
 - Updated the item anchors for dog mode to prevent dropped items from clipping through the ship.
 - Added dependencies to Verity-3rdPerson and MoreCompany for now (as a workaround for the plugin breaking without them)
 - Updated jetpack alignment to better fit on dog model
+
+**[1.0.1]**
+- Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. 
+- Added dependency to x753-More_Suits since this mod tends to work best with it.
+
+- **[1.0.2]**
+- Dog model ragdolls no longer have MoreCompany cosmetics floating above them. 
+- Fixed audio issue where model toggle clips are played on respawn.
+- 
+**[1.0.0]**
+- Updated to LC_API_V50. 
+- Added compatibility with MoreCompany which hides cosmetics when in dog mode.
+
+
