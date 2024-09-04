@@ -60,7 +60,7 @@
 - Fixed issue causing your own MoreCompany cosmetics to be visible in first-person. 
 - Added dependency to x753-More_Suits since this mod tends to work best with it.
 
-- **[1.0.2]**
+**[1.0.2]**
 - Dog model ragdolls no longer have MoreCompany cosmetics floating above them. 
 - Fixed audio issue where model toggle clips are played on respawn.
 
