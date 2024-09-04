@@ -41,7 +41,7 @@ namespace PlayerDogModel_Plus.Patches
 
                 ____camera.transform.position = gameplayCamera.transform.position + forwardVector * distance + rightVector + upVector;
                 ____camera.transform.rotation = Quaternion.LookRotation(gameplayCamera.transform.forward);
-                
+
                 return false;
             }
         }
@@ -71,7 +71,7 @@ namespace PlayerDogModel_Plus.Patches
                 if (replacer == null || !replacer.IsDog) return true;
 
                 MovementActions movement = playerController.playerActions.Movement;
-                Vector2 lookVector = movement.Look.ReadValue<Vector2>() * (0.008f * (float)IngamePlayerSettings.Instance.settings.lookSensitivity);
+                Vector2 lookVector = movement.Look.ReadValue<Vector2>() * (0.008f * IngamePlayerSettings.Instance.settings.lookSensitivity);
 
                 if (IngamePlayerSettings.Instance.settings.invertYAxis)
                 {

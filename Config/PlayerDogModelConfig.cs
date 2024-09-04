@@ -16,7 +16,7 @@ namespace PlayerDogModel_Plus.Config
         public readonly ConfigEntry<float> thirdPersonRightOffset;
         public readonly ConfigEntry<float> thirdPersonUpOffset;
 
-        public PlayerDogModelConfig(ConfigFile config) 
+        public PlayerDogModelConfig(ConfigFile config)
         {
             config.SaveOnConfigSet = false;
 
