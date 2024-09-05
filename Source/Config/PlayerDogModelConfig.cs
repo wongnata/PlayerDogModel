@@ -3,7 +3,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace PlayerDogModel_Plus.Config
+namespace PlayerDogModel_Plus.Source.Config
 {
     public class PlayerDogModelConfig
     {
@@ -16,7 +16,7 @@ namespace PlayerDogModel_Plus.Config
         public readonly ConfigEntry<float> thirdPersonRightOffset;
         public readonly ConfigEntry<float> thirdPersonUpOffset;
 
-        public PlayerDogModelConfig(ConfigFile config) 
+        public PlayerDogModelConfig(ConfigFile config)
         {
             config.SaveOnConfigSet = false;
 

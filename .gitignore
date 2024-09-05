@@ -4,11 +4,11 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # Custom ignores
-Libraries/*
+Lib/*
 *.dll
 *.zip
-Distribution/icon.xcf
-Distribution/README.md
+Dist/icon.xcf
+Dist/README.md
 
 # User-specific files
 *.rsuser
