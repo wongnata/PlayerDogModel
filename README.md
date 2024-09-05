@@ -42,6 +42,9 @@
 
 ## Changelog
 
+**[1.1.2]**
+- Updated dependency on LC_API_V50 to use the latest version for v64 support.
+
 **[1.1.1]**
 - Fixed issue causing dog mode players appearing to "swim" through the ground while crouching
 - Removed hard dependencies to Verity-3rdPerson and MoreCompany
