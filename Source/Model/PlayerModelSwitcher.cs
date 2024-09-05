@@ -1,7 +1,7 @@
 ﻿using GameNetcodeStuff;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus
+namespace PlayerDogModel_Plus.Source.Model
 {
     public class PlayerModelSwitcher : MonoBehaviour
     {
@@ -9,7 +9,7 @@ namespace PlayerDogModel_Plus
         {
             // Spawn the mesh.
             GameObject modelPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/Helmets.fbx");
-            GameObject modelInstance = Instantiate(modelPrefab, this.transform);
+            GameObject modelInstance = Instantiate(modelPrefab, transform);
             modelInstance.transform.localPosition = Vector3.zero;
             modelInstance.transform.localRotation = Quaternion.identity;
             modelInstance.transform.localScale = Vector3.one * 0.75f;
@@ -26,12 +26,12 @@ namespace PlayerDogModel_Plus
                 }
             }
 
-            materials[1] = this.GetComponent<Renderer>().material;
+            materials[1] = GetComponent<Renderer>().material;
             renderer.materials = materials;
 
             // Add the scan node (copy an existing one because it's easier and it works).
-            GameObject scanNode = GameObject.Instantiate(GameObject.FindObjectOfType<ScanNodeProperties>()).gameObject;
-            scanNode.transform.parent = this.transform;
+            GameObject scanNode = Instantiate(FindObjectOfType<ScanNodeProperties>()).gameObject;
+            scanNode.transform.parent = transform;
             scanNode.transform.localPosition = new Vector3(0.75f, 0, 0.8f);
 
             ScanNodeProperties scanNodeProperties = scanNode.GetComponent<ScanNodeProperties>();
@@ -40,8 +40,8 @@ namespace PlayerDogModel_Plus
 
             // Add the interaction.
             InteractTrigger triggerPrefab = GameObject.Find("SpeakerAudio").transform.parent.GetComponentInChildren<InteractTrigger>();
-            InteractTrigger interactionTrigger = GameObject.Instantiate(triggerPrefab);
-            interactionTrigger.transform.position = this.transform.TransformPoint(new Vector3(0.75f, 0, 0.9f));
+            InteractTrigger interactionTrigger = Instantiate(triggerPrefab);
+            interactionTrigger.transform.position = transform.TransformPoint(new Vector3(0.75f, 0, 0.9f));
             interactionTrigger.transform.localScale = new Vector3(0.3f, 0.7f, 0.3f);
 
             interactionTrigger.hoverTip = "Switch model";
@@ -51,7 +51,7 @@ namespace PlayerDogModel_Plus
             interactionTrigger.onInteractEarly.RemoveAllListeners();
             interactionTrigger.onStopInteract.RemoveAllListeners();
             interactionTrigger.onInteract.RemoveAllListeners();
-            interactionTrigger.onInteract.AddListener(this.Interacted);
+            interactionTrigger.onInteract.AddListener(Interacted);
         }
 
         private void Interacted(PlayerControllerB player)

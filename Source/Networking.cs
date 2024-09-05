@@ -1,7 +1,8 @@
-﻿using System;
+﻿using PlayerDogModel_Plus.Source.Model;
+using System;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus
+namespace PlayerDogModel_Plus.Source
 {
     static class Networking
     {

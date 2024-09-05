@@ -2,13 +2,50 @@
 using HarmonyLib;
 using MoreCompany;
 using MoreCompany.Cosmetics;
+using PlayerDogModel_Plus.Source.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches.Optional
+namespace PlayerDogModel_Plus.Source.Patches.Optional
 {
-    public static class MoreCompanyPatch
+    [HarmonyPatch(typeof(CosmeticPatches))]
+    internal class MoreCompanyPatch
     {
+        [HarmonyPatch("CloneCosmeticsToNonPlayer")]
+        [HarmonyPrefix]
+        public static bool Prefix(Transform cosmeticRoot, int playerClientId)
+        {
+            Plugin.logger.LogDebug($"Checking for dog mode before copying cosmetics to body...");
+
+            PlayerModelReplacer replacer = null;
+            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
+            {
+                var currentReplacer = player.GetComponent<PlayerModelReplacer>();
+                if (currentReplacer != null && (int)currentReplacer.PlayerClientId == playerClientId)
+                {
+                    replacer = currentReplacer;
+                    break;
+                }
+            }
+
+            if (replacer == null)
+            {
+                Plugin.logger.LogDebug($"Could not find replacer for playerClientId={playerClientId}. Nothing to prefix.");
+                return true;
+            }
+
+            // If this person is a dog, we use this prefix to skip cloning the cosmetics.
+            if (replacer.IsDog)
+            {
+                Plugin.logger.LogDebug($"playerClientId={playerClientId} is a dog! Skipping cosmetics cloning to body...");
+                return false;
+            }
+
+            // Otherwise, we let the cosmetics get cloned.
+            Plugin.logger.LogDebug($"playerClientId={playerClientId} is a human! Cloning cosmetics to body...");
+            return true;
+        }
+
         public static void HideCosmeticsForPlayer(PlayerControllerB playerController)
         {
             CosmeticApplication cosmeticApplication = playerController.meshContainer.GetComponentInChildren<CosmeticApplication>();
@@ -62,43 +99,6 @@ namespace PlayerDogModel_Plus.Patches.Optional
             {
                 cosmetic.transform.localScale *= CosmeticRegistry.COSMETIC_PLAYER_SCALE_MULT;
 
-            }
-        }
-
-        [HarmonyPatch(typeof(CosmeticPatches), nameof(CosmeticPatches.CloneCosmeticsToNonPlayer))]
-        internal class CloneCosmeticsToNonPlayerPatch
-        {
-            static bool Prefix(Transform cosmeticRoot, int playerClientId)
-            {
-                Plugin.logger.LogDebug($"Checking for dog mode before copying cosmetics to body...");
-
-                PlayerModelReplacer replacer = null;
-                foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-                {
-                    var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                    if (currentReplacer != null && (int)currentReplacer.PlayerClientId == playerClientId)
-                    {
-                        replacer = currentReplacer;
-                        break;
-                    }
-                }
-
-                if (replacer == null)
-                {
-                    Plugin.logger.LogDebug($"Could not find replacer for playerClientId={playerClientId}. Nothing to prefix.");
-                    return true;
-                }
-
-                // If this person is a dog, we use this prefix to skip cloning the cosmetics.
-                if (replacer.IsDog)
-                {
-                    Plugin.logger.LogDebug($"playerClientId={playerClientId} is a dog! Skipping cosmetics cloning to body...");
-                    return false;
-                }
-
-                // Otherwise, we let the cosmetics get cloned.
-                Plugin.logger.LogDebug($"playerClientId={playerClientId} is a human! Cloning cosmetics to body...");
-                return true;
             }
         }
     }

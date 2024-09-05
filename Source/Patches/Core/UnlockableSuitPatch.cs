@@ -1,7 +1,8 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
+using PlayerDogModel_Plus.Source.Model;
 
-namespace PlayerDogModel_Plus.Patches.Core
+namespace PlayerDogModel_Plus.Source.Patches.Core
 {
     // This allows to wear other suits.
     [HarmonyPatch(typeof(UnlockableSuit))]

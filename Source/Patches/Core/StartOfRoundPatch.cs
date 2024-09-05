@@ -1,7 +1,8 @@
 ﻿using HarmonyLib;
+using PlayerDogModel_Plus.Source.Model;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches.Core
+namespace PlayerDogModel_Plus.Source.Patches.Core
 {
     // PlayerModelSwitcher is the interaction which allows the player to toggle the model on and off.
     [HarmonyPatch(typeof(StartOfRound))]

@@ -1,8 +1,9 @@
 ﻿using HarmonyLib;
+using PlayerDogModel_Plus.Source.Model;
 using UnityEngine;
 using UnityEngine.Animations;
 
-namespace PlayerDogModel_Plus.Patches.Core
+namespace PlayerDogModel_Plus.Source.Patches.Core
 {
     // Ragdoll support! It's whacky who cares.
     [HarmonyPatch(typeof(DeadBodyInfo))]

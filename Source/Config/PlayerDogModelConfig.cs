@@ -3,7 +3,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace PlayerDogModel_Plus.Config
+namespace PlayerDogModel_Plus.Source.Config
 {
     public class PlayerDogModelConfig
     {

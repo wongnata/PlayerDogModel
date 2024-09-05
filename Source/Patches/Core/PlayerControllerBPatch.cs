@@ -1,8 +1,9 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
+using PlayerDogModel_Plus.Source.Model;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches.Core
+namespace PlayerDogModel_Plus.Source.Patches.Core
 {
     // PlayerModelReplacer handles the model and its toggling.
     [HarmonyPatch(typeof(PlayerControllerB))]
@@ -25,6 +26,25 @@ namespace PlayerDogModel_Plus.Patches.Core
 
             // Request data regarding the other players' skins.
             PlayerModelReplacer.RequestSelectedModelBroadcast();
+        }
+
+        [HarmonyPatch("SetItemInElevator")]
+        [HarmonyPostfix]
+        public static void SetItemInElevator(ref PlayerControllerB __instance, ref GrabbableObject gObject, bool droppedInShipRoom)
+        {
+            if (!droppedInShipRoom) return;
+
+            RagdollGrabbableObject ragdollObject = gObject as RagdollGrabbableObject;
+            if (ragdollObject == null) return;
+
+            PlayerModelReplacer replacer = ragdollObject.ragdoll.playerScript.GetComponent<PlayerModelReplacer>(); // Get the replacer for this ragdoll
+
+            if (replacer == null || !replacer.IsDog) return;
+
+            Item dogRagdoll = GameObject.Instantiate(gObject.itemProperties);
+            dogRagdoll.spawnPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/DogRagdoll.fbx");
+
+            gObject.itemProperties = dogRagdoll; // We have to treat the item as immutable here
         }
     }
 }

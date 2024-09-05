@@ -30,6 +30,7 @@
 - When crouching in dog mode, dropped items can fall through the ship
 - Masked enemies spawned from dog model players will still use their human model
 - When using the jetpack in dog mode, the jetpack model partially obstructs your view
+- When holding a ragdoll in dog mode, your view may be entirely obstructed
 
 ## Credits
 - [Obviously **MonAmiral** for creating the original mod! It's awesome!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
@@ -43,6 +44,8 @@
 
 **[1.1.1]**
 - Fixed issue causing dog mode players appearing to "swim" through the ground while crouching
+- Removed hard dependencies to Verity-3rdPerson and MoreCompany
+- "Player collected" notification now displays a dog model turnaround when collecting dog player bodies
 
 **[1.1.0]**
 - Updated dog model ragdolls so that back legs and torso also move.
