@@ -11,7 +11,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
     {
         [HarmonyPatch("RaycastSpectateCameraAroundPivot")]
         [HarmonyPrefix]
-        public static void Prefix(ref Transform ___spectateCameraPivot, PlayerControllerB ___spectatedPlayerScript)
+        public static void RaycastSpectateCameraAroundPivotPrefix(ref Transform ___spectateCameraPivot, PlayerControllerB ___spectatedPlayerScript)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
         [HarmonyPatch("RaycastSpectateCameraAroundPivot")]
         [HarmonyPostfix]
-        public static void Postfix(ref Transform ___spectateCameraPivot, PlayerControllerB ___spectatedPlayerScript)
+        public static void RaycastSpectateCameraAroundPivotPostfix(ref Transform ___spectateCameraPivot, PlayerControllerB ___spectatedPlayerScript)
         {
             try
             {

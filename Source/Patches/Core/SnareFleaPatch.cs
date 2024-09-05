@@ -10,7 +10,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
     {
         [HarmonyPatch("UpdatePositionToClingingPlayerHead")]
         [HarmonyPostfix]
-        public static void Postfix(CentipedeAI __instance, bool ___clingingToLocalClient, ref PlayerControllerB ___clingingToPlayer)
+        public static void UpdatePositionToClingingPlayerHeadPostfix(CentipedeAI __instance, bool ___clingingToLocalClient, ref PlayerControllerB ___clingingToPlayer)
         {
             if (___clingingToLocalClient) return; // Local camera is fine here.
 

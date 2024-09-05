@@ -10,7 +10,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
     {
         [HarmonyPatch("LateUpdate")]
         [HarmonyPostfix]
-        public static void Postfix(JetpackItem __instance, PlayerControllerB ___playerHeldBy, bool ___isHeld)
+        public static void LateUpdatePostfix(JetpackItem __instance, PlayerControllerB ___playerHeldBy, bool ___isHeld)
         {
             if (___playerHeldBy != null && ___isHeld)
             {

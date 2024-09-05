@@ -13,7 +13,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
     {
         [HarmonyPatch("CloneCosmeticsToNonPlayer")]
         [HarmonyPrefix]
-        public static bool Prefix(Transform cosmeticRoot, int playerClientId)
+        public static bool CloneCosmeticsToNonPlayerPrefix(Transform cosmeticRoot, int playerClientId)
         {
             Plugin.logger.LogDebug($"Checking for dog mode before copying cosmetics to body...");
 

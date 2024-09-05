@@ -11,7 +11,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         // PositionSuitsOnRack is called when the game scene is prepared.
         [HarmonyPatch("PositionSuitsOnRack")]
         [HarmonyPostfix]
-        public static void PositionSuitsOnRackPatch(ref StartOfRound __instance)
+        public static void PositionSuitsOnRackPostfix(ref StartOfRound __instance)
         {
             PlayerModelSwitcher switcher = Object.FindObjectOfType<PlayerModelSwitcher>();
             if (!switcher)

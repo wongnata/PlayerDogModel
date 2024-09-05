@@ -11,7 +11,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         // SwitchSuitForPlayer is called when switching to a new suit.
         [HarmonyPatch("SwitchSuitForPlayer")]
         [HarmonyPostfix]
-        public static void SwitchSuitForPlayerPatch(PlayerControllerB player, int suitID, bool playAudio = true)
+        public static void SwitchSuitForPlayerPostfix(PlayerControllerB player, int suitID, bool playAudio = true)
         {
             PlayerModelReplacer replacer = player.GetComponent<PlayerModelReplacer>();
             if (replacer)

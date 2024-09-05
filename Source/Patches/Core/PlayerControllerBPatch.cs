@@ -12,7 +12,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         // SpawnPlayerAnimation is called when respawning.
         [HarmonyPatch("SpawnPlayerAnimation")]
         [HarmonyPostfix]
-        public static void SpawnPlayerAnimationPatch(ref PlayerControllerB __instance)
+        public static void SpawnPlayerAnimationPatchPostfix(ref PlayerControllerB __instance)
         {
             // Find all the players and add the script to them if they don't have it yet.
             // This is done for every player every time a player spawns just to be sure.
@@ -30,7 +30,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
         [HarmonyPatch("SetItemInElevator")]
         [HarmonyPostfix]
-        public static void SetItemInElevator(ref PlayerControllerB __instance, ref GrabbableObject gObject, bool droppedInShipRoom)
+        public static void SetItemInElevatorPostfix(ref PlayerControllerB __instance, ref GrabbableObject gObject, bool droppedInShipRoom)
         {
             if (!droppedInShipRoom) return;
 

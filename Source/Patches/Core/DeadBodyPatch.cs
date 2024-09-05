@@ -12,7 +12,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         // Start is called when the ragdoll is instantiated.
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
-        public static void StartPatch(ref DeadBodyInfo __instance)
+        public static void StartPostfix(ref DeadBodyInfo __instance)
         {
             if (!__instance.playerScript.GetComponent<PlayerModelReplacer>().IsDog)
             {
