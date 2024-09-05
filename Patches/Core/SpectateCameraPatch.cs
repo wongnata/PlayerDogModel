@@ -3,13 +3,13 @@ using HarmonyLib;
 using System;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches
+namespace PlayerDogModel_Plus.Patches.Core
 {
     internal class SpectateCameraPatch
     {
         [HarmonyPatch(typeof(PlayerControllerB))]
         [HarmonyPatch("RaycastSpectateCameraAroundPivot")]
-        class RaycastSpectateCameraAroundPivotPatch
+        internal class RaycastSpectateCameraAroundPivotPatch
         {
             static void Prefix(ref Transform ___spectateCameraPivot, PlayerControllerB ___spectatedPlayerScript)
             {

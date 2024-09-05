@@ -2,13 +2,13 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches
+namespace PlayerDogModel_Plus.Patches.Core
 {
     internal class SnareFleaPatch
     {
         [HarmonyPatch(typeof(CentipedeAI))]
         [HarmonyPatch("UpdatePositionToClingingPlayerHead")]
-        class UpdatePositionToClingingPlayerHeadPatch
+        internal class UpdatePositionToClingingPlayerHeadPatch
         {
             static void Postfix(CentipedeAI __instance, bool ___clingingToLocalClient, ref PlayerControllerB ___clingingToPlayer)
             {

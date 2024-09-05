@@ -1,6 +1,6 @@
 using GameNetcodeStuff;
 using Newtonsoft.Json;
-using PlayerDogModel_Plus.Patches;
+using PlayerDogModel_Plus.Patches.Optional;
 using System.Collections;
 using System.IO;
 using System.Reflection;

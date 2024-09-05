@@ -4,13 +4,13 @@ using HarmonyLib;
 using UnityEngine;
 using static PlayerActions;
 
-namespace PlayerDogModel_Plus.Patches
+namespace PlayerDogModel_Plus.Patches.Optional
 {
     internal class ThirdPersonPatch
     {
         [HarmonyPatch(typeof(ThirdPersonCamera))]
         [HarmonyPatch("ThirdPersonUpdate")]
-        class ThirdPersonUpdatePatch
+        internal class ThirdPersonUpdatePatch
         {
             static bool Prefix(ref Camera ____camera)
             {
@@ -48,7 +48,7 @@ namespace PlayerDogModel_Plus.Patches
 
         [HarmonyPatch(typeof(ThirdPersonCamera))]
         [HarmonyPatch("ThirdPersonOrbitUpdate")]
-        class ThirdPersonOrbitUpdatePatch
+        internal class ThirdPersonOrbitUpdatePatch
         {
             static bool Prefix(ref Camera ____camera)
             {
@@ -80,9 +80,9 @@ namespace PlayerDogModel_Plus.Patches
 
                 // Rest of this is ripped directly from the original method, minus the custom configs.
                 ____camera.transform.Rotate(Vector3.right, lookVector.y * _3rdPerson.Plugin.OrbitSpeedEntry.Value * Time.deltaTime);
-                ____camera.transform.RotateAround((playerController.gameplayCamera).transform.position, Vector3.up, lookVector.x * _3rdPerson.Plugin.OrbitSpeedEntry.Value * Time.deltaTime);
+                ____camera.transform.RotateAround(playerController.gameplayCamera.transform.position, Vector3.up, lookVector.x * _3rdPerson.Plugin.OrbitSpeedEntry.Value * Time.deltaTime);
                 float distance = Plugin.boundConfig.thirdPersonDistance.Value;
-                ____camera.transform.position = (playerController.gameplayCamera).transform.position - ____camera.transform.forward * distance;
+                ____camera.transform.position = playerController.gameplayCamera.transform.position - ____camera.transform.forward * distance;
 
                 return false;
             }

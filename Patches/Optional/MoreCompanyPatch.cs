@@ -5,7 +5,7 @@ using MoreCompany.Cosmetics;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches
+namespace PlayerDogModel_Plus.Patches.Optional
 {
     public static class MoreCompanyPatch
     {
@@ -66,7 +66,7 @@ namespace PlayerDogModel_Plus.Patches
         }
 
         [HarmonyPatch(typeof(CosmeticPatches), nameof(CosmeticPatches.CloneCosmeticsToNonPlayer))]
-        class CloneCosmeticsToNonPlayerPatch
+        internal class CloneCosmeticsToNonPlayerPatch
         {
             static bool Prefix(Transform cosmeticRoot, int playerClientId)
             {

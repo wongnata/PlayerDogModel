@@ -2,12 +2,12 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Patches
+namespace PlayerDogModel_Plus.Patches.Core
 {
     internal class JetpackPatch
     {
         [HarmonyPatch(typeof(JetpackItem), nameof(JetpackItem.LateUpdate))]
-        class LateUpdatePatch
+        internal class LateUpdatePatch
         {
             static void Postfix(JetpackItem __instance, PlayerControllerB ___playerHeldBy, bool ___isHeld)
             {
