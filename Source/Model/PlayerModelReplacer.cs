@@ -160,7 +160,7 @@ namespace PlayerDogModel_Plus.Source.Model
             try
             {
                 // Load and spawn new model.
-                GameObject modelPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/Dog.fbx");
+                GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
                 dogGameObject = Instantiate(modelPrefab, transform);
                 dogGameObject.transform.position = transform.position;
                 dogGameObject.transform.eulerAngles = transform.eulerAngles;
@@ -422,10 +422,10 @@ namespace PlayerDogModel_Plus.Source.Model
         {
             try
             {
-                Texture2D filled = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<Texture2D>("assets/TPoseFilled.png");
+                Texture2D filled = Plugin.assetBundle.LoadAsset<Texture2D>("assets/TPoseFilled.png");
                 dogFill = Sprite.Create(filled, new Rect(0, 0, filled.width, filled.height), new Vector2(0.5f, 0.5f), 100f);
 
-                Texture2D outline = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<Texture2D>("assets/TPoseOutline.png");
+                Texture2D outline = Plugin.assetBundle.LoadAsset<Texture2D>("assets/TPoseOutline.png");
                 dogOutline = Sprite.Create(outline, new Rect(0, 0, outline.width, outline.height), new Vector2(0.5f, 0.5f), 100f);
             }
             catch (System.Exception e)

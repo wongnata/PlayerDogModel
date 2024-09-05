@@ -42,7 +42,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             if (replacer == null || !replacer.IsDog) return;
 
             Item dogRagdoll = GameObject.Instantiate(gObject.itemProperties);
-            dogRagdoll.spawnPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/DogRagdoll.fbx");
+            dogRagdoll.spawnPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/DogRagdoll.fbx");
 
             gObject.itemProperties = dogRagdoll; // We have to treat the item as immutable here
         }

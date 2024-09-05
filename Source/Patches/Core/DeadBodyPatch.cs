@@ -32,7 +32,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             Transform humanLegR = humanPelvis.Find("thigh.R");
 
             // Load and spawn new model.
-            GameObject modelPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/DogRagdoll.fbx");
+            GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/DogRagdoll.fbx");
             GameObject dogGameObject = Object.Instantiate(modelPrefab, __instance.transform);
             dogGameObject.transform.position = __instance.transform.position;
             dogGameObject.transform.eulerAngles = __instance.transform.eulerAngles;

@@ -8,7 +8,7 @@ namespace PlayerDogModel_Plus.Source.Model
         private void Start()
         {
             // Spawn the mesh.
-            GameObject modelPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/Helmets.fbx");
+            GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Helmets.fbx");
             GameObject modelInstance = Instantiate(modelPrefab, transform);
             modelInstance.transform.localPosition = Vector3.zero;
             modelInstance.transform.localRotation = Quaternion.identity;

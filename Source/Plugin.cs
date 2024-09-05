@@ -7,6 +7,7 @@ using PlayerDogModel_Plus.Source.Patches.Core;
 using PlayerDogModel_Plus.Source.Patches.Optional;
 using System.IO;
 using System.Reflection;
+using UnityEngine;
 using static BepInEx.BepInDependency;
 
 namespace PlayerDogModel_Plus.Source
@@ -19,9 +20,10 @@ namespace PlayerDogModel_Plus.Source
     [BepInProcess("Lethal Company.exe")]
     public class Plugin : BaseUnityPlugin
     {
-        public static Harmony harmony;
+        internal static Harmony harmony;
         internal static PlayerDogModelConfig boundConfig { get; private set; } = null!;
         internal static ManualLogSource logger;
+        internal static AssetBundle assetBundle { get; private set; }
 
         private void Awake()
         {
@@ -53,7 +55,7 @@ namespace PlayerDogModel_Plus.Source
             boundConfig = new PlayerDogModelConfig(Config);
 
             Networking.Initialize();
-            LC_API.BundleAPI.BundleLoader.LoadAssetBundle(GetAssemblyFullPath("playerdog"));
+            assetBundle = AssetBundle.LoadFromFile(GetAssemblyFullPath("playerdog"));
         }
 
         private static string GetAssemblyFullPath(string additionalPath)

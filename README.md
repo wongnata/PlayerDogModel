@@ -42,6 +42,10 @@
 
 ## Changelog
 
+**[1.1.3]**
+- Removed dependency on LC_API_V50
+- Added dependency on LethalNetworkAPI
+
 **[1.1.2]**
 - Updated dependency on LC_API_V50 to use the latest version for v64 support.
 
