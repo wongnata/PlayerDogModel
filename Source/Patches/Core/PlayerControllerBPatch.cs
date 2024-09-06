@@ -1,5 +1,6 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
+using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
 using UnityEngine;
 
@@ -25,7 +26,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
 
             // Request data regarding the other players' skins.
-            PlayerModelReplacer.RequestSelectedModelBroadcast();
+            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(Networking.ModelInfoMessageName);
+            requestSelectedModelEvent.InvokeAllClients();
         }
 
         [HarmonyPatch("SetItemInElevator")]

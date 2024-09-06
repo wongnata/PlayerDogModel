@@ -13,7 +13,7 @@ using static BepInEx.BepInDependency;
 namespace PlayerDogModel_Plus.Source
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency("LC_API_V50")]
+    [BepInDependency("LethalNetworkAPI")]
     [BepInDependency("x753.More_Suits")]
     [BepInDependency("me.swipez.melonloader.morecompany", DependencyFlags.SoftDependency)]
     [BepInDependency("verity.3rdperson", DependencyFlags.SoftDependency)]

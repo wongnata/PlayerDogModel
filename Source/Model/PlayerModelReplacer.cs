@@ -1,5 +1,6 @@
+using BepInEx.Bootstrap;
 using GameNetcodeStuff;
-using Newtonsoft.Json;
+using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Patches.Optional;
 using System.Collections;
 using System.IO;
@@ -379,7 +380,11 @@ namespace PlayerDogModel_Plus.Source.Model
             {
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
                 EnableDogModel(playAudio);
-                MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                }
             }
             else
             {
@@ -389,12 +394,19 @@ namespace PlayerDogModel_Plus.Source.Model
                 if (playerController.IsOwner) // This should only be true once when you start up!
                 {
                     Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
-                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+
+                    if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                    {
+                        MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                    }
                     return;
                 }
                 else
                 {
-                    MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
+                    if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                    {
+                        MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
+                    }
                 }
             }
         }
@@ -402,20 +414,8 @@ namespace PlayerDogModel_Plus.Source.Model
         public void BroadcastSelectedModel(bool playAudio)
         {
             Plugin.logger.LogDebug($"Sent dog={isDogActive} on {playerController.playerClientId} ({playerController.playerUsername}).");
-
-            ToggleData data = new ToggleData()
-            {
-                playerClientId = PlayerClientId,
-                isDog = isDogActive,
-                playAudio = playAudio
-            };
-
-            LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
-        }
-
-        public static void RequestSelectedModelBroadcast()
-        {
-            LC_API.Networking.Network.Broadcast(Networking.ModelInfoMessageName);
+            LethalClientMessage<bool> selectedModelMessage = new LethalClientMessage<bool>(Networking.ModelSwitchMessageName);
+            selectedModelMessage.SendAllClients(isDogActive, false);
         }
 
         private static void LoadImageResources()
@@ -463,31 +463,6 @@ namespace PlayerDogModel_Plus.Source.Model
             string directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string path = additionalPath != null ? Path.Combine(directoryName, ".\\" + additionalPath) : directoryName;
             return Path.GetFullPath(path);
-        }
-
-        [JsonObject]
-        internal class ToggleData
-        {
-            [JsonProperty]
-            public ulong playerClientId
-            {
-                get;
-                set;
-            }
-
-            [JsonProperty]
-            public bool isDog
-            {
-                get;
-                set;
-            }
-
-            [JsonProperty]
-            public bool playAudio
-            {
-                get;
-                set;
-            }
         }
     }
 }

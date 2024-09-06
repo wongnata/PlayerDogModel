@@ -1,6 +1,7 @@
-﻿using PlayerDogModel_Plus.Source.Model;
+﻿using GameNetcodeStuff;
+using LethalNetworkAPI;
+using PlayerDogModel_Plus.Source.Model;
 using System;
-using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source
 {
@@ -11,29 +12,17 @@ namespace PlayerDogModel_Plus.Source
 
         public static void Initialize()
         {
-            LC_API.Networking.Network.RegisterMessage<PlayerModelReplacer.ToggleData>(ModelSwitchMessageName, relayToSelf: false, onReceived: HandleModelSwitchMessage);
-            LC_API.Networking.Network.RegisterMessage(ModelInfoMessageName, relayToSelf: false, onReceived: HandleModelInfoMessage);
+            LethalClientMessage<bool> selectedModelMessage = new LethalClientMessage<bool>(ModelSwitchMessageName);
+            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(ModelInfoMessageName);
+            selectedModelMessage.OnReceivedFromClient += HandleModelSwitchMessage;
+            requestSelectedModelEvent.OnReceivedFromClient += HandleModelInfoMessage;
         }
 
-        private static void HandleModelSwitchMessage(ulong senderId, PlayerModelReplacer.ToggleData toggleData)
+        internal static void HandleModelSwitchMessage(bool isDog, ulong senderId)
         {
-            Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId}: {{ " +
-                  $"{nameof(PlayerModelReplacer.ToggleData.playerClientId)} = {toggleData.playerClientId}, " +
-                  $"{nameof(PlayerModelReplacer.ToggleData.playAudio)} = {toggleData.playAudio}, " +
-                  $"{nameof(PlayerModelReplacer.ToggleData.isDog)} = {toggleData.isDog} " +
-                  "}}");
+            Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId} with isDog={isDog}");
+            PlayerModelReplacer replacer = senderId.GetPlayerController().GetComponent<PlayerModelReplacer>();
 
-            PlayerModelReplacer replacer = null;
-
-            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-            {
-                var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                if (currentReplacer != null && currentReplacer.PlayerClientId == toggleData.playerClientId)
-                {
-                    replacer = currentReplacer;
-                    break;
-                }
-            }
             if (replacer == null)
             {
                 Plugin.logger.LogWarning($"{ModelSwitchMessageName} message from client {senderId} will be ignored because replacer with this ID is not registered");
@@ -46,29 +35,26 @@ namespace PlayerDogModel_Plus.Source
                 return;
             }
 
-            Plugin.logger.LogDebug($"Received dog={toggleData.isDog} for {replacer.PlayerClientId} ({replacer.PlayerUsername}).");
-            replacer.ReceiveBroadcastAndToggle(toggleData.playAudio, toggleData.isDog);
+            replacer.ReceiveBroadcastAndToggle(false, isDog);
         }
 
-        private static void HandleModelInfoMessage(ulong senderId)
+        internal static void HandleModelInfoMessage(ulong senderId)
         {
             Plugin.logger.LogDebug($"Got {ModelInfoMessageName} network message from {senderId}");
+            PlayerControllerB localPlayer = StartOfRound.Instance.localPlayerController;
+            PlayerModelReplacer replacer = localPlayer.GetComponent<PlayerModelReplacer>();
 
-            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
+            if (replacer != null)
             {
-                var replacer = player.GetComponent<PlayerModelReplacer>();
-                if (replacer != null)
+                try
                 {
-                    try
-                    {
-                        replacer.BroadcastSelectedModel(playAudio: false);
-                    }
-                    catch (Exception e)
-                    {
-                        Plugin.logger.LogDebug($"Couldn't broadcast model for senderId={senderId} for some reason!");
+                    replacer.BroadcastSelectedModel(playAudio: false);
+                }
+                catch (Exception e)
+                {
+                    Plugin.logger.LogDebug($"Couldn't broadcast model for senderId={senderId} for some reason!");
 
-                        if (!Plugin.boundConfig.suppressExceptions.Value) throw e;
-                    }
+                    if (!Plugin.boundConfig.suppressExceptions.Value) throw e;
                 }
             }
         }
