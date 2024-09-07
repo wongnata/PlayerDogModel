@@ -26,7 +26,9 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
 
             // Request data regarding the other players' skins.
+#pragma warning disable 0618
             LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(Networking.ModelInfoMessageName);
+#pragma warning restore 0618
             requestSelectedModelEvent.InvokeAllClients();
         }
 

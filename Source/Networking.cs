@@ -13,8 +13,10 @@ namespace PlayerDogModel_Plus.Source
 
         public static void Initialize()
         {
+#pragma warning disable 0618
             LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(ModelSwitchMessageName);
             LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(ModelInfoMessageName);
+#pragma warning restore 0618
             selectedModelMessage.OnReceivedFromClient += HandleModelSwitchMessage;
             requestSelectedModelEvent.OnReceivedFromClient += HandleModelInfoMessage;
         }

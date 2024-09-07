@@ -68,6 +68,6 @@
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(ProjectDir)Scripts\publishBuildToDir.ps1&quot;" />
+		<Exec Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(ProjectDir)Scripts\postBuild.ps1&quot;" />
 	</Target>
 </Project>
