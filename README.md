@@ -2,7 +2,22 @@
 
 # [Fork of the original mod by **MonAmiral**!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
 
+> [!IMPORTANT]
+> [Please report bugs, issues, and feature requests](https://github.com/wongnata/PlayerDogModel_Plus/issues/new) and I will be happy to look into them when I have time!
+
 ![](https://i.imgur.com/s1SdJxD.png)
+
+## Features
+
+Use the helmets on the side of the suits rack to toggle dog mode!
+
+- Model, first person camera, item anchors, and health display are updated in dog mode
+- Snare fleas attach to the dog model head
+- Jetpacks are aligned to the dog model body
+- Spectator cameras are recentered on dog players
+- Body collected notification displays a dog model turnaround
+- Hides any [MoreCompany](https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/) cosmetics while in dog mode
+- Custom overrides in config file to customize the [Verity-3rdPerson](https://thunderstore.io/c/lethal-company/p/Verity/3rdPerson/) camera in dog mode
 
 <details>
 
@@ -15,27 +30,12 @@
 
 </details>
 
-## Features
-- Use the helmets on the side of the suits rack to switch between dog and human model!
-- Replaces your 3D model, adjusts your height, updates the health UI.
-- Compatible with custom suits!
-- Compatible with 3rd person & mirror!
-- The mod works in multiplayer with players who do not have it! They will just see everyone as a human.
-- Limited compatibility with emotes!
-- **[NEW]** Compatible with MoreCompany cosmetics! Cosmetics are hidden in dog mode.
-- **[NEW]** Configurable with Verity-3rdPerson! Overrides are available using the config file.
-
 ## Limitations
-- Not compatible with model replacing mods (e.g. ModelReplacementAPI, etc.)
 - When crouching in dog mode, dropped items can fall through the ship
 - Masked enemies spawned from dog model players will still use their human model
-- When using the jetpack in dog mode, the jetpack model partially obstructs your view
-- When holding a ragdoll in dog mode, your view may be entirely obstructed
+- When holding certain items in dog mode (dog corpse, jetpack), they may partially or fully obstruct your view
 
 ## Credits
-- [Obviously **MonAmiral** for creating the original mod! It's awesome!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
-- Based on [DarnHyena's LethalCreatures mod, which is based on code by Zoomy](https://github.com/DarnHyena/LethalCreatures)
-- Originated from a [design by EndlessForebode](https://twitter.com/UslurpArt/status/1724137874717573268)
-- [LC_API 3.2 fix by juanjp600. Thank you very much!](https://github.com/MonAmiral/PlayerDogModel/pull/12)
-- Thanks to Andrew, Jaime, Andy, and Denny for your help in testing and fixing multiplayer interactions! Dog bless you!
+- Obviously [MonAmiral](https://thunderstore.io/c/lethal-company/p/MonAmiral/) and [all their supporters](https://github.com/MonAmiral/PlayerDogModel?tab=readme-ov-file#credits) for creating the original mod! It's awesome!
+- Thanks to Andrew, Jaime, [90% Andy](https://www.90percentstudios.com/), and [90% Denny](https://www.90percentstudios.com/) for your help in testing and fixing multiplayer interactions! Dog bless you!
 - Thanks to the entire Flodogs+ squad for dogfooding this mod with me! Bone-appetit!
