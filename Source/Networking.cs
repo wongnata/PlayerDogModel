@@ -1,6 +1,7 @@
 ﻿using GameNetcodeStuff;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Util;
 using System;
 using UnityEngine;
 
@@ -25,7 +26,9 @@ namespace PlayerDogModel_Plus.Source
         {
             ModelToggleData modelToggleData = JsonUtility.FromJson<ModelToggleData>(modelToggleJson);
             Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId} with json={modelToggleJson}");
-            PlayerModelReplacer replacer = modelToggleData.clientId.GetPlayerController().GetComponent<PlayerModelReplacer>();
+
+            PlayerControllerB player = PlayerRetriever.GetPlayerFromClientId(modelToggleData.clientId);
+            PlayerModelReplacer replacer = player.GetComponent<PlayerModelReplacer>();
 
             if (replacer == null)
             {

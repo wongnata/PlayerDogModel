@@ -1,6 +1,7 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Util;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Patches.Core
@@ -14,16 +15,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (___clingingToLocalClient) return; // Local camera is fine here.
 
-            PlayerModelReplacer replacer = null;
-            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-            {
-                var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                if (currentReplacer != null && currentReplacer.PlayerClientId == ___clingingToPlayer.playerClientId)
-                {
-                    replacer = currentReplacer;
-                    break;
-                }
-            }
+            PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId(___clingingToPlayer.playerClientId);
 
             if (replacer == null || !replacer.IsDog) return; // Nothing to do.
 
