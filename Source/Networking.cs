@@ -2,6 +2,7 @@
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
 using System;
+using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source
 {
@@ -12,20 +13,21 @@ namespace PlayerDogModel_Plus.Source
 
         public static void Initialize()
         {
-            LethalClientMessage<bool> selectedModelMessage = new LethalClientMessage<bool>(ModelSwitchMessageName);
+            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(ModelSwitchMessageName);
             LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(ModelInfoMessageName);
             selectedModelMessage.OnReceivedFromClient += HandleModelSwitchMessage;
             requestSelectedModelEvent.OnReceivedFromClient += HandleModelInfoMessage;
         }
 
-        internal static void HandleModelSwitchMessage(bool isDog, ulong senderId)
+        internal static void HandleModelSwitchMessage(string modelToggleJson, ulong senderId)
         {
-            Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId} with isDog={isDog}");
-            PlayerModelReplacer replacer = senderId.GetPlayerController().GetComponent<PlayerModelReplacer>();
+            ModelToggleData modelToggleData = JsonUtility.FromJson<ModelToggleData>(modelToggleJson); // Deserialize manually
+            Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId} with json={modelToggleJson}");
+            PlayerModelReplacer replacer = modelToggleData.clientId.GetPlayerController().GetComponent<PlayerModelReplacer>();
 
             if (replacer == null)
             {
-                Plugin.logger.LogWarning($"{ModelSwitchMessageName} message from client {senderId} will be ignored because replacer with this ID is not registered");
+                Plugin.logger.LogWarning($"{ModelSwitchMessageName} message from client {modelToggleData.clientId} will be ignored because replacer with this ID is not registered");
                 return;
             }
 
@@ -35,7 +37,7 @@ namespace PlayerDogModel_Plus.Source
                 return;
             }
 
-            replacer.ReceiveBroadcastAndToggle(false, isDog);
+            replacer.ReceiveBroadcastAndToggle(false, modelToggleData.isDog);
         }
 
         internal static void HandleModelInfoMessage(ulong senderId)

@@ -413,9 +413,16 @@ namespace PlayerDogModel_Plus.Source.Model
 
         public void BroadcastSelectedModel(bool playAudio)
         {
-            Plugin.logger.LogDebug($"Sent dog={isDogActive} on {playerController.playerClientId} ({playerController.playerUsername}).");
-            LethalClientMessage<bool> selectedModelMessage = new LethalClientMessage<bool>(Networking.ModelSwitchMessageName);
-            selectedModelMessage.SendAllClients(isDogActive, false);
+            ModelToggleData modelToggleData = new ModelToggleData()
+            {
+                isDog = isDogActive,
+                clientId = playerController.playerClientId
+            };
+
+            string modelToggleString = JsonUtility.ToJson(modelToggleData);
+            Plugin.logger.LogDebug($"Sent json={modelToggleString} for {playerController.playerClientId} ({playerController.playerUsername})");
+            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(Networking.ModelSwitchMessageName);
+            selectedModelMessage.SendAllClients(modelToggleString);
         }
 
         private static void LoadImageResources()
