@@ -11,7 +11,7 @@
 
 Use the helmets on the side of the suits rack to toggle dog mode!
 
-- Model, first person camera, item anchors, and health display are updated in dog mode
+- Model, first person camera, item anchor, health display, and ragdoll are updated in dog mode
 - Snare fleas attach to the dog model head
 - Jetpacks are aligned to the dog model body
 - Spectator cameras are recentered on dog players

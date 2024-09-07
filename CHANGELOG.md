@@ -3,7 +3,7 @@
 **[1.1.3]**
 - Removed dependency on LC_API_V50 and More_Suits
 - Added dependency on LethalNetworkAPI and reimplemented networking
-- Fixed issue where after a dog player disconnects and rejoins, they will be in dog mode (with visible floating MoreCompany cosmetics if MoreCompany is loaded)
+- Fixed issue where after a dog player disconnects and rejoins, they will be in dog mode (with visible floating MoreCompany cosmetics if applicable)
 
 **[1.1.2]**
 - Updated dependency on LC_API_V50 to use the latest version for v64 support.
