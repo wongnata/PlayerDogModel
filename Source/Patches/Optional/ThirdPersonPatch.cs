@@ -2,6 +2,7 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Util;
 using UnityEngine;
 using static PlayerActions;
 
@@ -20,16 +21,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
             PlayerControllerB playerController = LocalPlayer.GetController();
             Camera gameplayCamera = playerController.gameplayCamera;
 
-            PlayerModelReplacer replacer = null;
-            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-            {
-                var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                if (currentReplacer != null && currentReplacer.PlayerClientId == playerController.playerClientId)
-                {
-                    replacer = currentReplacer;
-                    break;
-                }
-            }
+            PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId(playerController.playerClientId);
 
             if (replacer == null || !replacer.IsDog) return true;
 
@@ -55,16 +47,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
             PlayerControllerB playerController = LocalPlayer.GetController();
             Camera gameplayCamera = playerController.gameplayCamera;
 
-            PlayerModelReplacer replacer = null;
-            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-            {
-                var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                if (currentReplacer != null && currentReplacer.PlayerClientId == playerController.playerClientId)
-                {
-                    replacer = currentReplacer;
-                    break;
-                }
-            }
+            PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId(playerController.playerClientId);
 
             if (replacer == null || !replacer.IsDog) return true;
 
