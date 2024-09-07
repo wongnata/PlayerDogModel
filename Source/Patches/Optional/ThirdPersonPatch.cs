@@ -2,7 +2,6 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using PlayerDogModel_Plus.Source.Model;
-using PlayerDogModel_Plus.Source.Util;
 using UnityEngine;
 using static PlayerActions;
 
@@ -21,7 +20,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
             PlayerControllerB playerController = LocalPlayer.GetController();
             Camera gameplayCamera = playerController.gameplayCamera;
 
-            PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId(playerController.playerClientId);
+            PlayerModelReplacer replacer = playerController.GetComponent<PlayerModelReplacer>();
 
             if (replacer == null || !replacer.IsDog) return true;
 
@@ -47,7 +46,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
             PlayerControllerB playerController = LocalPlayer.GetController();
             Camera gameplayCamera = playerController.gameplayCamera;
 
-            PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId(playerController.playerClientId);
+            PlayerModelReplacer replacer = playerController.GetComponent<PlayerModelReplacer>();
 
             if (replacer == null || !replacer.IsDog) return true;
 

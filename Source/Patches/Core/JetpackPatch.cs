@@ -1,7 +1,6 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
 using PlayerDogModel_Plus.Source.Model;
-using PlayerDogModel_Plus.Source.Util;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Patches.Core
@@ -15,7 +14,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (___playerHeldBy != null && ___isHeld)
             {
-                PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId(___playerHeldBy.playerClientId);
+                PlayerModelReplacer replacer = ___playerHeldBy.GetComponent<PlayerModelReplacer>();
 
                 if (replacer == null || !replacer.IsDog) return; // Nothing to do.
 

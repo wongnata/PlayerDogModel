@@ -3,6 +3,7 @@ using HarmonyLib;
 using MoreCompany;
 using MoreCompany.Cosmetics;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Util;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,16 +18,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
         {
             Plugin.logger.LogDebug($"Checking for dog mode before copying cosmetics to body...");
 
-            PlayerModelReplacer replacer = null;
-            foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-            {
-                var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                if (currentReplacer != null && (int)currentReplacer.PlayerClientId == playerClientId)
-                {
-                    replacer = currentReplacer;
-                    break;
-                }
-            }
+            PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId((ulong)playerClientId);
 
             if (replacer == null)
             {
