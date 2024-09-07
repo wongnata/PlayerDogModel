@@ -3,6 +3,7 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using PlayerDogModel_Plus.Source.Config;
+using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Core;
 using PlayerDogModel_Plus.Source.Patches.Optional;
 using System.IO;
@@ -20,7 +21,7 @@ namespace PlayerDogModel_Plus.Source
     public class Plugin : BaseUnityPlugin
     {
         internal static Harmony harmony;
-        internal static PlayerDogModelConfig boundConfig { get; private set; } = null!;
+        internal static PluginConfig config { get; private set; } = null!;
         internal static ManualLogSource logger;
         internal static AssetBundle assetBundle { get; private set; }
 
@@ -51,9 +52,9 @@ namespace PlayerDogModel_Plus.Source
 
             logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded! Woof!");
 
-            boundConfig = new PlayerDogModelConfig(Config);
+            config = new PluginConfig(Config);
 
-            Networking.Initialize();
+            MessageHandler.Initialize();
             assetBundle = AssetBundle.LoadFromFile(GetAssemblyFullPath("playerdog"));
         }
 

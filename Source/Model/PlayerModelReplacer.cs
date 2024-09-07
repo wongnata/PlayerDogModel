@@ -1,6 +1,7 @@
 using BepInEx.Bootstrap;
 using GameNetcodeStuff;
 using LethalNetworkAPI;
+using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Optional;
 using System.Collections;
 using System.IO;
@@ -421,7 +422,7 @@ namespace PlayerDogModel_Plus.Source.Model
 
             string modelToggleString = JsonUtility.ToJson(modelToggleData);
 #pragma warning disable 0618
-            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(Networking.ModelSwitchMessageName);
+            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(MessageHandler.ModelSwitchMessageName);
 #pragma warning restore 0618
             selectedModelMessage.SendAllClients(modelToggleString);
             Plugin.logger.LogDebug($"Sent json={modelToggleString} for {playerController.playerClientId} ({playerController.playerUsername})");

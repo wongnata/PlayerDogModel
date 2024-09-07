@@ -5,9 +5,9 @@ using PlayerDogModel_Plus.Source.Util;
 using System;
 using UnityEngine;
 
-namespace PlayerDogModel_Plus.Source
+namespace PlayerDogModel_Plus.Source.Networking
 {
-    static class Networking
+    static class MessageHandler
     {
         public const string ModelSwitchMessageName = "modelswitch";
         public const string ModelInfoMessageName = "modelinfo";
@@ -61,7 +61,7 @@ namespace PlayerDogModel_Plus.Source
                 {
                     Plugin.logger.LogDebug($"Couldn't broadcast model for senderId={senderId} for some reason!");
 
-                    if (!Plugin.boundConfig.suppressExceptions.Value) throw e;
+                    if (!Plugin.config.suppressExceptions.Value) throw e;
                 }
             }
         }

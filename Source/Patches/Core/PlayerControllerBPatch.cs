@@ -2,6 +2,7 @@
 using HarmonyLib;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Networking;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Patches.Core
@@ -27,7 +28,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
             // Request data regarding the other players' skins.
 #pragma warning disable 0618
-            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(Networking.ModelInfoMessageName);
+            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(MessageHandler.ModelSwitchMessageName);
 #pragma warning restore 0618
             requestSelectedModelEvent.InvokeAllClients();
         }

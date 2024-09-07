@@ -23,7 +23,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
             catch (Exception e)
             {
-                if (!Plugin.boundConfig.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
+                if (!Plugin.config.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
             }
         }
 
@@ -50,7 +50,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
             catch (Exception e)
             {
-                if (!Plugin.boundConfig.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
+                if (!Plugin.config.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
             }
         }
     }
