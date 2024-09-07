@@ -23,7 +23,7 @@ namespace PlayerDogModel_Plus.Source
 
         internal static void HandleModelSwitchMessage(string modelToggleJson, ulong senderId)
         {
-            ModelToggleData modelToggleData = JsonUtility.FromJson<ModelToggleData>(modelToggleJson); // Deserialize manually
+            ModelToggleData modelToggleData = JsonUtility.FromJson<ModelToggleData>(modelToggleJson);
             Plugin.logger.LogDebug($"Got {ModelSwitchMessageName} network message from {senderId} with json={modelToggleJson}");
             PlayerModelReplacer replacer = modelToggleData.clientId.GetPlayerController().GetComponent<PlayerModelReplacer>();
 
