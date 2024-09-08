@@ -26,7 +26,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 ![](https://imgur.com/HqYB9te.png)
 ![](https://i.imgur.com/lJHsS3n.png)
 ![](https://i.imgur.com/dSnw0l3.png)
-![](https://i.imgur.com/NS6bAPH.png)
+![](https://imgur.com/a/0Sp0tbq.png)
 
 </details>
 
