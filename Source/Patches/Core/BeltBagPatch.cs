@@ -20,7 +20,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
                 if (!___isPocketed)
                 {
-                    __instance.transform.position = replacer.itemAnchor.position;
+                    __instance.transform.position = replacer.itemAnchor.position + replacer.itemAnchor.forward * 0.1f;
                     return;
                 }
 
