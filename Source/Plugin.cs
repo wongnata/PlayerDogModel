@@ -36,6 +36,7 @@ namespace PlayerDogModel_Plus.Source
             harmony.PatchAll(typeof(StartOfRoundPatch));
             harmony.PatchAll(typeof(UnlockableSuitPatch));
             harmony.PatchAll(typeof(DeadBodyPatch));
+            harmony.PatchAll(typeof(BeltBagPatch));
             logger.LogInfo($"loaded core patches...");
 
             if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
