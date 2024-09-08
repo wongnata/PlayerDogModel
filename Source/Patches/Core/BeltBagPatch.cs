@@ -25,9 +25,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
                 }
 
                 Transform dogTorso = replacer.GetDogGameObject().transform.Find("Armature").Find("torso");
-                __instance.transform.position = dogTorso.position;
-                __instance.transform.rotation = dogTorso.rotation;
-
+                __instance.transform.position = dogTorso.position + dogTorso.forward * 0.1f + dogTorso.up * 0.9f;
+                __instance.transform.Rotate(25, 0, 0);
             }
         }
     }
