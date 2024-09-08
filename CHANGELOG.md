@@ -1,5 +1,8 @@
 ## Changelog
 
+**[1.1.4]**
+- Removed patch for adding blood decals to a dog player
+
 **[1.1.3]**
 - Removed dependency on LC_API_V50 and More_Suits
 - Added dependency on LethalNetworkAPI and reimplemented networking
