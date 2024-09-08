@@ -20,14 +20,13 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
                 if (!___isPocketed)
                 {
-                    __instance.transform.position = replacer.itemAnchor.position;
+                    __instance.transform.position = replacer.itemAnchor.position + replacer.itemAnchor.forward * 0.1f;
                     return;
                 }
 
                 Transform dogTorso = replacer.GetDogGameObject().transform.Find("Armature").Find("torso");
-                __instance.transform.position = dogTorso.position;
-                __instance.transform.rotation = dogTorso.rotation;
-
+                __instance.transform.position = dogTorso.position + dogTorso.forward * 0.1f + dogTorso.up * 0.9f;
+                __instance.transform.Rotate(25, 0, 0);
             }
         }
     }

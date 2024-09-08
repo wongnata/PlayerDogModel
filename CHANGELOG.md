@@ -1,4 +1,10 @@
-## Changelog
+# Changelog
+
+**[1.1.4]**
+- Removed patch for adding blood decals to a dog player
+- Updated masks held position and possession position to align to dog model
+- Updated belt bag pocketed position to be accessible by dog players (and look more like a collar!)
+- Updated jetpack position to no longer obstruct vision in dog mode (and now the alignment makes some sense physics-wise!)
 
 **[1.1.3]**
 - Removed dependency on LC_API_V50 and More_Suits

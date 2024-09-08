@@ -1,5 +1,3 @@
-
-
 # [Fork of the original mod by **MonAmiral**!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
 
 > [!IMPORTANT]
@@ -18,6 +16,8 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Body collected notification displays a dog model turnaround
 - Hides any [MoreCompany](https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/) cosmetics while in dog mode
 - Custom overrides in config file to customize the [Verity-3rdPerson](https://thunderstore.io/c/lethal-company/p/Verity/3rdPerson/) camera in dog mode
+- Masks attach to the dog model head during possession
+- Belt bag position is adjusted to be useable (and kind of cute!) when pocketed in dog mode
 
 <details>
 
@@ -26,14 +26,14 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 ![](https://imgur.com/HqYB9te.png)
 ![](https://i.imgur.com/lJHsS3n.png)
 ![](https://i.imgur.com/dSnw0l3.png)
-![](https://i.imgur.com/NS6bAPH.png)
+![](https://i.imgur.com/rnOUaUE.png)
 
 </details>
 
 ## Limitations
 - When crouching in dog mode, dropped items can fall through the ship
 - Masked enemies spawned from dog model players will still use their human model
-- When holding certain items in dog mode (dog corpse, jetpack), they may partially or fully obstruct your view
+- When holding certain items in dog mode (dog ragdoll in particular), they may partially or fully obstruct your view
 
 ## Credits
 - Obviously [MonAmiral](https://thunderstore.io/c/lethal-company/p/MonAmiral/) and [all their supporters](https://github.com/MonAmiral/PlayerDogModel?tab=readme-ov-file#credits) for creating the original mod! It's awesome!

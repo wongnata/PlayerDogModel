@@ -51,16 +51,5 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
             gObject.itemProperties = dogRagdoll; // We have to treat the item as immutable here
         }
-
-        [HarmonyPatch("AddBloodToBody")]
-        [HarmonyPostfix]
-        public static void AddBloodToBodyPostix(PlayerControllerB __instance)
-        {
-            PlayerModelReplacer replacer = __instance.GetComponent<PlayerModelReplacer>();
-
-            if (replacer == null || !replacer.IsDog) return;
-
-            replacer.UpdateMaterial();
-        }
     }
 }
