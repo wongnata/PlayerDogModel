@@ -28,7 +28,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
             // Request data regarding the other players' skins.
 #pragma warning disable 0618
-            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(MessageHandler.ModelSwitchMessageName);
+            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(MessageHandler.ModelInfoMessageName);
 #pragma warning restore 0618
             requestSelectedModelEvent.InvokeAllClients();
         }
@@ -50,6 +50,17 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             dogRagdoll.spawnPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/DogRagdoll.fbx");
 
             gObject.itemProperties = dogRagdoll; // We have to treat the item as immutable here
+        }
+
+        [HarmonyPatch("AddBloodToBody")]
+        [HarmonyPostfix]
+        public static void AddBloodToBodyPostix(PlayerControllerB __instance)
+        {
+            PlayerModelReplacer replacer = __instance.GetComponent<PlayerModelReplacer>();
+
+            if (replacer == null || !replacer.IsDog) return;
+
+            replacer.UpdateMaterial();
         }
     }
 }
