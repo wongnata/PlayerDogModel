@@ -19,17 +19,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
                 if (replacer == null || !replacer.IsDog) return; // Nothing to do.
 
                 Transform dogTorso = replacer.GetDogGameObject().transform.Find("Armature").Find("torso");
-
-                // Need to adjust the arm component of this item to line up with the item anchor
                 __instance.transform.position = dogTorso.Find("head").Find("serverItem").position;
-                __instance.transform.Rotate(__instance.backPartRotationOffset);
-
-                __instance.backPart.rotation = dogTorso.rotation;
-                __instance.backPart.position = dogTorso.position;
-
-                Vector3 vector = __instance.backPartPositionOffset;
-                vector = dogTorso.rotation * vector;
-                __instance.backPart.position += vector;
+                __instance.backPart.position = dogTorso.position + dogTorso.up * 1.0f + dogTorso.right * -0.03f;
             }
         }
     }
