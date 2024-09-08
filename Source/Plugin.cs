@@ -3,25 +3,27 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using PlayerDogModel_Plus.Source.Config;
+using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Core;
 using PlayerDogModel_Plus.Source.Patches.Optional;
 using System.IO;
 using System.Reflection;
+using UnityEngine;
 using static BepInEx.BepInDependency;
 
 namespace PlayerDogModel_Plus.Source
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency("LC_API_V50")]
-    [BepInDependency("x753.More_Suits")]
+    [BepInDependency("LethalNetworkAPI")]
     [BepInDependency("me.swipez.melonloader.morecompany", DependencyFlags.SoftDependency)]
     [BepInDependency("verity.3rdperson", DependencyFlags.SoftDependency)]
     [BepInProcess("Lethal Company.exe")]
     public class Plugin : BaseUnityPlugin
     {
-        public static Harmony harmony;
-        internal static PlayerDogModelConfig boundConfig { get; private set; } = null!;
+        internal static Harmony harmony;
+        internal static PluginConfig config { get; private set; } = null!;
         internal static ManualLogSource logger;
+        internal static AssetBundle assetBundle { get; private set; }
 
         private void Awake()
         {
@@ -34,6 +36,7 @@ namespace PlayerDogModel_Plus.Source
             harmony.PatchAll(typeof(StartOfRoundPatch));
             harmony.PatchAll(typeof(UnlockableSuitPatch));
             harmony.PatchAll(typeof(DeadBodyPatch));
+            harmony.PatchAll(typeof(BeltBagPatch));
             logger.LogInfo($"loaded core patches...");
 
             if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
@@ -50,10 +53,10 @@ namespace PlayerDogModel_Plus.Source
 
             logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded! Woof!");
 
-            boundConfig = new PlayerDogModelConfig(Config);
+            config = new PluginConfig(Config);
 
-            Networking.Initialize();
-            LC_API.BundleAPI.BundleLoader.LoadAssetBundle(GetAssemblyFullPath("playerdog"));
+            MessageHandler.Initialize();
+            assetBundle = AssetBundle.LoadFromFile(GetAssemblyFullPath("playerdog"));
         }
 
         private static string GetAssemblyFullPath(string additionalPath)

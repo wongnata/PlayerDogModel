@@ -9,6 +9,8 @@ Lib/*
 *.zip
 Dist/icon.xcf
 Dist/README.md
+Dist/CHANGELOG.md
+Scripts/*
 
 # User-specific files
 *.rsuser

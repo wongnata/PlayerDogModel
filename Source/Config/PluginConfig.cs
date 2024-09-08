@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace PlayerDogModel_Plus.Source.Config
 {
-    public class PlayerDogModelConfig
+    public class PluginConfig
     {
         // Developer Tools
         public readonly ConfigEntry<bool> suppressExceptions;
@@ -16,7 +16,7 @@ namespace PlayerDogModel_Plus.Source.Config
         public readonly ConfigEntry<float> thirdPersonRightOffset;
         public readonly ConfigEntry<float> thirdPersonUpOffset;
 
-        public PlayerDogModelConfig(ConfigFile config)
+        public PluginConfig(ConfigFile config)
         {
             config.SaveOnConfigSet = false;
 

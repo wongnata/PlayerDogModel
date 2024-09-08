@@ -14,16 +14,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (___playerHeldBy != null && ___isHeld)
             {
-                PlayerModelReplacer replacer = null;
-                foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-                {
-                    var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                    if (currentReplacer != null && currentReplacer.PlayerClientId == ___playerHeldBy.playerClientId)
-                    {
-                        replacer = currentReplacer;
-                        break;
-                    }
-                }
+                PlayerModelReplacer replacer = ___playerHeldBy.GetComponent<PlayerModelReplacer>();
 
                 if (replacer == null || !replacer.IsDog) return; // Nothing to do.
 

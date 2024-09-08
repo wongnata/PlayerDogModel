@@ -1,6 +1,8 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
+using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Networking;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Patches.Core
@@ -25,7 +27,10 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
 
             // Request data regarding the other players' skins.
-            PlayerModelReplacer.RequestSelectedModelBroadcast();
+#pragma warning disable 0618
+            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(MessageHandler.ModelInfoMessageName);
+#pragma warning restore 0618
+            requestSelectedModelEvent.InvokeAllClients();
         }
 
         [HarmonyPatch("SetItemInElevator")]
@@ -42,9 +47,20 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             if (replacer == null || !replacer.IsDog) return;
 
             Item dogRagdoll = GameObject.Instantiate(gObject.itemProperties);
-            dogRagdoll.spawnPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/DogRagdoll.fbx");
+            dogRagdoll.spawnPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/DogRagdoll.fbx");
 
             gObject.itemProperties = dogRagdoll; // We have to treat the item as immutable here
+        }
+
+        [HarmonyPatch("AddBloodToBody")]
+        [HarmonyPostfix]
+        public static void AddBloodToBodyPostix(PlayerControllerB __instance)
+        {
+            PlayerModelReplacer replacer = __instance.GetComponent<PlayerModelReplacer>();
+
+            if (replacer == null || !replacer.IsDog) return;
+
+            replacer.UpdateMaterial();
         }
     }
 }

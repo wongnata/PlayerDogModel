@@ -15,16 +15,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             try
             {
-                PlayerModelReplacer replacer = null;
-                foreach (GameObject player in StartOfRound.Instance.allPlayerObjects)
-                {
-                    var currentReplacer = player.GetComponent<PlayerModelReplacer>();
-                    if (currentReplacer != null && currentReplacer.PlayerClientId == ___spectatedPlayerScript.playerClientId)
-                    {
-                        replacer = currentReplacer;
-                        break;
-                    }
-                }
+                PlayerModelReplacer replacer = ___spectatedPlayerScript.GetComponent<PlayerModelReplacer>();
 
                 if (replacer == null || !replacer.IsDog) return; // Nothing to do.
 
@@ -32,7 +23,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
             catch (Exception e)
             {
-                if (!Plugin.boundConfig.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
+                if (!Plugin.config.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
             }
         }
 
@@ -59,7 +50,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
             catch (Exception e)
             {
-                if (!Plugin.boundConfig.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
+                if (!Plugin.config.suppressExceptions.Value) throw e; // Couldn't adjust the spectator camera, no biggie.
             }
         }
     }

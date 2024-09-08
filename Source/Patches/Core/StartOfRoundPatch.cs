@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
 using UnityEngine;
 
@@ -20,6 +21,14 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
                 GameObject suitHanger = GameObject.Find("NurbsPath.002");
                 suitHanger.AddComponent<PlayerModelSwitcher>();
             }
+        }
+
+        [HarmonyPatch("OnClientDisconnect")]
+        [HarmonyPrefix]
+        public static void OnClientDisconnectPostfix(ref ulong clientId)
+        {
+            // Reset the status of this player in case they reconnect
+            clientId.GetPlayerController().GetComponent<PlayerModelReplacer>().EnableHumanModel(false);
         }
     }
 }

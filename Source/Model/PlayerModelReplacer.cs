@@ -1,5 +1,7 @@
+using BepInEx.Bootstrap;
 using GameNetcodeStuff;
-using Newtonsoft.Json;
+using LethalNetworkAPI;
+using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Optional;
 using System.Collections;
 using System.IO;
@@ -160,7 +162,7 @@ namespace PlayerDogModel_Plus.Source.Model
             try
             {
                 // Load and spawn new model.
-                GameObject modelPrefab = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<GameObject>("assets/Dog.fbx");
+                GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
                 dogGameObject = Instantiate(modelPrefab, transform);
                 dogGameObject.transform.position = transform.position;
                 dogGameObject.transform.eulerAngles = transform.eulerAngles;
@@ -379,7 +381,11 @@ namespace PlayerDogModel_Plus.Source.Model
             {
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
                 EnableDogModel(playAudio);
-                MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+
+                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                {
+                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                }
             }
             else
             {
@@ -389,43 +395,47 @@ namespace PlayerDogModel_Plus.Source.Model
                 if (playerController.IsOwner) // This should only be true once when you start up!
                 {
                     Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
-                    MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+
+                    if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                    {
+                        MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
+                    }
                     return;
                 }
                 else
                 {
-                    MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
+                    if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                    {
+                        MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
+                    }
                 }
             }
         }
 
         public void BroadcastSelectedModel(bool playAudio)
         {
-            Plugin.logger.LogDebug($"Sent dog={isDogActive} on {playerController.playerClientId} ({playerController.playerUsername}).");
-
-            ToggleData data = new ToggleData()
+            ModelToggleData modelToggleData = new ModelToggleData()
             {
-                playerClientId = PlayerClientId,
                 isDog = isDogActive,
-                playAudio = playAudio
+                clientId = playerController.playerClientId
             };
 
-            LC_API.Networking.Network.Broadcast(Networking.ModelSwitchMessageName, data);
-        }
-
-        public static void RequestSelectedModelBroadcast()
-        {
-            LC_API.Networking.Network.Broadcast(Networking.ModelInfoMessageName);
+            string modelToggleString = JsonUtility.ToJson(modelToggleData);
+#pragma warning disable 0618
+            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(MessageHandler.ModelSwitchMessageName);
+#pragma warning restore 0618
+            selectedModelMessage.SendAllClients(modelToggleString);
+            Plugin.logger.LogDebug($"Sent json={modelToggleString} for {playerController.playerClientId} ({playerController.playerUsername})");
         }
 
         private static void LoadImageResources()
         {
             try
             {
-                Texture2D filled = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<Texture2D>("assets/TPoseFilled.png");
+                Texture2D filled = Plugin.assetBundle.LoadAsset<Texture2D>("assets/TPoseFilled.png");
                 dogFill = Sprite.Create(filled, new Rect(0, 0, filled.width, filled.height), new Vector2(0.5f, 0.5f), 100f);
 
-                Texture2D outline = LC_API.BundleAPI.BundleLoader.GetLoadedAsset<Texture2D>("assets/TPoseOutline.png");
+                Texture2D outline = Plugin.assetBundle.LoadAsset<Texture2D>("assets/TPoseOutline.png");
                 dogOutline = Sprite.Create(outline, new Rect(0, 0, outline.width, outline.height), new Vector2(0.5f, 0.5f), 100f);
             }
             catch (System.Exception e)
@@ -463,31 +473,6 @@ namespace PlayerDogModel_Plus.Source.Model
             string directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string path = additionalPath != null ? Path.Combine(directoryName, ".\\" + additionalPath) : directoryName;
             return Path.GetFullPath(path);
-        }
-
-        [JsonObject]
-        internal class ToggleData
-        {
-            [JsonProperty]
-            public ulong playerClientId
-            {
-                get;
-                set;
-            }
-
-            [JsonProperty]
-            public bool isDog
-            {
-                get;
-                set;
-            }
-
-            [JsonProperty]
-            public bool playAudio
-            {
-                get;
-                set;
-            }
         }
     }
 }
