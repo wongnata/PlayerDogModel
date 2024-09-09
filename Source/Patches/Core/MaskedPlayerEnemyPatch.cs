@@ -28,16 +28,13 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
                 renderer.enabled = false;
             }
 
-            // For now, let's assume the first renderer is the one we care about
             Material material = __instance.skinnedMeshRenderers[0].material;
 
-            // Grab all the constraints for when we map the new dog body
             Transform humanPelvis = __instance.transform.Find("ScavengerModel").Find("metarig").Find("spine");
             Transform humanHead = humanPelvis.Find("spine.001").Find("spine.002").Find("spine.003").Find("spine.004");
             Transform humanLegL = humanPelvis.Find("thigh.L");
             Transform humanLegR = humanPelvis.Find("thigh.R");
 
-            // Load in the dog model
             GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
             GameObject dogGameObject = GameObject.Instantiate(modelPrefab, __instance.transform);
             dogGameObject.transform.position = __instance.transform.position;
@@ -50,7 +47,6 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
                 renderer.material = material;
             }
 
-            // Set up the anim correspondence with Constraints.
             Transform dogTorso = dogGameObject.transform.Find("Armature").Find("torso");
             Transform dogHead = dogTorso.Find("head");
             Transform dogArmL = dogTorso.Find("arm.L");
@@ -58,7 +54,6 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             Transform dogLegL = dogTorso.Find("butt").Find("leg.L");
             Transform dogLegR = dogTorso.Find("butt").Find("leg.R");
 
-            // Add Constraints.
             PositionConstraint torsoConstraint = dogTorso.gameObject.AddComponent<PositionConstraint>();
             torsoConstraint.AddSource(new ConstraintSource() { sourceTransform = humanPelvis, weight = 1 });
             torsoConstraint.translationAtRest = dogTorso.localPosition;
@@ -66,7 +61,6 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             torsoConstraint.constraintActive = true;
             torsoConstraint.locked = true;
 
-            // Note: the rotation offsets are not set because the model bones have the same rotation as the associated bones.
             RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
             headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 1 });
             headConstraint.rotationAtRest = dogHead.localEulerAngles;
@@ -96,6 +90,17 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             legRConstraint.rotationAtRest = dogLegR.localEulerAngles;
             legRConstraint.constraintActive = true;
             legRConstraint.locked = true;
+
+            // Scale up the mask objects for the dog model, since they look pretty small on their faces otherwise
+            // I'm doing this for all the masks, just in case a mod might be overwriting which mask is being used
+            for (int i = 0; i < __instance.maskTypes.Length; i++)
+            {
+                GameObject originalMask = __instance.maskTypes[i];
+                GameObject maskCopy = GameObject.Instantiate(originalMask); // Copy the masks since I don't want to accidentally affect other instances
+                maskCopy.transform.localScale *= 1.5f;
+
+                __instance.maskTypes[i] = maskCopy;
+            }
         }
 
         [HarmonyPatch("LateUpdate")]
@@ -104,13 +109,17 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (__instance.mimickingPlayer == null) return;
 
-            PlayerModelReplacer replacer = __instance.mimickingPlayer.GetComponent<PlayerModelReplacer>();
+            Transform dogGameObject = __instance.transform.Find("Dog(Clone)");
 
-            if (replacer == null || !replacer.IsDog) return;
+            if (dogGameObject == null) return; // Wasn't mimicking a dog
 
             foreach (GameObject mask in __instance.maskTypes)
             {
-                mask.SetActive(false); // Indiscriminantly disabling the masks here, at least for now.
+                Transform dogHead = dogGameObject.Find("Armature").Find("torso").Find("head");
+
+                mask.transform.rotation = dogHead.rotation;
+                mask.transform.position = dogHead.position + dogHead.forward * 0.51f + dogHead.up * 0.2f;
+                mask.transform.Rotate(-35, 0, 0);
             }
         }
     }

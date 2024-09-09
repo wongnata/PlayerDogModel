@@ -34,6 +34,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 ## Limitations
 - When crouching in dog mode, dropped items can fall through the ship
 - When holding certain items in dog mode (dog ragdoll in particular), they may partially or fully obstruct your view
+- Masked enemies using the dog model that were not spawned from a possession do not have masks
 
 ## Credits
 - Obviously [MonAmiral](https://thunderstore.io/c/lethal-company/p/MonAmiral/) and [all their supporters](https://github.com/MonAmiral/PlayerDogModel?tab=readme-ov-file#credits) for creating the original mod! It's awesome!
