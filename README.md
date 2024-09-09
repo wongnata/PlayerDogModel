@@ -18,6 +18,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Custom overrides in config file to customize the [Verity-3rdPerson](https://thunderstore.io/c/lethal-company/p/Verity/3rdPerson/) camera in dog mode
 - Masks attach to the dog model head during possession
 - Belt bag position is adjusted to be useable (and kind of cute!) when pocketed in dog mode
+- Masked enemies spawned from dog players will use the dog model
 
 <details>
 
@@ -32,7 +33,6 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 
 ## Limitations
 - When crouching in dog mode, dropped items can fall through the ship
-- Masked enemies spawned from dog model players will still use their human model
 - When holding certain items in dog mode (dog ragdoll in particular), they may partially or fully obstruct your view
 
 ## Credits

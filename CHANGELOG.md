@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.0]**
+- Added support for masked enemies! Masked enemies that spawn from dog players will now use the dog model and no masks
+
 **[1.1.4]**
 - Removed patch for adding blood decals to a dog player
 - Updated masks held position and possession position to align to dog model
