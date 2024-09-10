@@ -14,12 +14,10 @@ namespace PlayerDogModel_Plus.Source.Networking
 
         public static void Initialize()
         {
-#pragma warning disable 0618
-            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(ModelSwitchMessageName);
-            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(ModelInfoMessageName);
-#pragma warning restore 0618
-            selectedModelMessage.OnReceivedFromClient += HandleModelSwitchMessage;
-            requestSelectedModelEvent.OnReceivedFromClient += HandleModelInfoMessage;
+            LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(ModelSwitchMessageName);
+            LNetworkEvent requestSelectedModelEvent = LNetworkEvent.Connect(ModelInfoMessageName);
+            selectedModelMessage.OnClientReceivedFromClient += HandleModelSwitchMessage;
+            requestSelectedModelEvent.OnClientReceivedFromClient += HandleModelInfoMessage;
         }
 
         internal static void HandleModelSwitchMessage(string modelToggleJson, ulong senderId)
