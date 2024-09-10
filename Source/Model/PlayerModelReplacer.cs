@@ -1,4 +1,3 @@
-using BepInEx.Bootstrap;
 using GameNetcodeStuff;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Networking;
@@ -382,7 +381,7 @@ namespace PlayerDogModel_Plus.Source.Model
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
                 EnableDogModel(playAudio);
 
-                if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                if (Plugin.isMoreCompanyLoaded)
                 {
                     MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
                 }
@@ -396,7 +395,7 @@ namespace PlayerDogModel_Plus.Source.Model
                 {
                     Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
 
-                    if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                    if (Plugin.isMoreCompanyLoaded)
                     {
                         MoreCompanyPatch.HideCosmeticsForPlayer(playerController);
                     }
@@ -404,7 +403,7 @@ namespace PlayerDogModel_Plus.Source.Model
                 }
                 else
                 {
-                    if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
+                    if (Plugin.isMoreCompanyLoaded)
                     {
                         MoreCompanyPatch.ShowCosmeticsForPlayer(playerController);
                     }
