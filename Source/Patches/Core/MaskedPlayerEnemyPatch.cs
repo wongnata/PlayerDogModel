@@ -113,13 +113,23 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
             if (dogGameObject == null) return; // Wasn't mimicking a dog
 
+            if (Plugin.isMirageLoaded || Plugin.config.alwaysHideMasksOnDogs.Value)
+            {
+                foreach (GameObject mask in __instance.maskTypes)
+                {
+                    mask.gameObject.SetActive(false); // Disable all masks
+                }
+
+                return; // Don't bother adjusting position
+            }
+
             foreach (GameObject mask in __instance.maskTypes)
             {
                 Transform dogHead = dogGameObject.Find("Armature").Find("torso").Find("head");
 
                 mask.transform.rotation = dogHead.rotation;
-                mask.transform.position = dogHead.position + dogHead.forward * 0.51f + dogHead.up * 0.2f;
-                mask.transform.Rotate(-35, 0, 0);
+                mask.transform.position = dogHead.position + dogHead.forward * 0.5f + dogHead.up * 0.2f;
+                mask.transform.Rotate(-37, 0, 0);
             }
         }
     }

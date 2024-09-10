@@ -16,6 +16,9 @@ namespace PlayerDogModel_Plus.Source.Config
         public readonly ConfigEntry<float> thirdPersonRightOffset;
         public readonly ConfigEntry<float> thirdPersonUpOffset;
 
+        // Masked Enemies
+        public readonly ConfigEntry<bool> alwaysHideMasksOnDogs;
+
         public PluginConfig(ConfigFile config)
         {
             config.SaveOnConfigSet = false;
@@ -53,6 +56,13 @@ namespace PlayerDogModel_Plus.Source.Config
                 "Up-Offset",
                 0.1f,
                 "Offset of the camera upwards from the player when using dog mode."
+            );
+
+            alwaysHideMasksOnDogs = config.Bind(
+                "Masked Enemies",
+                "AlwaysHideMasksOnDogs",
+                false,
+                "Disables masks on all masked enemies spawned from dogs. Default has masks visible for masked enemies spawned by possession."
             );
 
             ClearOrphanedEntries(config);

@@ -24,6 +24,9 @@ namespace PlayerDogModel_Plus.Source
         internal static PluginConfig config { get; private set; } = null!;
         internal static ManualLogSource logger;
         internal static AssetBundle assetBundle { get; private set; }
+        internal static bool isMoreCompanyLoaded = false;
+        internal static bool isThirdPersonLoaded = false;
+        internal static bool isMirageLoaded = false;
 
         private void Awake()
         {
@@ -43,17 +46,25 @@ namespace PlayerDogModel_Plus.Source
 
             if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
             {
+                isMoreCompanyLoaded = true;
                 harmony.PatchAll(typeof(MoreCompanyPatch));
                 logger.LogInfo($"loaded MoreCompany patches...");
             }
 
             if (Chainloader.PluginInfos.ContainsKey("verity.3rdperson"))
             {
+                isThirdPersonLoaded = true;
                 harmony.PatchAll(typeof(ThirdPersonPatch));
                 logger.LogInfo($"loaded 3rdPerson patches...");
             }
 
-            logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded! Woof!");
+            if (Chainloader.PluginInfos.ContainsKey("Mirage"))
+            {
+                logger.LogDebug($"detected Mirage...");
+                isMirageLoaded = true;
+            }
+
+            logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded successfully! Woof!");
 
             config = new PluginConfig(Config);
 

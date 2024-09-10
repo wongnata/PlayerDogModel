@@ -35,6 +35,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - When crouching in dog mode, dropped items can fall through the ship
 - When holding certain items in dog mode (dog ragdoll in particular), they may partially or fully obstruct your view
 - Masked enemies using the dog model that were not spawned from a possession do not have masks
+- Masked enemies spawned from a dog model will not have a mask if [Mirage](https://thunderstore.io/c/lethal-company/p/qwbarch/Mirage/) is being used, regardless of config
 - Kill animation looks a little funky for masked enemies using the dog model
 - Blood spatter does not apply to dog players or their ragdolls
 
