@@ -8,6 +8,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
     [HarmonyPatch(typeof(MaskedPlayerEnemy))]
     internal class MaskedPlayerEnemyPatch
     {
+        private static readonly string dogComponentKey = "Dog";
+
         [HarmonyPatch("SetEnemyOutside")]
         [HarmonyPostfix]
         public static void SetEnemyOutsidePostfix(ref MaskedPlayerEnemy __instance)
@@ -37,6 +39,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
             GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
             GameObject dogGameObject = GameObject.Instantiate(modelPrefab, __instance.transform);
+
+            dogGameObject.name = dogComponentKey; // Set this so we know exactly what we're looking for later
             dogGameObject.transform.position = __instance.transform.position;
             dogGameObject.transform.eulerAngles = __instance.transform.eulerAngles;
             dogGameObject.transform.localScale *= 2f;
@@ -109,28 +113,23 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (__instance.mimickingPlayer == null) return;
 
-            Transform dogGameObject = __instance.transform.Find("Dog(Clone)");
+            Transform dogGameObject = __instance.transform.Find(dogComponentKey);
 
             if (dogGameObject == null) return; // Wasn't mimicking a dog
 
+            GameObject mask = __instance.maskTypes[__instance.maskTypeIndex];
+
             if (Plugin.isMirageLoaded || Plugin.config.alwaysHideMasksOnDogs.Value)
             {
-                foreach (GameObject mask in __instance.maskTypes)
-                {
-                    mask.gameObject.SetActive(false); // Disable all masks
-                }
-
+                mask.gameObject.SetActive(false);
                 return; // Don't bother adjusting position
             }
 
-            foreach (GameObject mask in __instance.maskTypes)
-            {
-                Transform dogHead = dogGameObject.Find("Armature").Find("torso").Find("head");
-
-                mask.transform.rotation = dogHead.rotation;
-                mask.transform.position = dogHead.position + dogHead.forward * 0.5f + dogHead.up * 0.2f;
-                mask.transform.Rotate(-37, 0, 0);
-            }
+            Transform dogHead = dogGameObject.Find("Armature").Find("torso").Find("head");
+            mask.transform.rotation = dogHead.rotation;
+            mask.transform.position = dogHead.position + dogHead.forward * 0.5f + dogHead.up * 0.2f;
+            mask.transform.Rotate(-37, 0, 0);
+            mask.gameObject.SetActive(true);
         }
     }
 }
