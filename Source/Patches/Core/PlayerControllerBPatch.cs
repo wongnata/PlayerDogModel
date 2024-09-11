@@ -27,8 +27,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
 
             // Request data regarding the other players' skins.
-            LNetworkEvent requestSelectedModelEvent = LNetworkEvent.Connect(MessageHandler.ModelInfoMessageName);
-            requestSelectedModelEvent.InvokeOtherClients();
+            LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(MessageHandler.ModelInfoMessageName);
+            selectedModelMessage.SendOtherClients(""); // Literally don't care about the data here
         }
 
         [HarmonyPatch("SetItemInElevator")]

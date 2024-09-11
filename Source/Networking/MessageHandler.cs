@@ -15,8 +15,9 @@ namespace PlayerDogModel_Plus.Source.Networking
         public static void Initialize()
         {
             LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(ModelSwitchMessageName);
-            LNetworkEvent requestSelectedModelEvent = LNetworkEvent.Connect(ModelInfoMessageName);
             selectedModelMessage.OnClientReceivedFromClient += HandleModelSwitchMessage;
+            // Using message here since for some reason event isn't working for me yet
+            LNetworkMessage<string> requestSelectedModelEvent = LNetworkMessage<string>.Connect(ModelInfoMessageName);
             requestSelectedModelEvent.OnClientReceivedFromClient += HandleModelInfoMessage;
         }
 
@@ -43,7 +44,7 @@ namespace PlayerDogModel_Plus.Source.Networking
             replacer.ReceiveBroadcastAndToggle(false, modelToggleData.isDog);
         }
 
-        internal static void HandleModelInfoMessage(ulong senderId)
+        internal static void HandleModelInfoMessage(string nothing, ulong senderId) // Literally not using the string param
         {
             Plugin.logger.LogDebug($"Got {ModelInfoMessageName} network message from {senderId}");
             PlayerControllerB localPlayer = StartOfRound.Instance.localPlayerController;
