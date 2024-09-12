@@ -1,7 +1,7 @@
 # [Fork of the original mod by **MonAmiral**!](https://thunderstore.io/c/lethal-company/p/MonAmiral/PlayerDogModel/)
 
 > [!IMPORTANT]
-> [Please report bugs, issues, and feature requests](https://github.com/wongnata/PlayerDogModel_Plus/issues/new) and I will be happy to look into them when I have time!
+> [Please report bugs, issues, and feature requests](https://github.com/wongnata/PlayerDogModel_Plus/issues/) and I will be happy to look into them when I have time!
 
 ![](https://i.imgur.com/s1SdJxD.png)
 
