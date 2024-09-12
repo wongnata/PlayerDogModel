@@ -83,9 +83,9 @@ namespace PlayerDogModel_Plus.Source.Model
             }
 
             humanCameraPosition = playerController.gameplayCamera.transform.localPosition;
-
+#if DEBUG
             Plugin.logger.LogDebug($"Adding PlayerModelReplacer on {playerController.playerUsername} ({playerController.IsOwner})");
-
+#endif
             SpawnDogModel();
             EnableHumanModel(false);
         }
@@ -145,13 +145,17 @@ namespace PlayerDogModel_Plus.Source.Model
             // Make sure the shadow casting mode and layer are right despite other mods.
             if (dogRenderers[0].shadowCastingMode != playerController.thisPlayerModel.shadowCastingMode)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Dog model is on the wrong shadow casting mode. ({dogRenderers[0].shadowCastingMode} instead of {playerController.thisPlayerModel.shadowCastingMode})");
+#endif
                 dogRenderers[0].shadowCastingMode = playerController.thisPlayerModel.shadowCastingMode;
             }
 
             if (dogRenderers[0].gameObject.layer != playerController.thisPlayerModel.gameObject.layer)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Dog model is on the wrong layer. ({LayerMask.LayerToName(dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(playerController.thisPlayerModel.gameObject.layer)})");
+#endif
                 dogRenderers[0].gameObject.layer = playerController.thisPlayerModel.gameObject.layer;
             }
         }
@@ -361,7 +365,9 @@ namespace PlayerDogModel_Plus.Source.Model
 
         public void ToggleAndBroadcast(bool playAudio)
         {
+#if DEBUG
             Plugin.logger.LogDebug($"Toggling dog mode for you ({playerController.playerUsername})!");
+#endif
             if (isDogActive)
             {
                 EnableHumanModel(playAudio);
@@ -378,7 +384,9 @@ namespace PlayerDogModel_Plus.Source.Model
         {
             if (isDog)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
+#endif
                 EnableDogModel(playAudio);
 
                 if (Plugin.isMoreCompanyLoaded)
@@ -388,12 +396,16 @@ namespace PlayerDogModel_Plus.Source.Model
             }
             else
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a human!");
+#endif
                 EnableHumanModel(playAudio);
 
                 if (playerController.IsOwner) // This should only be true once when you start up!
                 {
+#if DEBUG
                     Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+#endif
 
                     if (Plugin.isMoreCompanyLoaded)
                     {

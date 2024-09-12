@@ -16,46 +16,34 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
         [HarmonyPrefix]
         public static bool CloneCosmeticsToNonPlayerPrefix(Transform cosmeticRoot, int playerClientId)
         {
-            Plugin.logger.LogDebug($"Checking for dog mode before copying cosmetics to body...");
-
             PlayerModelReplacer replacer = ModelReplacerRetriever.GetModelReplacerFromClientId((ulong)playerClientId);
 
-            if (replacer == null)
+            if (replacer == null || !replacer.IsDog)
             {
-                Plugin.logger.LogDebug($"Could not find replacer for playerClientId={playerClientId}. Nothing to prefix.");
-                return true;
+                return true; // Nothing to prefix
             }
 
-            // If this person is a dog, we use this prefix to skip cloning the cosmetics.
-            if (replacer.IsDog)
-            {
-                Plugin.logger.LogDebug($"playerClientId={playerClientId} is a dog! Skipping cosmetics cloning to body...");
-                return false;
-            }
-
-            // Otherwise, we let the cosmetics get cloned.
-            Plugin.logger.LogDebug($"playerClientId={playerClientId} is a human! Cloning cosmetics to body...");
-            return true;
+            return false;
         }
 
         public static void HideCosmeticsForPlayer(PlayerControllerB playerController)
         {
             CosmeticApplication cosmeticApplication = playerController.meshContainer.GetComponentInChildren<CosmeticApplication>();
 
-            if (cosmeticApplication == null)
-            {
-                Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance was null!");
-                return;
-            }
+            if (cosmeticApplication == null) return;
 
+#if DEBUG
             Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
+#endif
 
             cosmeticApplication.ClearCosmetics();
 
             List<string> selectedCosmetics = MainClass.playerIdsAndCosmetics[(int)playerController.playerClientId];
             foreach (var selected in selectedCosmetics)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Disabling {playerController.playerUsername}'s {selected}...");
+#endif
                 cosmeticApplication.ApplyCosmetic(selected, false);
             }
 
@@ -70,19 +58,19 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
         {
             CosmeticApplication cosmeticApplication = playerController.meshContainer.GetComponentInChildren<CosmeticApplication>();
 
-            if (cosmeticApplication == null)
-            {
-                Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance was null!");
-                return;
-            }
+            if (cosmeticApplication == null) return;
 
+#if DEBUG
             Plugin.logger.LogDebug($"{playerController.playerUsername}'s cosmetic application's instance ID was {cosmeticApplication.GetInstanceID()}");
+#endif
 
             cosmeticApplication.ClearCosmetics();
             List<string> selectedCosmetics = MainClass.playerIdsAndCosmetics[(int)playerController.playerClientId];
             foreach (var selected in selectedCosmetics)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Enabling {playerController.playerUsername}'s {selected}...");
+#endif
                 cosmeticApplication.ApplyCosmetic(selected, true);
             }
 

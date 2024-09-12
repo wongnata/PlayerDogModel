@@ -20,5 +20,10 @@ namespace PlayerDogModel_Plus.Source.Util
             Plugin.logger.LogDebug($"Couldn't find replacer with for player with clientId={clientId}!");
             return null;
         }
+
+        internal static void OnClientDisconnect(ulong clientId)
+        {
+            cache.Remove(clientId);
+        }
     }
 }
