@@ -79,14 +79,14 @@ namespace PlayerDogModel_Plus.Source.Networking
 
             if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(maskedDogData.maskedEnemyNetworkId, out NetworkObject networkObject))
             {
-                Plugin.logger.LogDebug($"Couldn't find networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+                Plugin.logger.LogWarning($"Couldn't find networkObjectId={maskedDogData.maskedEnemyNetworkId}");
                 return;
             }
 
             MaskedPlayerEnemy mimic = networkObject.GetComponent<MaskedPlayerEnemy>();
             if (mimic == null)
             {
-                Plugin.logger.LogDebug($"Couldn't find a MaskedPlayerEnemy for networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+                Plugin.logger.LogWarning($"Couldn't find a MaskedPlayerEnemy for networkObjectId={maskedDogData.maskedEnemyNetworkId}");
                 return;
             }
 
@@ -97,10 +97,14 @@ namespace PlayerDogModel_Plus.Source.Networking
 
             if (MaskedPlayerEnemyPatch.RenderMaskedDog(ref mimic))
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Rendered a dog model for the mimic with networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+#endif
                 return;
             }
+#if DEBUG
             Plugin.logger.LogDebug($"Didn't render a dog model for the mimic with networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+#endif
         }
     }
 }

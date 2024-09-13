@@ -38,7 +38,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (__instance.mimickingPlayer == null) return;
 
-            Transform dogGameObject = __instance.transform.Find(DogModelMapper.dogComponentKey);
+            Transform dogGameObject = __instance.transform.Find(DogModelMapper.dogModelKey);
 
             if (dogGameObject == null) return; // Wasn't mimicking a dog
 
@@ -64,7 +64,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             PlayerModelReplacer replacer = mimic.mimickingPlayer.GetComponent<PlayerModelReplacer>();
 
             // Wasn't a dog or already had a dog rendered
-            if (replacer == null || !replacer.IsDog || (mimic.transform.Find(DogModelMapper.dogComponentKey) != null)) return false;
+            if (replacer == null || !replacer.IsDog || (mimic.transform.Find(DogModelMapper.dogModelKey) != null)) return false;
 
             DisableMaskedRenderers(mimic); ;
 
@@ -96,7 +96,7 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
 
         private static void DisableMaskedRenderers(MaskedPlayerEnemy mimic)
         {
-            // Sometimes it's possible for this to get called before the renders have been set.
+            // It's possible for this to get called before the renders have been set.
             if (mimic.skinnedMeshRenderers.Length == 0)
             {
                 mimic.skinnedMeshRenderers = mimic.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();

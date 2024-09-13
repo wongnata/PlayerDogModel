@@ -2,6 +2,7 @@ using GameNetcodeStuff;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Optional;
+using PlayerDogModel_Plus.Source.Util;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -167,9 +168,6 @@ namespace PlayerDogModel_Plus.Source.Model
                 // Load and spawn new model.
                 GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
                 dogGameObject = Instantiate(modelPrefab, transform);
-                dogGameObject.transform.position = transform.position;
-                dogGameObject.transform.eulerAngles = transform.eulerAngles;
-                dogGameObject.transform.localScale *= 2f;
             }
             catch (System.Exception e)
             {
@@ -203,70 +201,12 @@ namespace PlayerDogModel_Plus.Source.Model
 
             try
             {
-                // Set up the anim correspondence with Constraints.
+                DogModelConstraints dogModelConstraints = DogModelMapper.MapDogModelToHumanModel(dogGameObject, transform);
+                torsoConstraint = dogModelConstraints.torso;
                 dogTorso = dogGameObject.transform.Find("Armature").Find("torso");
-                Transform dogHead = dogTorso.Find("head");
-                Transform dogArmL = dogTorso.Find("arm.L");
-                Transform dogArmR = dogTorso.Find("arm.R");
-                Transform dogLegL = dogTorso.Find("butt").Find("leg.L");
-                Transform dogLegR = dogTorso.Find("butt").Find("leg.R");
-
-                Transform humanPelvis = transform.Find("ScavengerModel").Find("metarig").Find("spine");
-                Transform humanHead = humanPelvis.Find("spine.001").Find("spine.002").Find("spine.003").Find("spine.004");
-                Transform humanLegL = humanPelvis.Find("thigh.L");
-                Transform humanLegR = humanPelvis.Find("thigh.R");
-
-                try
-                {
-                    // Add Constraints.
-                    torsoConstraint = dogTorso.gameObject.AddComponent<PositionConstraint>();
-                    torsoConstraint.AddSource(new ConstraintSource() { sourceTransform = humanPelvis, weight = 1 });
-                    torsoConstraint.translationAtRest = dogTorso.localPosition;
-                    torsoConstraint.translationOffset = dogTorso.InverseTransformPoint(humanPelvis.position);
-                    torsoConstraint.constraintActive = true;
-                    torsoConstraint.locked = true;
-
-                    // Note: the rotation offsets are not set because the model bones have the same rotation as the associated bones.
-                    RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
-                    headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 1 });
-                    headConstraint.rotationAtRest = dogHead.localEulerAngles;
-                    headConstraint.constraintActive = true;
-                    headConstraint.locked = true;
-
-                    RotationConstraint armLConstraint = dogArmL.gameObject.AddComponent<RotationConstraint>();
-                    armLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
-                    armLConstraint.rotationAtRest = dogArmL.localEulerAngles;
-                    armLConstraint.constraintActive = true;
-                    armLConstraint.locked = true;
-
-                    RotationConstraint armRConstraint = dogArmR.gameObject.AddComponent<RotationConstraint>();
-                    armRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
-                    armRConstraint.rotationAtRest = dogArmR.localEulerAngles;
-                    armRConstraint.constraintActive = true;
-                    armRConstraint.locked = true;
-
-                    RotationConstraint legLConstraint = dogLegL.gameObject.AddComponent<RotationConstraint>();
-                    legLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
-                    legLConstraint.rotationAtRest = dogLegL.localEulerAngles;
-                    legLConstraint.constraintActive = true;
-                    legLConstraint.locked = true;
-
-                    RotationConstraint legRConstraint = dogLegR.gameObject.AddComponent<RotationConstraint>();
-                    legRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
-                    legRConstraint.rotationAtRest = dogLegR.localEulerAngles;
-                    legRConstraint.constraintActive = true;
-                    legRConstraint.locked = true;
-                }
-                catch (System.Exception e)
-                {
-                    exceptionMessage = "Failed to set up the constraints.";
-                    exception = e;
-
-                    Plugin.logger.LogError(exceptionMessage);
-                }
 
                 // Fetch the anchor for the items.
-                itemAnchor = dogHead.Find("serverItem");
+                itemAnchor = dogTorso.Find("head").Find("serverItem");
             }
             catch (System.Exception e)
             {
