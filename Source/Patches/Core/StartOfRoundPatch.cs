@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Util;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Patches.Core
@@ -29,6 +30,10 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             // Reset the status of this player in case they reconnect
             clientId.GetPlayerController().GetComponent<PlayerModelReplacer>().EnableHumanModel(false);
+
+            // Remove this client from the caches
+            ModelReplacerRetriever.OnClientDisconnect(clientId);
+            PlayerRetriever.OnClientDisconnect(clientId);
         }
     }
 }

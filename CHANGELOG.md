@@ -1,5 +1,10 @@
 # Changelog
 
+**[2.0.1]**
+- Updated networking from LethalNetworkAPI v2 to v3
+- Minor performance improvements (made most debug logging debug-build only)
+- Fixed desync issue with masked enemies using dog models
+
 **[2.0.0]**
 - Added support for masked enemies! Masked enemies that spawn from dog players will now use the dog model and no masks
 - Added a new config file setting to disable masks on dog mimics

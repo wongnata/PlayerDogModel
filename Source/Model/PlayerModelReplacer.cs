@@ -2,6 +2,7 @@ using GameNetcodeStuff;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Optional;
+using PlayerDogModel_Plus.Source.Util;
 using System.Collections;
 using System.IO;
 using System.Reflection;
@@ -83,9 +84,9 @@ namespace PlayerDogModel_Plus.Source.Model
             }
 
             humanCameraPosition = playerController.gameplayCamera.transform.localPosition;
-
+#if DEBUG
             Plugin.logger.LogDebug($"Adding PlayerModelReplacer on {playerController.playerUsername} ({playerController.IsOwner})");
-
+#endif
             SpawnDogModel();
             EnableHumanModel(false);
         }
@@ -145,13 +146,17 @@ namespace PlayerDogModel_Plus.Source.Model
             // Make sure the shadow casting mode and layer are right despite other mods.
             if (dogRenderers[0].shadowCastingMode != playerController.thisPlayerModel.shadowCastingMode)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Dog model is on the wrong shadow casting mode. ({dogRenderers[0].shadowCastingMode} instead of {playerController.thisPlayerModel.shadowCastingMode})");
+#endif
                 dogRenderers[0].shadowCastingMode = playerController.thisPlayerModel.shadowCastingMode;
             }
 
             if (dogRenderers[0].gameObject.layer != playerController.thisPlayerModel.gameObject.layer)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Dog model is on the wrong layer. ({LayerMask.LayerToName(dogRenderers[0].gameObject.layer)} instead of {LayerMask.LayerToName(playerController.thisPlayerModel.gameObject.layer)})");
+#endif
                 dogRenderers[0].gameObject.layer = playerController.thisPlayerModel.gameObject.layer;
             }
         }
@@ -163,9 +168,6 @@ namespace PlayerDogModel_Plus.Source.Model
                 // Load and spawn new model.
                 GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
                 dogGameObject = Instantiate(modelPrefab, transform);
-                dogGameObject.transform.position = transform.position;
-                dogGameObject.transform.eulerAngles = transform.eulerAngles;
-                dogGameObject.transform.localScale *= 2f;
             }
             catch (System.Exception e)
             {
@@ -199,70 +201,12 @@ namespace PlayerDogModel_Plus.Source.Model
 
             try
             {
-                // Set up the anim correspondence with Constraints.
+                DogModelConstraints dogModelConstraints = DogModelMapper.MapDogModelToHumanModel(dogGameObject, transform);
+                torsoConstraint = dogModelConstraints.torso;
                 dogTorso = dogGameObject.transform.Find("Armature").Find("torso");
-                Transform dogHead = dogTorso.Find("head");
-                Transform dogArmL = dogTorso.Find("arm.L");
-                Transform dogArmR = dogTorso.Find("arm.R");
-                Transform dogLegL = dogTorso.Find("butt").Find("leg.L");
-                Transform dogLegR = dogTorso.Find("butt").Find("leg.R");
-
-                Transform humanPelvis = transform.Find("ScavengerModel").Find("metarig").Find("spine");
-                Transform humanHead = humanPelvis.Find("spine.001").Find("spine.002").Find("spine.003").Find("spine.004");
-                Transform humanLegL = humanPelvis.Find("thigh.L");
-                Transform humanLegR = humanPelvis.Find("thigh.R");
-
-                try
-                {
-                    // Add Constraints.
-                    torsoConstraint = dogTorso.gameObject.AddComponent<PositionConstraint>();
-                    torsoConstraint.AddSource(new ConstraintSource() { sourceTransform = humanPelvis, weight = 1 });
-                    torsoConstraint.translationAtRest = dogTorso.localPosition;
-                    torsoConstraint.translationOffset = dogTorso.InverseTransformPoint(humanPelvis.position);
-                    torsoConstraint.constraintActive = true;
-                    torsoConstraint.locked = true;
-
-                    // Note: the rotation offsets are not set because the model bones have the same rotation as the associated bones.
-                    RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
-                    headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 1 });
-                    headConstraint.rotationAtRest = dogHead.localEulerAngles;
-                    headConstraint.constraintActive = true;
-                    headConstraint.locked = true;
-
-                    RotationConstraint armLConstraint = dogArmL.gameObject.AddComponent<RotationConstraint>();
-                    armLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
-                    armLConstraint.rotationAtRest = dogArmL.localEulerAngles;
-                    armLConstraint.constraintActive = true;
-                    armLConstraint.locked = true;
-
-                    RotationConstraint armRConstraint = dogArmR.gameObject.AddComponent<RotationConstraint>();
-                    armRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
-                    armRConstraint.rotationAtRest = dogArmR.localEulerAngles;
-                    armRConstraint.constraintActive = true;
-                    armRConstraint.locked = true;
-
-                    RotationConstraint legLConstraint = dogLegL.gameObject.AddComponent<RotationConstraint>();
-                    legLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
-                    legLConstraint.rotationAtRest = dogLegL.localEulerAngles;
-                    legLConstraint.constraintActive = true;
-                    legLConstraint.locked = true;
-
-                    RotationConstraint legRConstraint = dogLegR.gameObject.AddComponent<RotationConstraint>();
-                    legRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
-                    legRConstraint.rotationAtRest = dogLegR.localEulerAngles;
-                    legRConstraint.constraintActive = true;
-                    legRConstraint.locked = true;
-                }
-                catch (System.Exception e)
-                {
-                    exceptionMessage = "Failed to set up the constraints.";
-                    exception = e;
-
-                    Plugin.logger.LogError(exceptionMessage);
-                }
 
                 // Fetch the anchor for the items.
-                itemAnchor = dogHead.Find("serverItem");
+                itemAnchor = dogTorso.Find("head").Find("serverItem");
             }
             catch (System.Exception e)
             {
@@ -361,7 +305,9 @@ namespace PlayerDogModel_Plus.Source.Model
 
         public void ToggleAndBroadcast(bool playAudio)
         {
+#if DEBUG
             Plugin.logger.LogDebug($"Toggling dog mode for you ({playerController.playerUsername})!");
+#endif
             if (isDogActive)
             {
                 EnableHumanModel(playAudio);
@@ -378,7 +324,9 @@ namespace PlayerDogModel_Plus.Source.Model
         {
             if (isDog)
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a dog! Woof!");
+#endif
                 EnableDogModel(playAudio);
 
                 if (Plugin.isMoreCompanyLoaded)
@@ -388,12 +336,16 @@ namespace PlayerDogModel_Plus.Source.Model
             }
             else
             {
+#if DEBUG
                 Plugin.logger.LogDebug($"Turning {playerController.playerUsername} into a human!");
+#endif
                 EnableHumanModel(playAudio);
 
                 if (playerController.IsOwner) // This should only be true once when you start up!
                 {
+#if DEBUG
                     Plugin.logger.LogDebug($"Hang on, you're {playerController.playerUsername}, we won't show your cosmetics!");
+#endif
 
                     if (Plugin.isMoreCompanyLoaded)
                     {
@@ -420,10 +372,8 @@ namespace PlayerDogModel_Plus.Source.Model
             };
 
             string modelToggleString = JsonUtility.ToJson(modelToggleData);
-#pragma warning disable 0618
-            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(MessageHandler.ModelSwitchMessageName);
-#pragma warning restore 0618
-            selectedModelMessage.SendAllClients(modelToggleString);
+            LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(MessageHandler.ModelSwitchMessageName);
+            selectedModelMessage.SendOtherClients(modelToggleString);
             Plugin.logger.LogDebug($"Sent json={modelToggleString} for {playerController.playerClientId} ({playerController.playerUsername})");
         }
 

@@ -27,10 +27,8 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             }
 
             // Request data regarding the other players' skins.
-#pragma warning disable 0618
-            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(MessageHandler.ModelInfoMessageName);
-#pragma warning restore 0618
-            requestSelectedModelEvent.InvokeAllClients();
+            LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(MessageHandler.ModelInfoMessageName);
+            selectedModelMessage.SendOtherClients(""); // Literally don't care about the data here
         }
 
         [HarmonyPatch("SetItemInElevator")]

@@ -1,7 +1,9 @@
 ﻿using HarmonyLib;
+using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Networking;
+using PlayerDogModel_Plus.Source.Util;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace PlayerDogModel_Plus.Source.Patches.Core
 {
@@ -12,94 +14,21 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         [HarmonyPostfix]
         public static void SetEnemyOutsidePostfix(ref MaskedPlayerEnemy __instance)
         {
-            if (__instance.mimickingPlayer == null) return;
-
-            PlayerModelReplacer replacer = __instance.mimickingPlayer.GetComponent<PlayerModelReplacer>();
-
-            if (replacer == null || !replacer.IsDog) return;
-
-            // Disable the renderers first
-            foreach (SkinnedMeshRenderer renderer in __instance.skinnedMeshRenderers)
+            if (RenderMaskedDog(ref __instance))
             {
-                renderer.enabled = false;
-            }
-            foreach (MeshRenderer renderer in __instance.meshRenderers)
-            {
-                renderer.enabled = false;
-            }
+                // Broadcast that this masked enemy is mimicking a dog
+                MaskedDogData maskedDogData = new MaskedDogData()
+                {
+                    maskedEnemyNetworkId = __instance.NetworkObjectId,
+                    mimickingClientId = __instance.mimickingPlayer.GetClientId()
+                };
 
-            Material material = __instance.skinnedMeshRenderers[0].material;
-
-            Transform humanPelvis = __instance.transform.Find("ScavengerModel").Find("metarig").Find("spine");
-            Transform humanHead = humanPelvis.Find("spine.001").Find("spine.002").Find("spine.003").Find("spine.004");
-            Transform humanLegL = humanPelvis.Find("thigh.L");
-            Transform humanLegR = humanPelvis.Find("thigh.R");
-
-            GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
-            GameObject dogGameObject = GameObject.Instantiate(modelPrefab, __instance.transform);
-            dogGameObject.transform.position = __instance.transform.position;
-            dogGameObject.transform.eulerAngles = __instance.transform.eulerAngles;
-            dogGameObject.transform.localScale *= 2f;
-
-            SkinnedMeshRenderer[] dogRenderers = dogGameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach (SkinnedMeshRenderer renderer in dogRenderers)
-            {
-                renderer.material = material;
-            }
-
-            Transform dogTorso = dogGameObject.transform.Find("Armature").Find("torso");
-            Transform dogHead = dogTorso.Find("head");
-            Transform dogArmL = dogTorso.Find("arm.L");
-            Transform dogArmR = dogTorso.Find("arm.R");
-            Transform dogLegL = dogTorso.Find("butt").Find("leg.L");
-            Transform dogLegR = dogTorso.Find("butt").Find("leg.R");
-
-            PositionConstraint torsoConstraint = dogTorso.gameObject.AddComponent<PositionConstraint>();
-            torsoConstraint.AddSource(new ConstraintSource() { sourceTransform = humanPelvis, weight = 1 });
-            torsoConstraint.translationAtRest = dogTorso.localPosition;
-            torsoConstraint.translationOffset = dogTorso.InverseTransformPoint(humanPelvis.position);
-            torsoConstraint.constraintActive = true;
-            torsoConstraint.locked = true;
-
-            RotationConstraint headConstraint = dogHead.gameObject.AddComponent<RotationConstraint>();
-            headConstraint.AddSource(new ConstraintSource() { sourceTransform = humanHead, weight = 1 });
-            headConstraint.rotationAtRest = dogHead.localEulerAngles;
-            headConstraint.constraintActive = true;
-            headConstraint.locked = true;
-
-            RotationConstraint armLConstraint = dogArmL.gameObject.AddComponent<RotationConstraint>();
-            armLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
-            armLConstraint.rotationAtRest = dogArmL.localEulerAngles;
-            armLConstraint.constraintActive = true;
-            armLConstraint.locked = true;
-
-            RotationConstraint armRConstraint = dogArmR.gameObject.AddComponent<RotationConstraint>();
-            armRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
-            armRConstraint.rotationAtRest = dogArmR.localEulerAngles;
-            armRConstraint.constraintActive = true;
-            armRConstraint.locked = true;
-
-            RotationConstraint legLConstraint = dogLegL.gameObject.AddComponent<RotationConstraint>();
-            legLConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegL, weight = 1 });
-            legLConstraint.rotationAtRest = dogLegL.localEulerAngles;
-            legLConstraint.constraintActive = true;
-            legLConstraint.locked = true;
-
-            RotationConstraint legRConstraint = dogLegR.gameObject.AddComponent<RotationConstraint>();
-            legRConstraint.AddSource(new ConstraintSource() { sourceTransform = humanLegR, weight = 1 });
-            legRConstraint.rotationAtRest = dogLegR.localEulerAngles;
-            legRConstraint.constraintActive = true;
-            legRConstraint.locked = true;
-
-            // Scale up the mask objects for the dog model, since they look pretty small on their faces otherwise
-            // I'm doing this for all the masks, just in case a mod might be overwriting which mask is being used
-            for (int i = 0; i < __instance.maskTypes.Length; i++)
-            {
-                GameObject originalMask = __instance.maskTypes[i];
-                GameObject maskCopy = GameObject.Instantiate(originalMask); // Copy the masks since I don't want to accidentally affect other instances
-                maskCopy.transform.localScale *= 1.5f;
-
-                __instance.maskTypes[i] = maskCopy;
+                string maskedDogString = JsonUtility.ToJson(maskedDogData);
+                LNetworkMessage<string> maskedDogSpawnMessage = LNetworkMessage<string>.Connect(MessageHandler.MaskedDogSpawnMessageName);
+                maskedDogSpawnMessage.SendOtherClients(maskedDogString);
+                Plugin.logger.LogDebug($"Sent json={maskedDogString} for a masked dog spawn event " +
+                    $"maskedEnemyNetworkId={maskedDogData.maskedEnemyNetworkId}, " +
+                    $"mimickingClientId={maskedDogData.mimickingClientId}");
             }
         }
 
@@ -109,27 +38,82 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
         {
             if (__instance.mimickingPlayer == null) return;
 
-            Transform dogGameObject = __instance.transform.Find("Dog(Clone)");
+            Transform dogGameObject = __instance.transform.Find(DogModelMapper.dogModelKey);
 
             if (dogGameObject == null) return; // Wasn't mimicking a dog
 
+            GameObject mask = __instance.maskTypes[__instance.maskTypeIndex];
+
             if (Plugin.isMirageLoaded || Plugin.config.alwaysHideMasksOnDogs.Value)
             {
-                foreach (GameObject mask in __instance.maskTypes)
-                {
-                    mask.gameObject.SetActive(false); // Disable all masks
-                }
-
+                mask.gameObject.SetActive(false);
                 return; // Don't bother adjusting position
             }
 
-            foreach (GameObject mask in __instance.maskTypes)
-            {
-                Transform dogHead = dogGameObject.Find("Armature").Find("torso").Find("head");
+            Transform dogHead = dogGameObject.Find("Armature").Find("torso").Find("head");
+            mask.transform.rotation = dogHead.rotation;
+            mask.transform.position = dogHead.position + dogHead.forward * 0.5f + dogHead.up * 0.2f;
+            mask.transform.Rotate(-37, 0, 0);
+            mask.gameObject.SetActive(true);
+        }
 
-                mask.transform.rotation = dogHead.rotation;
-                mask.transform.position = dogHead.position + dogHead.forward * 0.5f + dogHead.up * 0.2f;
-                mask.transform.Rotate(-37, 0, 0);
+        internal static bool RenderMaskedDog(ref MaskedPlayerEnemy mimic)
+        {
+            if (mimic.mimickingPlayer == null) return false;
+
+            PlayerModelReplacer replacer = mimic.mimickingPlayer.GetComponent<PlayerModelReplacer>();
+
+            // Wasn't a dog or already had a dog rendered
+            if (replacer == null || !replacer.IsDog || (mimic.transform.Find(DogModelMapper.dogModelKey) != null)) return false;
+
+            DisableMaskedRenderers(mimic); ;
+
+            GameObject modelPrefab = Plugin.assetBundle.LoadAsset<GameObject>("assets/Dog.fbx");
+            GameObject dogGameObject = GameObject.Instantiate(modelPrefab, mimic.transform);
+
+            SkinnedMeshRenderer[] dogRenderers = dogGameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            Material material = StartOfRound.Instance.unlockablesList.unlockables[mimic.mimickingPlayer.currentSuitID].suitMaterial;
+            foreach (SkinnedMeshRenderer renderer in dogRenderers)
+            {
+                renderer.material = material;
+            }
+
+            DogModelMapper.MapDogModelToHumanModel(dogGameObject, mimic.transform);
+
+            // Scale up the mask objects for the dog model, since they look pretty small on their faces otherwise
+            // I'm doing this for all the masks, just in case a mod might be overwriting which mask is being used
+            for (int i = 0; i < mimic.maskTypes.Length; i++)
+            {
+                GameObject originalMask = mimic.maskTypes[i];
+                GameObject maskCopy = GameObject.Instantiate(originalMask); // Copy the masks since I don't want to accidentally affect other instances
+                maskCopy.transform.localScale *= 1.5f;
+
+                mimic.maskTypes[i] = maskCopy;
+            }
+
+            return true;
+        }
+
+        private static void DisableMaskedRenderers(MaskedPlayerEnemy mimic)
+        {
+            // It's possible for this to get called before the renders have been set.
+            if (mimic.skinnedMeshRenderers.Length == 0)
+            {
+                mimic.skinnedMeshRenderers = mimic.gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            }
+            if (mimic.meshRenderers.Length == 0)
+            {
+                mimic.meshRenderers = mimic.gameObject.GetComponentsInChildren<MeshRenderer>();
+            }
+
+            // Disable the renderers so the original model is hidden
+            foreach (SkinnedMeshRenderer renderer in mimic.skinnedMeshRenderers)
+            {
+                renderer.enabled = false;
+            }
+            foreach (MeshRenderer renderer in mimic.meshRenderers)
+            {
+                renderer.enabled = false;
             }
         }
     }

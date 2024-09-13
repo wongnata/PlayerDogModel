@@ -1,8 +1,10 @@
 ﻿using GameNetcodeStuff;
 using LethalNetworkAPI;
 using PlayerDogModel_Plus.Source.Model;
+using PlayerDogModel_Plus.Source.Patches.Core;
 using PlayerDogModel_Plus.Source.Util;
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Networking
@@ -11,15 +13,19 @@ namespace PlayerDogModel_Plus.Source.Networking
     {
         public const string ModelSwitchMessageName = "modelswitch";
         public const string ModelInfoMessageName = "modelinfo";
+        public const string MaskedDogSpawnMessageName = "maskeddogspawn";
 
         public static void Initialize()
         {
-#pragma warning disable 0618
-            LethalClientMessage<string> selectedModelMessage = new LethalClientMessage<string>(ModelSwitchMessageName);
-            LethalClientEvent requestSelectedModelEvent = new LethalClientEvent(ModelInfoMessageName);
-#pragma warning restore 0618
-            selectedModelMessage.OnReceivedFromClient += HandleModelSwitchMessage;
-            requestSelectedModelEvent.OnReceivedFromClient += HandleModelInfoMessage;
+            LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(ModelSwitchMessageName);
+            selectedModelMessage.OnClientReceivedFromClient += HandleModelSwitchMessage;
+
+            LNetworkMessage<string> maskedDogSpawnedEvent = LNetworkMessage<string>.Connect(MaskedDogSpawnMessageName);
+            maskedDogSpawnedEvent.OnClientReceivedFromClient += HandleMaskedDogSpawnMessage;
+
+            // Using message here since for some reason event isn't working for me yet
+            LNetworkMessage<string> requestSelectedModelEvent = LNetworkMessage<string>.Connect(ModelInfoMessageName);
+            requestSelectedModelEvent.OnClientReceivedFromClient += HandleModelInfoMessage;
         }
 
         internal static void HandleModelSwitchMessage(string modelToggleJson, ulong senderId)
@@ -45,7 +51,7 @@ namespace PlayerDogModel_Plus.Source.Networking
             replacer.ReceiveBroadcastAndToggle(false, modelToggleData.isDog);
         }
 
-        internal static void HandleModelInfoMessage(ulong senderId)
+        internal static void HandleModelInfoMessage(string nothing, ulong senderId) // Literally not using the string param
         {
             Plugin.logger.LogDebug($"Got {ModelInfoMessageName} network message from {senderId}");
             PlayerControllerB localPlayer = StartOfRound.Instance.localPlayerController;
@@ -64,6 +70,41 @@ namespace PlayerDogModel_Plus.Source.Networking
                     if (!Plugin.config.suppressExceptions.Value) throw e;
                 }
             }
+        }
+
+        internal static void HandleMaskedDogSpawnMessage(string maskedDogJson, ulong senderId)
+        {
+            Plugin.logger.LogDebug($"Got {MaskedDogSpawnMessageName} network message from {senderId} with json={maskedDogJson}");
+            MaskedDogData maskedDogData = JsonUtility.FromJson<MaskedDogData>(maskedDogJson);
+
+            if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(maskedDogData.maskedEnemyNetworkId, out NetworkObject networkObject))
+            {
+                Plugin.logger.LogWarning($"Couldn't find networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+                return;
+            }
+
+            MaskedPlayerEnemy mimic = networkObject.GetComponent<MaskedPlayerEnemy>();
+            if (mimic == null)
+            {
+                Plugin.logger.LogWarning($"Couldn't find a MaskedPlayerEnemy for networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+                return;
+            }
+
+            if (mimic.mimickingPlayer == null || mimic.mimickingPlayer.GetClientId() != maskedDogData.mimickingClientId)
+            {
+                mimic.mimickingPlayer = PlayerRetriever.GetPlayerFromClientId(maskedDogData.mimickingClientId); // Make sure this is consistent
+            }
+
+            if (MaskedPlayerEnemyPatch.RenderMaskedDog(ref mimic))
+            {
+#if DEBUG
+                Plugin.logger.LogDebug($"Rendered a dog model for the mimic with networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+#endif
+                return;
+            }
+#if DEBUG
+            Plugin.logger.LogDebug($"Didn't render a dog model for the mimic with networkObjectId={maskedDogData.maskedEnemyNetworkId}");
+#endif
         }
     }
 }
