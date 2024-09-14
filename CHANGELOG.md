@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.3]**
+- Forgot to update the version of the DLL last release. Updating now to avoid any dependency issues.
+
 **[2.0.2]**
 - Attempted a fix for dog model desyncs for clients especially during disconnects
 - Attempted another fix for dog player reconnects spawning as dogs for some clients
