@@ -20,12 +20,12 @@ namespace PlayerDogModel_Plus.Source.Networking
             LNetworkMessage<string> selectedModelMessage = LNetworkMessage<string>.Connect(ModelSwitchMessageName);
             selectedModelMessage.OnClientReceivedFromClient += HandleModelSwitchMessage;
 
-            LNetworkMessage<string> maskedDogSpawnedEvent = LNetworkMessage<string>.Connect(MaskedDogSpawnMessageName);
-            maskedDogSpawnedEvent.OnClientReceivedFromClient += HandleMaskedDogSpawnMessage;
+            LNetworkMessage<string> maskedDogSpawnedMessage = LNetworkMessage<string>.Connect(MaskedDogSpawnMessageName);
+            maskedDogSpawnedMessage.OnClientReceivedFromClient += HandleMaskedDogSpawnMessage;
 
             // Using message here since for some reason event isn't working for me yet
-            LNetworkMessage<string> requestSelectedModelEvent = LNetworkMessage<string>.Connect(ModelInfoMessageName);
-            requestSelectedModelEvent.OnClientReceivedFromClient += HandleModelInfoMessage;
+            LNetworkMessage<string> requestSelectedModelMessage = LNetworkMessage<string>.Connect(ModelInfoMessageName);
+            requestSelectedModelMessage.OnClientReceivedFromClient += HandleModelInfoMessage;
         }
 
         internal static void HandleModelSwitchMessage(string modelToggleJson, ulong senderId)

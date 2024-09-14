@@ -78,17 +78,18 @@ namespace PlayerDogModel_Plus.Source.Model
         {
             playerController = GetComponent<PlayerControllerB>();
 
-            if (playerController.IsOwner)
-            {
-                LocalReplacer = this;
-            }
-
             humanCameraPosition = playerController.gameplayCamera.transform.localPosition;
 #if DEBUG
             Plugin.logger.LogDebug($"Adding PlayerModelReplacer on {playerController.playerUsername} ({playerController.IsOwner})");
 #endif
             SpawnDogModel();
             EnableHumanModel(false);
+
+            if (playerController.IsOwner)
+            {
+                LocalReplacer = this;
+                BroadcastSelectedModel(false); // Prevents desync on reconnect
+            }
         }
 
         private void Update()

@@ -1,5 +1,9 @@
 # Changelog
 
+**[2.0.2]**
+- Attempted a fix for dog model desyncs for clients especially during disconnects
+- Attempted another fix for dog player reconnects spawning as dogs for some clients
+
 **[2.0.1]**
 - Updated networking from LethalNetworkAPI v2 to v3
 - Minor performance improvements (made most debug logging debug-build only)
