@@ -14,7 +14,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Jetpacks are aligned to the dog model body
 - Spectator cameras are recentered on dog players
 - Body collected notification displays a dog model turnaround
-- Hides any [MoreCompany](https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/) cosmetics or vanilla head cosmetics while in dog mode
+- Hides any [MoreCompany](https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/) cosmetics and vanilla head cosmetics while in dog mode
 - Custom overrides in config file to customize the [Verity-3rdPerson](https://thunderstore.io/c/lethal-company/p/Verity/3rdPerson/) camera in dog mode
 - Masks attach to the dog model head during possession
 - Belt bag position is adjusted to be useable (and kind of cute!) when pocketed in dog mode
