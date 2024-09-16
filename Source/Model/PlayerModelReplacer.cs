@@ -253,6 +253,9 @@ namespace PlayerDogModel_Plus.Source.Model
                     healthOutline.sprite = humanOutline;
                 }
             }
+
+            // Makes sure that head cosmetics are shown on toggle
+            UnlockableSuit.SwitchSuitForPlayer(playerController, playerController.currentSuitID, false);
         }
 
         public void EnableDogModel(bool playAudio)
@@ -288,6 +291,9 @@ namespace PlayerDogModel_Plus.Source.Model
                 healthFill.sprite = dogFill;
                 healthOutline.sprite = dogOutline;
             }
+
+            // Makes sure that head cosmetics are hidden on toggle
+            UnlockableSuit.SwitchSuitForPlayer(playerController, playerController.currentSuitID, false);
         }
 
         public void UpdateMaterial()

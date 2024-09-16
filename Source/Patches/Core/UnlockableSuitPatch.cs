@@ -18,6 +18,19 @@ namespace PlayerDogModel_Plus.Source.Patches.Core
             {
                 replacer.UpdateMaterial();
             }
+
+            if (replacer != null && replacer.IsDog)
+            {
+                // Hide the head cosmetics for dog players
+                if (GameNetworkManager.Instance.localPlayerController != player)
+                {
+                    UnlockableSuit.ChangePlayerCostumeElement(player.headCostumeContainer, null);
+                }
+                else
+                {
+                    UnlockableSuit.ChangePlayerCostumeElement(player.headCostumeContainerLocal, null);
+                }
+            }
         }
     }
 }
