@@ -54,7 +54,7 @@ namespace PlayerDogModel_Plus.Source.Networking
         internal static void HandleModelInfoMessage(string nothing, ulong senderId) // Literally not using the string param
         {
             Plugin.logger.LogDebug($"Got {ModelInfoMessageName} network message from {senderId}");
-            PlayerControllerB localPlayer = StartOfRound.Instance.localPlayerController;
+            PlayerControllerB localPlayer = GameNetworkManager.Instance.localPlayerController;
             PlayerModelReplacer replacer = localPlayer.GetComponent<PlayerModelReplacer>();
 
             if (replacer != null)

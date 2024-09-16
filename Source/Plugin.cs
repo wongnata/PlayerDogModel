@@ -42,6 +42,7 @@ namespace PlayerDogModel_Plus.Source
             harmony.PatchAll(typeof(BeltBagPatch));
             harmony.PatchAll(typeof(HauntedMaskPatch));
             harmony.PatchAll(typeof(MaskedPlayerEnemyPatch));
+            harmony.PatchAll(typeof(FlowerSnakeEnemyPatch));
             logger.LogInfo($"loaded core patches...");
 
             if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))

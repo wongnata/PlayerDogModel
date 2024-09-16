@@ -1,5 +1,10 @@
 # Changelog
 
+**[2.0.4]**
+- Fixed tulip snake interaction so that tulip snakes attach to dog players' heads
+- Fixed vanilla suits (bunny, bee) with head cosmetics so they no longer show floating head cosmetics on dog players
+- Updated local player lookup to be more consistent with how lookup is done in the game logic (using GameNetworkManager and not StartOfRound)
+
 **[2.0.3]**
 - Forgot to update the version of the DLL last release. Updating now to avoid any dependency issues.
 
