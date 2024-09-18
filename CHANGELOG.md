@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.5]**
+- Added MIT license for distribution and credit! Thanks again to MonAmiral for his blessing! <3
+
 **[2.0.4]**
 - Fixed tulip snake interaction so that tulip snakes attach to dog players' heads
 - Fixed vanilla suits (bunny, bee) with head cosmetics so they no longer show floating head cosmetics on dog players

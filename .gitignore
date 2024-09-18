@@ -10,6 +10,7 @@ Lib/*
 Dist/icon.xcf
 Dist/README.md
 Dist/CHANGELOG.md
+Dist/LICENSE
 Scripts/*
 
 # User-specific files
