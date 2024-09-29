@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.6]**
+- Added support for OpenBodyCams! When viewing dog model players on the monitor, their camera perspectives will no longer be obstructed by the dog model.
+
 **[2.0.5]**
 - Added MIT license for distribution and credit! Thanks again to MonAmiral for his blessing! <3
 

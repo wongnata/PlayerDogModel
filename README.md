@@ -19,6 +19,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Masks attach to the dog model head during possession
 - Belt bag position is adjusted to be useable (and kind of cute!) when pocketed in dog mode
 - Masked enemies mimicking dog players will use the dog model
+- [OpenBodyCams](https://thunderstore.io/c/lethal-company/p/Zaggy1024/OpenBodyCams/) shows the dog player's camera when monitoring a dog player
 
 <details>
 
@@ -43,3 +44,4 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Obviously [MonAmiral](https://thunderstore.io/c/lethal-company/p/MonAmiral/) and [all their supporters](https://github.com/MonAmiral/PlayerDogModel?tab=readme-ov-file#credits) for creating the original mod! It's awesome!
 - Thanks to Andrew, Jaime, [90% Andy](https://www.90percentstudios.com/), and [90% Denny](https://www.90percentstudios.com/) for your help in testing and fixing multiplayer interactions! Dog bless you!
 - Thanks to the entire Flodogs+ squad for dogfooding this mod with me! Bone-appetit!
+- Thanks to [Zaggy](https://thunderstore.io/c/lethal-company/p/Zaggy1024/) and [Bunya](https://thunderstore.io/c/lethal-company/p/BunyaPineTree/?section=asset-replacements) for their advice in implementing the OpenBodyCams patch!

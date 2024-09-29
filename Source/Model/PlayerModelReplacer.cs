@@ -31,7 +31,7 @@ namespace PlayerDogModel_Plus.Source.Model
         private PlayerControllerB playerController;
         private GameObject dogGameObject;
         private GameObject[] humanGameObjects;
-        private SkinnedMeshRenderer[] dogRenderers;
+        internal SkinnedMeshRenderer[] dogRenderers;
 
         private Transform dogTorso;
         private PositionConstraint torsoConstraint;
