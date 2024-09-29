@@ -12,11 +12,6 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
     {
         private static readonly Vector3 cameraContainerOffset = new(0, 0, 0.125f);
 
-        internal static void Update(Transform dogObject)
-        {
-            BodyCamComponent.MarkTargetDirtyUntilRenderForAllBodyCams(dogObject);
-        }
-
         [HarmonyPatch("SetTargetToPlayer")]
         [HarmonyPostfix]
         public static void SetTargetToPlayerPostfix(PlayerControllerB player, GameObject ___CameraObject, ref Renderer[] ___currentRenderersToHide)
