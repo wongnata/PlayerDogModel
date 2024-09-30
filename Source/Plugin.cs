@@ -17,6 +17,7 @@ namespace PlayerDogModel_Plus.Source
     [BepInDependency("LethalNetworkAPI")]
     [BepInDependency("me.swipez.melonloader.morecompany", DependencyFlags.SoftDependency)]
     [BepInDependency("verity.3rdperson", DependencyFlags.SoftDependency)]
+    [BepInDependency("Zaggy1024.OpenBodyCams", DependencyFlags.SoftDependency)]
     [BepInProcess("Lethal Company.exe")]
     public class Plugin : BaseUnityPlugin
     {
@@ -27,6 +28,7 @@ namespace PlayerDogModel_Plus.Source
         internal static bool isMoreCompanyLoaded = false;
         internal static bool isThirdPersonLoaded = false;
         internal static bool isMirageLoaded = false;
+        internal static bool isOpenBodyCamsLoaded = false;
 
         private void Awake()
         {
@@ -57,6 +59,13 @@ namespace PlayerDogModel_Plus.Source
                 isThirdPersonLoaded = true;
                 harmony.PatchAll(typeof(ThirdPersonPatch));
                 logger.LogInfo($"loaded 3rdPerson patches...");
+            }
+
+            if (Chainloader.PluginInfos.ContainsKey("Zaggy1024.OpenBodyCams"))
+            {
+                isOpenBodyCamsLoaded = true;
+                harmony.PatchAll(typeof(OpenBodyCamsPatch));
+                logger.LogInfo($"loaded OpenBodyCamsPatch patches...");
             }
 
             if (Chainloader.PluginInfos.ContainsKey("Mirage"))
