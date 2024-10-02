@@ -18,6 +18,7 @@ namespace PlayerDogModel_Plus.Source
     [BepInDependency("me.swipez.melonloader.morecompany", DependencyFlags.SoftDependency)]
     [BepInDependency("verity.3rdperson", DependencyFlags.SoftDependency)]
     [BepInDependency("Zaggy1024.OpenBodyCams", DependencyFlags.SoftDependency)]
+    [BepInDependency("FlipMods.TooManyEmotes", DependencyFlags.SoftDependency)]
     [BepInProcess("Lethal Company.exe")]
     public class Plugin : BaseUnityPlugin
     {
@@ -29,6 +30,7 @@ namespace PlayerDogModel_Plus.Source
         internal static bool isThirdPersonLoaded = false;
         internal static bool isMirageLoaded = false;
         internal static bool isOpenBodyCamsLoaded = false;
+        internal static bool isTooManyEmotesLoaded = false;
 
         private void Awake()
         {
@@ -52,6 +54,14 @@ namespace PlayerDogModel_Plus.Source
                 isMoreCompanyLoaded = true;
                 harmony.PatchAll(typeof(MoreCompanyPatch));
                 logger.LogInfo($"loaded MoreCompany patches...");
+
+                // This looks a bit psychotic but we only patch this to add more company cosmetic support
+                if (Chainloader.PluginInfos.ContainsKey("FlipMods.TooManyEmotes"))
+                {
+                    isTooManyEmotesLoaded = true;
+                    harmony.PatchAll(typeof(TooManyEmotesPatch));
+                    logger.LogInfo($"loaded TooManyEmotes patches...");
+                }
             }
 
             if (Chainloader.PluginInfos.ContainsKey("verity.3rdperson"))

@@ -20,6 +20,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Belt bag position is adjusted to be useable (and kind of cute!) when pocketed in dog mode
 - Masked enemies mimicking dog players will use the dog model
 - [OpenBodyCams](https://thunderstore.io/c/lethal-company/p/Zaggy1024/OpenBodyCams/) shows the dog player's camera when monitoring a dog player
+- Soft dependency on [TerminalAPI](https://thunderstore.io/c/lethal-company/p/NotAtomicBomb/TerminalApi/#creating-terminal-nodes) adds a terminal command to toggle dog mode
 
 <details>
 
