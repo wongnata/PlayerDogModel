@@ -20,7 +20,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Belt bag position is adjusted to be useable (and kind of cute!) when pocketed in dog mode
 - Masked enemies mimicking dog players will use the dog model
 - [OpenBodyCams](https://thunderstore.io/c/lethal-company/p/Zaggy1024/OpenBodyCams/) shows the dog player's camera when monitoring a dog player
-- Soft dependency on [TerminalAPI](https://thunderstore.io/c/lethal-company/p/NotAtomicBomb/TerminalApi/#creating-terminal-nodes) adds a terminal command to toggle dog mode ("toggledog")
+- Soft dependency on [TerminalAPI](https://thunderstore.io/c/lethal-company/p/NotAtomicBomb/TerminalApi/#creating-terminal-nodes) adds a terminal command to toggle dog mode ("switch model")
 
 <details>
 
@@ -42,7 +42,7 @@ Use the helmets on the side of the suits rack to toggle dog mode!
 - Blood spatter does not apply to dog players or their ragdolls
 - [CruiserImproved](https://thunderstore.io/c/lethal-company/p/DiggC/CruiserImproved/) and this mod do not play nice! When used together, by default the first person camera will either remain at human height or shake constantly. A workaround for using both mods together is documented [here](https://github.com/wongnata/PlayerDogModel_Plus/issues/47#issuecomment-2382134952)
 - [MoreCompany](https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/) cosmetics that you have equipped may be visible to you in third person while in dog mode depending on which mods you are using
-- Mods which hide or alter the suits rack may prevent the "switch model" node from rendering correctly. Please install [TerminalAPI](https://thunderstore.io/c/lethal-company/p/NotAtomicBomb/TerminalApi/#creating-terminal-nodes) and use the terminal command ("toggledog") to switch models if this happens!
+- Mods which hide or alter the suits rack may prevent the "switch model" node from rendering correctly. Please install [TerminalAPI](https://thunderstore.io/c/lethal-company/p/NotAtomicBomb/TerminalApi/#creating-terminal-nodes) and use the terminal command ("switch model") to switch models if this happens!
 
 ## Credits
 - Obviously [MonAmiral](https://thunderstore.io/c/lethal-company/p/MonAmiral/) and [all their supporters](https://github.com/MonAmiral/PlayerDogModel?tab=readme-ov-file#credits) for creating the original mod! It's awesome!

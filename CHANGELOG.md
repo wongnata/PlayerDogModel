@@ -4,6 +4,7 @@
 - Fixed issue where TooManyEmotes showed floating MoreCompany cosmetics in third person when in dog mode
 - Fixed issue causing OpenBodyCams to show your own MoreCompany cosmetics in some third person cameras
 - Added a soft dependency on TerminalAPI allowing dog mode to be toggled through the terminal (for compatibility with SuitsTerminal, etc.)
+- Updated the way optional patches are loaded to be less brittle if patching fails
 
 **[2.0.6]**
 - Added support for OpenBodyCams! When viewing dog model players on the monitor, their camera perspectives will no longer be obstructed by the dog model.

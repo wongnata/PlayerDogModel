@@ -8,7 +8,7 @@ namespace PlayerDogModel_Plus.Source.Terminal
     {
         internal static void Initialize()
         {
-            TerminalApi.TerminalApi.AddCommand("toggledog", new CommandInfo()
+            TerminalApi.TerminalApi.AddCommand("switch model", new CommandInfo()
             {
                 DisplayTextSupplier = () =>
                 {
@@ -18,10 +18,10 @@ namespace PlayerDogModel_Plus.Source.Terminal
 
                     PlayerModelSwitcher.SwitchModel(localPlayer);
                     string currentModel = wasDog ? "human" : "dog";
-                    return "Model switched!\n\n" + $"You're now a {currentModel}!\n\n";
+                    return "Model switched!\n\n" + $"You're now a {currentModel}! Yippee!\n\n";
                 },
                 Category = "Other",
-                Description = "Toggle the dog model"
+                Description = "To toggle between the human and dog models. Woof!"
             });
         }
     }
