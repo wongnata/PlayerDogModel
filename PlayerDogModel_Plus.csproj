@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>PlayerDogModel_Plus</AssemblyName>
         <Description>It's a doggie-dog world! Updated version of the original mod by MonAmiral!</Description>
-        <Version>2.0.6</Version>
+        <Version>2.0.7</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -67,6 +67,12 @@
 	  </Reference>
 	  <Reference Include="OpenBodyCams">
 		  <HintPath>..\OpenBodyCams.dll</HintPath>
+	  </Reference>
+	  <Reference Include="TooManyEmotes">
+		  <HintPath>..\TooManyEmotes.dll</HintPath>
+	  </Reference>
+	  <Reference Include="TerminalApi">
+		  <HintPath>..\TerminalApi.dll</HintPath>
 	  </Reference>
   </ItemGroup>
 

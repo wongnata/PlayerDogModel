@@ -6,6 +6,8 @@ using PlayerDogModel_Plus.Source.Config;
 using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Core;
 using PlayerDogModel_Plus.Source.Patches.Optional;
+using PlayerDogModel_Plus.Source.Terminal;
+using System;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -18,6 +20,8 @@ namespace PlayerDogModel_Plus.Source
     [BepInDependency("me.swipez.melonloader.morecompany", DependencyFlags.SoftDependency)]
     [BepInDependency("verity.3rdperson", DependencyFlags.SoftDependency)]
     [BepInDependency("Zaggy1024.OpenBodyCams", DependencyFlags.SoftDependency)]
+    [BepInDependency("FlipMods.TooManyEmotes", DependencyFlags.SoftDependency)]
+    [BepInDependency("atomic.terminalapi", DependencyFlags.SoftDependency)]
     [BepInProcess("Lethal Company.exe")]
     public class Plugin : BaseUnityPlugin
     {
@@ -29,6 +33,8 @@ namespace PlayerDogModel_Plus.Source
         internal static bool isThirdPersonLoaded = false;
         internal static bool isMirageLoaded = false;
         internal static bool isOpenBodyCamsLoaded = false;
+        internal static bool isTooManyEmotesLoaded = false;
+        internal static bool isTerminalApiLoaded = false;
 
         private void Awake()
         {
@@ -50,28 +56,39 @@ namespace PlayerDogModel_Plus.Source
             if (Chainloader.PluginInfos.ContainsKey("me.swipez.melonloader.morecompany"))
             {
                 isMoreCompanyLoaded = true;
-                harmony.PatchAll(typeof(MoreCompanyPatch));
-                logger.LogInfo($"loaded MoreCompany patches...");
+                TryPatch(typeof(MoreCompanyPatch));
+
+                // This looks a bit psychotic but we only patch this to add more company cosmetic support
+                if (Chainloader.PluginInfos.ContainsKey("FlipMods.TooManyEmotes"))
+                {
+                    isTooManyEmotesLoaded = true;
+                    TryPatch(typeof(TooManyEmotesPatch));
+                }
             }
 
             if (Chainloader.PluginInfos.ContainsKey("verity.3rdperson"))
             {
                 isThirdPersonLoaded = true;
-                harmony.PatchAll(typeof(ThirdPersonPatch));
-                logger.LogInfo($"loaded 3rdPerson patches...");
+                TryPatch(typeof(ThirdPersonPatch));
             }
 
             if (Chainloader.PluginInfos.ContainsKey("Zaggy1024.OpenBodyCams"))
             {
                 isOpenBodyCamsLoaded = true;
-                harmony.PatchAll(typeof(OpenBodyCamsPatch));
-                logger.LogInfo($"loaded OpenBodyCamsPatch patches...");
+                TryPatch(typeof(OpenBodyCamsPatch));
             }
 
             if (Chainloader.PluginInfos.ContainsKey("Mirage"))
             {
                 logger.LogDebug($"detected Mirage...");
                 isMirageLoaded = true;
+            }
+
+            if (Chainloader.PluginInfos.ContainsKey("atomic.terminalapi"))
+            {
+                logger.LogDebug($"detected TerminalAPI...");
+                SwitchModelCommand.Initialize();
+                isTerminalApiLoaded = true;
             }
 
             logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded successfully! Woof!");
@@ -87,6 +104,21 @@ namespace PlayerDogModel_Plus.Source
             string directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string path = additionalPath != null ? Path.Combine(directoryName, ".\\" + additionalPath) : directoryName;
             return Path.GetFullPath(path);
+        }
+
+        private static void TryPatch(Type patchType)
+        {
+            try
+            {
+                harmony.PatchAll(patchType);
+            }
+            catch (Exception e)
+            {
+                logger.LogWarning($"Failed to load {patchType.Name} with exception: {e}");
+                return;
+            }
+
+            logger.LogInfo($"loaded {patchType.Name}...");
         }
     }
 }

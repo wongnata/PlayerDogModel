@@ -1,18 +1,19 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
 using OpenBodyCams;
+using OpenBodyCams.Compatibility;
 using PlayerDogModel_Plus.Source.Model;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace PlayerDogModel_Plus.Source.Patches.Optional
 {
-    [HarmonyPatch(typeof(BodyCamComponent))]
     internal class OpenBodyCamsPatch
     {
         private static readonly Vector3 cameraContainerOffset = new(0, 0, 0.125f);
 
-        [HarmonyPatch("SetTargetToPlayer")]
+        [HarmonyPatch(typeof(BodyCamComponent), "SetTargetToPlayer")]
         [HarmonyPostfix]
         public static void SetTargetToPlayerPostfix(PlayerControllerB player, GameObject ___CameraObject, ref Renderer[] ___currentRenderersToHide)
         {
@@ -26,6 +27,18 @@ namespace PlayerDogModel_Plus.Source.Patches.Optional
 
             // Hide the dog model from the camera
             ___currentRenderersToHide = ___currentRenderersToHide.Concat(replacer.dogRenderers).ToArray();
+        }
+
+        [HarmonyPatch(typeof(MoreCompanyCompatibility), "CollectCosmetics")]
+        [HarmonyPrefix]
+        public static bool CollectCosmeticsPrefix(PlayerControllerB player, ref IEnumerable<GameObject> __result)
+        {
+            PlayerModelReplacer replacer = player.GetComponent<PlayerModelReplacer>();
+
+            if (replacer == null || !replacer.IsDog) return true; // Nothing to patch
+
+            __result = Enumerable.Empty<GameObject>();
+            return false; // Collect no cosmetics for dogs
         }
     }
 }
