@@ -2,7 +2,7 @@
 
 **[2.0.7]**
 - Fixed issue where TooManyEmotes showed floating MoreCompany cosmetics in third person when in dog mode
-- Fixed issue causing OpenBodyCams to show your own MoreCompany cosmetics in third person cameras
+- Fixed issue causing OpenBodyCams to show your own MoreCompany cosmetics in some third person cameras
 - Added a soft dependency on TerminalAPI allowing dog mode to be toggled through the terminal (for compatibility with SuitsTerminal, etc.)
 
 **[2.0.6]**

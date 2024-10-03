@@ -6,6 +6,7 @@ using PlayerDogModel_Plus.Source.Config;
 using PlayerDogModel_Plus.Source.Networking;
 using PlayerDogModel_Plus.Source.Patches.Core;
 using PlayerDogModel_Plus.Source.Patches.Optional;
+using PlayerDogModel_Plus.Source.Terminal;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace PlayerDogModel_Plus.Source
     [BepInDependency("verity.3rdperson", DependencyFlags.SoftDependency)]
     [BepInDependency("Zaggy1024.OpenBodyCams", DependencyFlags.SoftDependency)]
     [BepInDependency("FlipMods.TooManyEmotes", DependencyFlags.SoftDependency)]
+    [BepInDependency("atomic.terminalapi", DependencyFlags.SoftDependency)]
     [BepInProcess("Lethal Company.exe")]
     public class Plugin : BaseUnityPlugin
     {
@@ -31,6 +33,7 @@ namespace PlayerDogModel_Plus.Source
         internal static bool isMirageLoaded = false;
         internal static bool isOpenBodyCamsLoaded = false;
         internal static bool isTooManyEmotesLoaded = false;
+        internal static bool isTerminalApiLoaded = false;
 
         private void Awake()
         {
@@ -82,6 +85,13 @@ namespace PlayerDogModel_Plus.Source
             {
                 logger.LogDebug($"detected Mirage...");
                 isMirageLoaded = true;
+            }
+
+            if (Chainloader.PluginInfos.ContainsKey("atomic.terminalapi"))
+            {
+                logger.LogDebug($"detected TerminalAPI...");
+                SwitchModelCommand.Initialize();
+                isTerminalApiLoaded = true;
             }
 
             logger.LogInfo($"{PluginInfo.PLUGIN_GUID} loaded successfully! Woof!");

@@ -71,6 +71,9 @@
 	  <Reference Include="TooManyEmotes">
 		  <HintPath>..\TooManyEmotes.dll</HintPath>
 	  </Reference>
+	  <Reference Include="TerminalApi">
+		  <HintPath>..\TerminalApi.dll</HintPath>
+	  </Reference>
   </ItemGroup>
 
 	<Target Name="PostBuildDebug" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Debug'">
