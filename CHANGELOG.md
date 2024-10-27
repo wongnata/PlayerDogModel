@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.8]**
+- Removed broken patch for OpenBodyCams which attempts to hide MoreCompany cosmetics. Disable EnableMoreCompanyCosmeticsCompatibility in the OpenBodyCams config to hide MoreCompany cosmetics in the camera instead!
+
 **[2.0.7]**
 - Fixed issue where TooManyEmotes showed floating MoreCompany cosmetics in third person when in dog mode
 - Fixed issue causing OpenBodyCams to show your own MoreCompany cosmetics in some third person cameras
