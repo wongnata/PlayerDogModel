@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.9]**
+- Rebuilt for compatibility with MoreCompany v1.11.0
+
 **[2.0.8]**
 - Removed broken patch for OpenBodyCams which attempts to hide MoreCompany cosmetics. Disable EnableMoreCompanyCosmeticsCompatibility in the OpenBodyCams config to hide MoreCompany cosmetics in the camera instead!
 
