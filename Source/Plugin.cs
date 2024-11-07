@@ -75,6 +75,7 @@ namespace PlayerDogModel_Plus.Source
             if (Chainloader.PluginInfos.ContainsKey("Zaggy1024.OpenBodyCams"))
             {
                 isOpenBodyCamsLoaded = true;
+                OpenBodyCamsPatch.Initialize();
                 TryPatch(typeof(OpenBodyCamsPatch));
             }
 

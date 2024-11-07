@@ -1,5 +1,8 @@
 # Changelog
 
+**[2.0.10]**
+- Rebuilt and updated OpenBodyCams compatibility to use new API introduced in OpenBodyCams v3.0.1
+
 **[2.0.9]**
 - Rebuilt for compatibility with MoreCompany v1.11.0
 
